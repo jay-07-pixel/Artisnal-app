@@ -93,10 +93,13 @@ class _GuidePainter extends CustomPainter {
         _drawDiagonals(canvas, size, gridPaint);
         _dashedRect(canvas, _inset(size, 0.12, 0.14), framePaint);
       case GridOverlayType.detailFrame:
-        _drawThirds(canvas, size, gridPaint);
+        // Photography Guide Preset 4: detail frame + leading (diagonal) lines.
+        _drawDiagonals(canvas, size, gridPaint);
         _dashedRect(canvas, _inset(size, 0.28, 0.34), framePaint);
       case GridOverlayType.horizontalFolds:
+        // Photography Guide Preset 5: horizontal folds with diagonal assists.
         _drawHorizontals(canvas, size, gridPaint);
+        _drawDiagonals(canvas, size, gridPaint);
         _dashedRect(canvas, _inset(size, 0.10, 0.24), framePaint);
     }
   }

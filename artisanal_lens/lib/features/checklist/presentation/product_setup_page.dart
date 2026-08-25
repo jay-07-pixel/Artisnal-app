@@ -9,21 +9,13 @@ import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/lighting_advisory.dart';
 import '../../../domain/entities/product_category.dart';
-import '../../../domain/entities/shot_set.dart';
-import '../../../domain/entities/shot_type.dart';
 import '../../../shared/widgets/common.dart';
-import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
 
 /// Product setup — Figma frame "Product Setup Flow".
 ///
-/// Category grid and product name, then straight into the shoot. The shot-type
-/// checklist that Figma drew here was removed: the next screen asks "What kind
-/// of photo do you want?", so having both made the artisan choose twice.
-/// Per-type progress still lives in the Product Viewer and on the gallery card.
-///
-/// The same screen serves a brand-new product and a shoot being resumed; when
-/// [setId] is given the category and name are already fixed.
+/// Category grid and product name, then the photo list. Category is locked
+/// once a shoot exists so its presets stay scoped to it.
 class ProductSetupPage extends ConsumerStatefulWidget {
   const ProductSetupPage({this.setId, super.key});
 
@@ -88,13 +80,6 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
         ? null
         : ref.watch(catalogRepositoryProvider).categoryById(_selectedCategoryId!);
 
-    final nextSlot = existingSet?.nextSlot ??
-        ShotSlot(
-          shotType: ShotType.recommendedOrder.first,
-          index: 0,
-          label: ShotType.recommendedOrder.first.slotLabels.first,
-        );
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -155,18 +140,14 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
           ],
         ],
       ),
-      // The shot-type checklist used to sit here, but the very next screen
-      // asks the same question, so this screen now only sets up the product
-      // and hands straight over.
+      // Hands over to the photo list, which is the hub for the shoot.
       bottomNavigationBar: selectedCategory == null
           ? null
           : BottomAction(
               child: FilledButton.icon(
-                onPressed: _canStart && !_isStarting
-                    ? () => _start(nextSlot.shotType)
-                    : null,
-                icon: const Icon(Icons.photo_camera_outlined, size: 20),
-                label: const Text('Start Photography'),
+                onPressed: _canStart && !_isStarting ? _start : null,
+                icon: const Icon(Icons.arrow_forward, size: 20),
+                label: const Text('Continue'),
               ),
             ),
     );
@@ -175,11 +156,9 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
   bool get _canStart =>
       _selectedCategoryId != null && _nameController.text.trim().isNotEmpty;
 
-  Future<void> _start(ShotType shotType) async {
+  Future<void> _start() async {
     if (_isStarting) return;
 
-    // Drop focus so the keyboard does not come back when the capture flow
-    // pops back to this screen.
     FocusScope.of(context).unfocus();
     setState(() => _isStarting = true);
 
@@ -187,30 +166,20 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
       final controller = ref.read(shotSetsProvider.notifier);
       var setId = _activeSetId;
 
-      // A brand-new product is only persisted once the artisan actually starts
-      // shooting, so abandoning the form leaves nothing behind.
+      // A brand-new product is only persisted once the artisan continues, so
+      // abandoning the form leaves nothing behind.
       if (setId == null) {
         final created = await controller.createSet(
           productName: _nameController.text.trim(),
           categoryId: _selectedCategoryId!,
         );
         setId = created.id;
-        // Adopt it, so returning from the capture flow shows real progress
-        // rather than a fresh form.
         if (mounted) setState(() => _activeSetId = setId);
       }
 
-      final set = ref.read(shotSetProvider(setId));
-      final slot = set?.nextSlotFor(shotType) ??
-          ShotSlot(shotType: shotType, index: 0, label: shotType.slotLabels.first);
-
-      ref.read(captureSessionProvider.notifier)
-        ..startFor(setId)
-        ..chooseShotType(slot.shotType, slotIndex: slot.index);
-
       if (!mounted) return;
-      context.pushNamed(
-        AppRoute.shotAndStyle,
+      context.pushReplacementNamed(
+        AppRoute.photoList,
         pathParameters: {'setId': setId},
       );
     } finally {

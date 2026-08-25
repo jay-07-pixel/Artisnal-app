@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/capture/presentation/capture_page.dart';
+import '../features/checklist/presentation/photo_list_page.dart';
 import '../features/checklist/presentation/product_setup_page.dart';
 import '../features/completion/presentation/completion_page.dart';
 import '../features/gallery/presentation/gallery_page.dart';
 import '../features/gallery/presentation/product_viewer_page.dart';
 import '../features/home/presentation/home_page.dart';
+import '../features/instruction/presentation/alignment_page.dart';
+import '../features/instruction/presentation/lighting_setup_page.dart';
+import '../features/instruction/presentation/tutorial_page.dart';
 import '../features/onboarding/presentation/opening_sequence_page.dart';
 import '../features/review/presentation/review_page.dart';
 import '../features/settings/presentation/settings_page.dart';
@@ -20,19 +24,23 @@ abstract final class AppRoute {
   static const String gallery = 'gallery';
   static const String settings = 'settings';
   static const String productSetup = 'productSetup';
+  static const String photoList = 'photoList';
   static const String shotAndStyle = 'shotAndStyle';
+  static const String lightingSetup = 'lightingSetup';
+  static const String tutorial = 'tutorial';
+  static const String alignment = 'alignment';
   static const String capture = 'capture';
   static const String review = 'review';
   static const String completion = 'completion';
   static const String productViewer = 'productViewer';
 }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter createRouter() {
   return GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     routes: [
       GoRoute(
@@ -69,23 +77,55 @@ GoRouter createRouter() {
       GoRoute(
         path: '/product/setup',
         name: AppRoute.productSetup,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => ProductSetupPage(
           setId: state.uri.queryParameters['setId'],
         ),
       ),
       GoRoute(
+        path: '/product/:setId/list',
+        name: AppRoute.photoList,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => PhotoListPage(
+          setId: state.pathParameters['setId']!,
+        ),
+      ),
+      GoRoute(
         path: '/product/:setId/shot',
         name: AppRoute.shotAndStyle,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => ShotAndStylePage(
+          setId: state.pathParameters['setId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/product/:setId/lighting',
+        name: AppRoute.lightingSetup,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => LightingSetupPage(
+          setId: state.pathParameters['setId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/product/:setId/tutorial',
+        name: AppRoute.tutorial,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => TutorialPage(
+          setId: state.pathParameters['setId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/product/:setId/align',
+        name: AppRoute.alignment,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => AlignmentPage(
           setId: state.pathParameters['setId']!,
         ),
       ),
       GoRoute(
         path: '/product/:setId/capture',
         name: AppRoute.capture,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => CapturePage(
           setId: state.pathParameters['setId']!,
         ),
@@ -93,7 +133,7 @@ GoRouter createRouter() {
       GoRoute(
         path: '/product/:setId/review',
         name: AppRoute.review,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => ReviewPage(
           setId: state.pathParameters['setId']!,
         ),
@@ -101,7 +141,7 @@ GoRouter createRouter() {
       GoRoute(
         path: '/product/:setId/complete',
         name: AppRoute.completion,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => CompletionPage(
           setId: state.pathParameters['setId']!,
         ),
@@ -109,7 +149,7 @@ GoRouter createRouter() {
       GoRoute(
         path: '/product/:setId/photos',
         name: AppRoute.productViewer,
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => ProductViewerPage(
           setId: state.pathParameters['setId']!,
         ),

@@ -11,8 +11,8 @@ import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_set.dart';
 import '../../../domain/entities/shot_type.dart';
 import '../../../shared/widgets/common.dart';
-import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
+import '../../instruction/instruction_flow.dart';
 
 /// Product gallery & viewer — Figma frame "Product Gallery & Viewer".
 ///
@@ -82,8 +82,8 @@ class ProductViewerPage extends ConsumerWidget {
               )
             : FilledButton.icon(
                 onPressed: () => context.pushNamed(
-                  AppRoute.productSetup,
-                  queryParameters: {'setId': setId},
+                  AppRoute.photoList,
+                  pathParameters: {'setId': setId},
                 ),
                 icon: const Icon(Icons.photo_camera_outlined, size: 18),
                 label: Text(
@@ -193,14 +193,7 @@ class _TypeSection extends ConsumerWidget {
   }
 
   void _shootSlot(BuildContext context, WidgetRef ref, ShotSlot slot) {
-    ref.read(captureSessionProvider.notifier)
-      ..startFor(setId)
-      ..chooseShotType(slot.shotType, slotIndex: slot.index);
-
-    context.pushNamed(
-      AppRoute.shotAndStyle,
-      pathParameters: {'setId': setId},
-    );
+    beginCaptureForSlot(context, ref, setId: setId, slot: slot);
   }
 }
 

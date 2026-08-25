@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+
+import 'database_factory_stub.dart'
+    if (dart.library.js_interop) 'database_factory_web.dart';
 
 /// Local SQLite storage for shoots and photographs.
 ///
@@ -19,11 +20,10 @@ class AppDatabase {
   static const String tableShots = 'shots';
 
   static Future<AppDatabase> open({String fileName = 'artisanal_lens.db'}) async {
-    // On the web the same SQL runs against sqlite compiled to WASM, backed by
-    // IndexedDB, so the schema and every query below are shared unchanged.
-    if (kIsWeb) {
-      databaseFactory = databaseFactoryFfiWeb;
-    }
+    // On the web the same SQL runs against sqlite compiled to WASM. The
+    // factory is swapped via a conditional import so Android never loads
+    // the web plugin (that caused a MissingPluginException on the phone).
+    configureDatabaseFactory();
 
     final directory = await getDatabasesPath();
     final database = await openDatabase(

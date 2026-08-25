@@ -121,6 +121,20 @@ enum CompositionRule {
     id: 'leading_lines',
     label: 'Leading fabric lines',
     hint: 'Lay the folds along the diagonal guides.',
+  ),
+
+  /// Photography Guide — Texture & Weave: texture stays in the centre.
+  centerFocus(
+    id: 'center_focus',
+    label: 'Centre focus',
+    hint: 'Keep the texture in the centre of the frame.',
+  ),
+
+  /// Photography Guide — Embroidery & Border: detail stays inside the frame.
+  detailFrame(
+    id: 'detail_frame',
+    label: 'Detail frame',
+    hint: 'Keep the embroidery inside the highlighted frame.',
   );
 
   const CompositionRule({
@@ -147,10 +161,12 @@ enum GridOverlayType {
   /// Diagonal guides that the fabric flow should follow.
   leadingLines,
 
-  /// Small rectangle framing an embroidery or border detail.
+  /// Small rectangle framing an embroidery or border detail, with diagonal
+  /// leading lines (Photography Guide Preset 4).
   detailFrame,
 
-  /// Horizontal guides for aligning folds, with diagonal assists.
+  /// Horizontal guides for aligning folds, with diagonal assists
+  /// (Photography Guide Preset 5).
   horizontalFolds,
 }
 

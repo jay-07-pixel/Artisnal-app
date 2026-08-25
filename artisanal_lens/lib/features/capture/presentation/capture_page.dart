@@ -42,24 +42,18 @@ class _CapturePageState extends ConsumerState<CapturePage> {
     ref.read(guidedCameraProvider.notifier).start(_resolveTechnique());
   }
 
-  /// Process and Detail shots skip the style step, so they have no preset to
-  /// inherit a technique from and fall back to their type's own.
   TechniquePreset _resolveTechnique() {
-    final preset = ref.read(selectedPresetProvider);
-    if (preset != null) return preset.technique;
-    final shotType = ref.read(captureSessionProvider).shotType;
-    return (shotType ?? ShotType.detail).fallbackTechnique;
+    return ref.read(sessionTechniqueProvider);
   }
 
   @override
   Widget build(BuildContext context) {
     final camera = ref.watch(guidedCameraProvider);
     final session = ref.watch(captureSessionProvider);
-    final preset = ref.watch(selectedPresetProvider);
+    final guidance = ref.watch(sessionGuidanceProvider);
     final set = ref.watch(shotSetProvider(widget.setId));
 
-    final technique = preset?.technique ??
-        (session.shotType ?? ShotType.detail).fallbackTechnique;
+    final technique = guidance.technique;
     final slotLabel = session.shotType == null
         ? ''
         : (session.slotIndex != null &&
@@ -76,9 +70,8 @@ class _CapturePageState extends ConsumerState<CapturePage> {
           if (camera.isReady)
             GuideOverlay(
               grid: technique.grid,
-              caption: preset == null
-                  ? 'Fill the frame with the ${slotLabel.toLowerCase()}'
-                  : 'Align ${preset.name.toLowerCase()} here',
+              caption: guidance.overlayCaption ??
+                  'Fill the frame with the ${slotLabel.toLowerCase()}',
             ),
           _TopBar(
             productName: set?.productName ?? '',

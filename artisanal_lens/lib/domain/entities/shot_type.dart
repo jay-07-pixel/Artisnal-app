@@ -87,18 +87,20 @@ enum ShotType {
   /// apply to Product and Lifestyle. A Detail shot is framed against a grid
   /// rather than folded, and a Process shot is of the loom or the dye bath —
   /// there is no drape to choose in either case, so both go straight to the
-  /// camera and use [fallbackTechnique].
+  /// camera and load slot-specific shot guidance.
   bool get skipsStyleStep =>
       this == ShotType.detail || this == ShotType.process;
 
-  /// The technique used when this type has no preset to inherit one from.
+  /// Last-resort technique when no slot and no fold have been chosen.
   ///
-  /// Only meaningful for the types where [skipsStyleStep] is true; Product and
-  /// Lifestyle always carry a preset by the time the camera opens.
+  /// Saree Border and Weave load BTP §7.3 templates instead of this.
+  /// Other categories keep this Detail fallback because the photography
+  /// guide does not define templates for those categories. Motif uses a
+  /// Pattern close-up through `ShotGuidance.forSlot`.
   TechniquePreset get fallbackTechnique => switch (this) {
-        // A loom or a dye bath is a scene, not an object: stand back, keep the
-        // whole working area in frame, and let the light be whatever the
-        // workshop has rather than asking for a window.
+        // A loom or a dye bath is a scene, not an object. The photography
+        // guide does not define a process grid, so the existing rule-of-thirds
+        // scene framing is kept.
         ShotType.process => const TechniquePreset(
             angle: CameraAngle.eyeLevel,
             lighting: LightingSetup.diffusedDaylight,
@@ -109,15 +111,16 @@ enum ShotType {
               PhotographyGuideline.diverseLighting,
             ],
           ),
-        // Detail shots are a centred macro close-up of weave or border.
+        // Conservative close-up only. Saree Texture & Weave and Embroidery
+        // & Border must not read this — they have their own templates.
         _ => const TechniquePreset(
             angle: CameraAngle.macroCloseUp,
             lighting: LightingSetup.softWindowLight,
             composition: CompositionRule.centeredProduct,
-            grid: GridOverlayType.detailFrame,
+            grid: GridOverlayType.centerFocus,
             guidelines: [
               PhotographyGuideline.closeUpShots,
-              PhotographyGuideline.highlightFabricEdges,
+              PhotographyGuideline.weightAndFlow,
             ],
           ),
       };

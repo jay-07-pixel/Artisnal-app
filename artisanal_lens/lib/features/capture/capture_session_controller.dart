@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
 import '../../domain/entities/fold_preset.dart';
+import '../../domain/entities/shot_guidance.dart';
 import '../../domain/entities/shot_type.dart';
+import '../../domain/entities/technique_preset.dart';
+import '../home/shot_sets_controller.dart';
 
 /// The choices the artisan has made for the photograph they are about to take.
 ///
@@ -118,4 +121,29 @@ final selectedPresetProvider = Provider<FoldPreset?>((ref) {
   final presetId = ref.watch(captureSessionProvider).presetId;
   if (presetId == null) return null;
   return ref.watch(catalogRepositoryProvider).presetById(presetId);
+});
+
+/// Content, needs and technique for the photograph about to be taken.
+final sessionGuidanceProvider = Provider<ShotGuidance>((ref) {
+  final session = ref.watch(captureSessionProvider);
+  final preset = ref.watch(selectedPresetProvider);
+  final shotType = session.shotType ?? ShotType.detail;
+  final setId = session.setId;
+  final categoryId =
+      setId == null ? null : ref.watch(shotSetProvider(setId))?.categoryId;
+  return ShotGuidance.resolve(
+    shotType: shotType,
+    slotIndex: session.slotIndex ?? 0,
+    preset: preset,
+    categoryId: categoryId,
+  );
+});
+
+/// Technique loaded into the camera and the instruction screens.
+///
+/// Product and Lifestyle inherit this from the chosen fold preset. Process
+/// and Detail skip the style step. Saree Border/Weave use BTP templates;
+/// other categories keep the existing Detail fallback.
+final sessionTechniqueProvider = Provider<TechniquePreset>((ref) {
+  return ref.watch(sessionGuidanceProvider).technique;
 });

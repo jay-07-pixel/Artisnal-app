@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/providers.dart';
-import '../../../app/router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
@@ -12,6 +11,7 @@ import '../../../shared/widgets/common.dart';
 import '../../capture/camera_controller.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
+import '../../instruction/instruction_flow.dart';
 
 /// Review & retake — Figma frame "Refined Photo Review".
 ///
@@ -198,30 +198,16 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
         savedToDeviceGallery: savedToGallery,
       );
 
-      final updated = await ref
+      await ref
           .read(shotSetsProvider.notifier)
           .addShot(setId: widget.setId, shot: shot);
 
       ref.read(captureSessionProvider.notifier).completeShot();
       if (!mounted) return;
 
-      // A finished set goes to the celebration screen.
-      if (updated.isFinished) {
-        context.goNamed(
-          AppRoute.completion,
-          pathParameters: {'setId': widget.setId},
-        );
-        return;
-      }
-
-      // Otherwise unwind the three screens this photograph took (review,
-      // camera, shot & style) to land back on whichever screen launched it —
-      // the checklist or the product viewer. Both watch the shot-set provider,
-      // so they rebuild showing the new photo. Popping rather than navigating
-      // keeps Home underneath, which `goNamed` would have discarded.
-      for (var i = 0; i < 3 && context.canPop(); i++) {
-        context.pop();
-      }
+      // The photo list is the hub: the new photograph shows as complete and
+      // the next required slot is highlighted.
+      returnToPhotoList(context, widget.setId);
     } catch (error) {
       if (!mounted) return;
       setState(() => _isSaving = false);

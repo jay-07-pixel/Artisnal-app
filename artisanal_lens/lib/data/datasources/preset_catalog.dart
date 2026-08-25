@@ -36,7 +36,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         ),
         ProductCategory(
           id: cushionCover,
-          name: 'Cushion cover',
+          name: 'Cushion Cover',
           thumbnailAsset: 'assets/images/categories/cushion_cover.png',
           sortOrder: 1,
         ),
@@ -68,16 +68,29 @@ class BundledCatalogDataSource implements CatalogDataSource {
 
   /// Every preset in the catalogue.
   ///
-  /// Fold names come from the deck's Fold & Styling Presets slide; grid types,
-  /// purposes, highlighted properties and guideline references come from BTP
-  /// §7.3 (Presets 1–5) and §7.2 (property → technique mapping).
+  /// Fold names are the category-specific fold/styling presets from the
+  /// Artisanal Lens specification (four per category). They are not the
+  /// photography-guide templates. Templates load through shot-slot guidance.
+  ///
+  /// A fold may share angle / lighting / grid data with a template when the
+  /// source supports that overlap (for example Pallu drape uses hanger /
+  /// bamboo / mannequin, which the Draped Look template also names). Sharing
+  /// data is not the same as treating the fold as the template.
   static final List<FoldPreset> _all = [
     // ---------------------------------------------------------------- Saree
+    // SOURCE CONFLICT — product-owner decision required. Do not reconcile.
+    // Solution Deck p.9 sample flow: Pallu drape → Rule of Thirds.
+    // BTP §7.3 Draped Look (hanger / bamboo / mannequin): Leading Lines.
+    // This fold is not the Draped Look template. The current grid is Leading
+    // Lines, matching BTP Draped Look placement overlap (hanger). Left
+    // unchanged until the sources are decided.
     FoldPreset(
       id: 'saree_pallu_drape',
       categoryId: saree,
-      name: 'Pallu Drape',
-      purpose: 'Best for a clean hero photograph.',
+      name: 'Pallu drape (hanger)',
+      purpose: 'Shows flimsiness, sheen, flow and weight.',
+      content: 'Flimsiness, Sheen, Flow, Weight',
+      needs: 'Hanger, bamboo or mannequin; side lighting',
       technique: const TechniquePreset(
         angle: CameraAngle.eyeLevel,
         lighting: LightingSetup.softWindowLight,
@@ -92,7 +105,6 @@ class BundledCatalogDataSource implements CatalogDataSource {
       highlightedProperties: const [
         FabricProperty.flimsiness,
         FabricProperty.sheen,
-        FabricProperty.quality,
         FabricProperty.material,
       ],
       referenceImageAsset: 'assets/images/presets/saree_pallu_drape.png',
@@ -100,87 +112,43 @@ class BundledCatalogDataSource implements CatalogDataSource {
       supportedShotTypes: const [ShotType.product, ShotType.lifestyle],
       tutorialVideoAsset: 'assets/videos/saree_pallu_drape.mp4',
       tutorialTranscript: const [
-        'In this video we will hang the saree so its fall is clearly visible.',
-        'Tie the bamboo or hanger at about shoulder height.',
+        'Hang the saree so its fall is clearly visible.',
+        'Use a hanger, bamboo pole or mannequin at about shoulder height.',
         'Let the pallu hang freely — do not pull it straight.',
-        'Let the folds settle along the diagonal lines on your screen.',
+        'Let the folds follow the diagonal lines on your screen.',
         'Keep one light source to the side so the sheen shows.',
       ],
       setupSteps: const [
         SetupStep(
           title: 'Hang the saree',
           instruction:
-              'Hang the saree on the bamboo so the pallu falls freely in front.',
+              'Drape the saree over a hanger, bamboo or mannequin so the pallu falls freely.',
           illustrationAsset: 'assets/images/steps/saree_pallu_drape_1.png',
         ),
         SetupStep(
           title: 'Let the folds settle',
           instruction:
-              'Do not flatten the folds — let them fall naturally to show weight.',
+              'Do not flatten the folds — let them fall naturally to show weight and flow.',
           illustrationAsset: 'assets/images/steps/saree_pallu_drape_2.png',
         ),
         SetupStep(
           title: 'Align with the gridlines',
           instruction:
-              'Match the hanging line with the top guide on the camera screen.',
+              'Match the drape to the diagonal guides. Side light shows the sheen.',
           illustrationAsset: 'assets/images/steps/saree_pallu_drape_3.png',
         ),
       ],
     ),
     FoldPreset(
-      id: 'saree_hanger',
+      id: 'saree_box_fold',
       categoryId: saree,
-      name: 'Hanger',
-      purpose: 'Simple and clear.',
+      name: 'Box / flat fold',
+      purpose: 'Shows thickness and material weight.',
+      content: 'Thickness, Material weight',
+      needs: 'Side lighting',
       technique: const TechniquePreset(
         angle: CameraAngle.eyeLevel,
         lighting: LightingSetup.softWindowLight,
-        composition: CompositionRule.centeredProduct,
-        grid: GridOverlayType.ruleOfThirds,
-        guidelines: [
-          PhotographyGuideline.complementaryBackgrounds,
-          PhotographyGuideline.weightAndFlow,
-          PhotographyGuideline.naturalCreases,
-        ],
-      ),
-      highlightedProperties: const [
-        FabricProperty.pattern,
-        FabricProperty.colour,
-        FabricProperty.material,
-      ],
-      requiresProp: 'A hanger',
-      referenceImageAsset: 'assets/images/presets/saree_hanger.png',
-      supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/saree_hanger.mp4',
-      tutorialTranscript: const [
-        'Hanging the saree straight gives the simplest, clearest photograph.',
-        'Hang it on a plain hanger at about eye height.',
-        'Smooth the front so the border runs straight down.',
-        'Stand square to it and keep the background plain.',
-      ],
-      setupSteps: const [
-        SetupStep(
-          title: 'Hang the saree',
-          instruction: 'Hang the saree on a plain hanger at about eye height.',
-          illustrationAsset: 'assets/images/steps/saree_hanger_1.png',
-        ),
-        SetupStep(
-          title: 'Straighten the fall',
-          instruction: 'Smooth the front so the border runs straight down.',
-          illustrationAsset: 'assets/images/steps/saree_hanger_2.png',
-        ),
-      ],
-    ),
-
-    // -------------------------------------------------------- Cushion cover
-    FoldPreset(
-      id: 'saree_box_fold',
-      categoryId: saree,
-      name: 'Box / Flat Fold',
-      purpose: 'Shows the full design.',
-      technique: const TechniquePreset(
-        angle: CameraAngle.overheadFlatLay,
-        lighting: LightingSetup.diffusedDaylight,
         composition: CompositionRule.negativeSpaceAroundFolds,
         grid: GridOverlayType.horizontalFolds,
         guidelines: [
@@ -192,39 +160,33 @@ class BundledCatalogDataSource implements CatalogDataSource {
       highlightedProperties: const [
         FabricProperty.thickness,
         FabricProperty.material,
-        FabricProperty.pattern,
       ],
       referenceImageAsset: 'assets/images/presets/saree_box_fold.png',
       supportedShotTypes: const [ShotType.product],
       tutorialVideoAsset: 'assets/videos/saree_box_fold.mp4',
       tutorialTranscript: const [
-        'Lay the saree out on a clean, flat surface — a bed or table works well.',
-        'Make sure there are no wrinkles.',
-        'Fold it once from the middle, keeping the border edge visible.',
-        'Pick a corner and fold it diagonally.',
-        'Press the edges flat so they do not curl up.',
+        'Fold the saree into a neat stack so the layers stay visible.',
+        'Keep the folded edge facing the camera — that edge shows thickness.',
+        'Line the folds up with the horizontal guides.',
+        'Use light from the side so each layer has depth.',
       ],
       setupSteps: const [
         SetupStep(
-          title: 'Fold your saree',
+          title: 'Stack the folds',
           instruction:
-              'Place the saree on the floor and fold it once from the middle.',
+              'Fold the saree into even layers and stack them so the edge is visible.',
           illustrationAsset: 'assets/images/steps/saree_box_fold_1.png',
         ),
         SetupStep(
-          title: 'Fold the corner',
-          instruction: 'Pick a corner and fold it diagonally like this.',
+          title: 'Face the edge forward',
+          instruction:
+              'Turn the stack so the saree edge faces the camera for a thickness reference.',
           illustrationAsset: 'assets/images/steps/saree_box_fold_2.png',
         ),
         SetupStep(
-          title: 'Press the edges',
-          instruction:
-              'Press the edges flat with your hand so they do not curl.',
-          illustrationAsset: 'assets/images/steps/saree_box_fold_3.png',
-        ),
-        SetupStep(
           title: 'Align with the gridlines',
-          instruction: 'Keep the folds parallel to the horizontal guides.',
+          instruction:
+              'Keep the folds parallel to the horizontal guides. Side light gives each fold depth.',
           illustrationAsset: 'assets/images/steps/saree_box_fold_4.png',
         ),
       ],
@@ -232,8 +194,11 @@ class BundledCatalogDataSource implements CatalogDataSource {
     FoldPreset(
       id: 'saree_worn_drape',
       categoryId: saree,
-      name: 'Worn Drape',
-      purpose: 'Shows how it looks when worn.',
+      name: 'Worn drape (model)',
+      purpose: 'Shows colour, pattern and material when worn.',
+      content: 'Colour, Pattern, Material',
+      needs:
+          'Someone to wear the saree; natural daylight; neutral or contrasting background',
       technique: const TechniquePreset(
         angle: CameraAngle.eyeLevel,
         lighting: LightingSetup.diffusedDaylight,
@@ -243,27 +208,30 @@ class BundledCatalogDataSource implements CatalogDataSource {
           PhotographyGuideline.weightAndFlow,
           PhotographyGuideline.tellAStory,
           PhotographyGuideline.variousAngles,
+          PhotographyGuideline.diverseLighting,
         ],
       ),
       highlightedProperties: const [
-        FabricProperty.pattern,
         FabricProperty.colour,
-        FabricProperty.flimsiness,
+        FabricProperty.pattern,
+        FabricProperty.material,
       ],
       referenceImageAsset: 'assets/images/presets/saree_worn_drape.png',
       requiresProp: 'Someone to wear the saree',
       supportedShotTypes: const [ShotType.product, ShotType.lifestyle],
       tutorialVideoAsset: 'assets/videos/saree_worn_drape.mp4',
       tutorialTranscript: const [
-        'A worn shot tells the buyer how the saree will actually look.',
-        'Stand the person in open shade, never in direct midday sun.',
-        'Keep the full length in frame so the size is clear.',
-        'Turn slightly to the side so the pleats catch the light.',
+        'A worn shot shows the full saree — colour, pattern and material.',
+        'Stand in open shade so the colour stays true.',
+        'Let the saree cover most of the frame.',
+        'Line the top border up with the top third of the grid.',
+        'If there are pleats, follow the vertical grid lines.',
       ],
       setupSteps: const [
         SetupStep(
           title: 'Drape the saree',
-          instruction: 'Drape the saree normally, keeping the pallu visible.',
+          instruction:
+              'Drape the saree on the person so it covers most of the frame.',
           illustrationAsset: 'assets/images/steps/saree_worn_drape_1.png',
         ),
         SetupStep(
@@ -272,12 +240,66 @@ class BundledCatalogDataSource implements CatalogDataSource {
           illustrationAsset: 'assets/images/steps/saree_worn_drape_2.png',
         ),
         SetupStep(
-          title: 'Fit the full length',
-          instruction: 'Step back until the whole saree fits inside the guide.',
+          title: 'Align with the gridlines',
+          instruction:
+              'Line the top border with the top third. Keep pleats on the vertical guides.',
           illustrationAsset: 'assets/images/steps/saree_worn_drape_3.png',
         ),
       ],
     ),
+    FoldPreset(
+      id: 'saree_roll_display',
+      categoryId: saree,
+      name: 'Roll display',
+      purpose: 'Shows colour, pattern and material in a compact roll.',
+      content: 'Colour, Pattern, Material',
+      needs: 'Natural daylight; neutral or contrasting background',
+      technique: const TechniquePreset(
+        angle: CameraAngle.eyeLevel,
+        lighting: LightingSetup.diffusedDaylight,
+        composition: CompositionRule.ruleOfThirds,
+        grid: GridOverlayType.ruleOfThirds,
+        guidelines: [
+          PhotographyGuideline.variousAngles,
+          PhotographyGuideline.diverseLighting,
+          PhotographyGuideline.complementaryBackgrounds,
+        ],
+      ),
+      highlightedProperties: const [
+        FabricProperty.colour,
+        FabricProperty.pattern,
+        FabricProperty.material,
+      ],
+      referenceImageAsset: 'assets/images/presets/saree_roll_display.png',
+      supportedShotTypes: const [ShotType.product],
+      tutorialTranscript: const [
+        'Roll the saree so the pallu and border face the camera.',
+        'Let the roll cover most of the frame.',
+        'Line the top border up with the top third of the grid.',
+        'Use soft daylight so the colour stays true.',
+      ],
+      setupSteps: const [
+        SetupStep(
+          title: 'Roll the saree',
+          instruction:
+              'Roll the saree so the pallu and border face the camera.',
+          illustrationAsset: 'assets/images/steps/saree_roll_display_1.png',
+        ),
+        SetupStep(
+          title: 'Fill the frame',
+          instruction: 'Step in until the roll covers most of the frame.',
+          illustrationAsset: 'assets/images/steps/saree_roll_display_2.png',
+        ),
+        SetupStep(
+          title: 'Align with the gridlines',
+          instruction:
+              'Line the top border up with the top third of the grid.',
+          illustrationAsset: 'assets/images/steps/saree_roll_display_3.png',
+        ),
+      ],
+    ),
+
+    // -------------------------------------------------------- Cushion Cover
     FoldPreset(
       id: 'cushion_flat_lay',
       categoryId: cushionCover,

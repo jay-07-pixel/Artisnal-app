@@ -41,6 +41,8 @@ class FoldPreset extends Equatable {
     required this.referenceImageAsset,
     required this.setupSteps,
     required this.supportedShotTypes,
+    this.content,
+    this.needs,
     this.tutorialVideoAsset,
     this.tutorialTranscript = const [],
     this.requiresProp,
@@ -62,6 +64,13 @@ class FoldPreset extends Equatable {
 
   /// The fabric properties this composition is designed to communicate.
   final List<FabricProperty> highlightedProperties;
+
+  /// Documented Content line. When null, [contentLabel] uses property labels.
+  final String? content;
+
+  /// Documented Needs line (props, light, background). When null, [needsLabel]
+  /// falls back to [requiresProp].
+  final String? needs;
 
   /// Reference photo shown as the preset thumbnail and again during review.
   final String referenceImageAsset;
@@ -87,9 +96,38 @@ class FoldPreset extends Equatable {
   /// plain grid alignment, so the UI warns and offers extra help when set.
   final String? requiresProp;
 
-  bool get hasVideoTutorial => tutorialVideoAsset != null;
+  bool get hasVideoTutorial =>
+      tutorialVideoAsset != null && tutorialVideoAsset!.trim().isNotEmpty;
+
+  bool get hasSpokenTranscript => tutorialTranscript.isNotEmpty;
 
   bool get needsProp => requiresProp != null;
+
+  /// Illustration named for the alignment step, when the catalog lists one.
+  ///
+  /// Missing files stay missing — callers must placeholder, not substitute
+  /// the fold thumbnail.
+  String? get alignmentIllustrationAsset {
+    for (final step in setupSteps) {
+      final haystack = '${step.title} ${step.instruction}'.toLowerCase();
+      if (haystack.contains('align') || haystack.contains('grid')) {
+        return step.illustrationAsset;
+      }
+    }
+    return null;
+  }
+
+  /// Content shown in the UI — documented string, or fabric-property labels.
+  String get contentLabel =>
+      (content != null && content!.trim().isNotEmpty)
+          ? content!
+          : highlightedProperties.map((property) => property.label).join(', ');
+
+  /// Needs shown in the UI. Empty when the source names no requirement.
+  String? get needsLabel {
+    if (needs != null && needs!.trim().isNotEmpty) return needs;
+    return requiresProp;
+  }
 
   bool supports(ShotType shotType) => supportedShotTypes.contains(shotType);
 

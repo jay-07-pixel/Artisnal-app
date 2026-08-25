@@ -205,8 +205,8 @@ class _ContinueCard extends StatelessWidget {
                 const SizedBox(height: AppDimens.space12),
                 OutlinedButton(
                   onPressed: () => context.pushNamed(
-                    AppRoute.productSetup,
-                    queryParameters: {'setId': set.id},
+                    AppRoute.photoList,
+                    pathParameters: {'setId': set.id},
                   ),
                   child: const Text('Continue'),
                 ),
@@ -256,7 +256,7 @@ class _RecentCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(AppDimens.radiusLg),
         onTap: () => context.pushNamed(
-          AppRoute.productViewer,
+          set.isFinished ? AppRoute.productViewer : AppRoute.photoList,
           pathParameters: {'setId': set.id},
         ),
         child: Padding(
