@@ -1,0 +1,346 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../app/providers.dart';
+import '../../../app/router.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_dimens.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../domain/entities/lighting_advisory.dart';
+import '../../../domain/entities/product_category.dart';
+import '../../../domain/entities/shot_set.dart';
+import '../../../domain/entities/shot_type.dart';
+import '../../../shared/widgets/common.dart';
+import '../../capture/capture_session_controller.dart';
+import '../../home/shot_sets_controller.dart';
+
+/// Product setup — Figma frame "Product Setup Flow".
+///
+/// Category grid and product name, then straight into the shoot. The shot-type
+/// checklist that Figma drew here was removed: the next screen asks "What kind
+/// of photo do you want?", so having both made the artisan choose twice.
+/// Per-type progress still lives in the Product Viewer and on the gallery card.
+///
+/// The same screen serves a brand-new product and a shoot being resumed; when
+/// [setId] is given the category and name are already fixed.
+class ProductSetupPage extends ConsumerStatefulWidget {
+  const ProductSetupPage({this.setId, super.key});
+
+  final String? setId;
+
+  @override
+  ConsumerState<ProductSetupPage> createState() => _ProductSetupPageState();
+}
+
+class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
+  final TextEditingController _nameController = TextEditingController();
+  String? _selectedCategoryId;
+  bool _isStarting = false;
+
+  /// Guards the one-time copy of a resumed shoot into the form fields.
+  bool _hydrated = false;
+
+  /// The shoot this screen is tracking.
+  ///
+  /// Starts as [ProductSetupPage.setId], but a screen opened for a brand-new
+  /// product creates its set on the first "Start with …" tap and adopts that
+  /// id here. Without this the page would still believe it was an empty form
+  /// when the capture flow pops back to it, and would show 0 / 7 forever.
+  String? _activeSetId;
+
+  @override
+  void initState() {
+    super.initState();
+    _activeSetId = widget.setId;
+  }
+
+  bool get _isExistingSet => _activeSetId != null;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final categories = ref.watch(catalogRepositoryProvider).categories();
+    final existingSet = _activeSetId == null
+        ? null
+        : ref.watch(shotSetProvider(_activeSetId!));
+
+    // When resuming, mirror the stored set into the form once the set has
+    // loaded. Done after the frame because assigning to a TextEditingController
+    // notifies its listeners, which must not happen during build.
+    if (existingSet != null && !_hydrated) {
+      _hydrated = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        setState(() {
+          _selectedCategoryId = existingSet.categoryId;
+          _nameController.text = existingSet.productName;
+        });
+      });
+    }
+
+    final selectedCategory = _selectedCategoryId == null
+        ? null
+        : ref.watch(catalogRepositoryProvider).categoryById(_selectedCategoryId!);
+
+    final nextSlot = existingSet?.nextSlot ??
+        ShotSlot(
+          shotType: ShotType.recommendedOrder.first,
+          index: 0,
+          label: ShotType.recommendedOrder.first.slotLabels.first,
+        );
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(
+          existingSet?.productName.isNotEmpty == true
+              ? existingSet!.productName
+              : 'New Product',
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          AppDimens.pagePadding,
+          AppDimens.space24,
+          AppDimens.pagePadding,
+          AppDimens.space32,
+        ),
+        children: [
+          Text(
+            'What are you\nphotographing today?',
+            style: AppTypography.displayLarge,
+          ),
+          const SizedBox(height: AppDimens.space20),
+          _CategoryGrid(
+            categories: categories,
+            selectedId: _selectedCategoryId,
+            // Category is fixed once a shoot exists — its presets and
+            // checklist are already scoped to it.
+            onSelected: _isExistingSet
+                ? null
+                : (id) => setState(() => _selectedCategoryId = id),
+          ),
+          if (selectedCategory != null) ...[
+            const SizedBox(height: AppDimens.space32),
+            const Divider(),
+            const SizedBox(height: AppDimens.space24),
+            Text(selectedCategory.name, style: AppTypography.displayMedium),
+            const SizedBox(height: AppDimens.space12),
+            Text('Give your product a name', style: AppTypography.labelSmall),
+            const SizedBox(height: AppDimens.space8),
+            TextField(
+              controller: _nameController,
+              enabled: !_isExistingSet,
+              textCapitalization: TextCapitalization.words,
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppColors.textPrimary,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g. Blue Silk ${selectedCategory.name}',
+              ),
+              onChanged: (_) => setState(() {}),
+            ),
+            const SizedBox(height: AppDimens.space24),
+            const _ProTipBanner(),
+          ],
+        ],
+      ),
+      // The shot-type checklist used to sit here, but the very next screen
+      // asks the same question, so this screen now only sets up the product
+      // and hands straight over.
+      bottomNavigationBar: selectedCategory == null
+          ? null
+          : BottomAction(
+              child: FilledButton.icon(
+                onPressed: _canStart && !_isStarting
+                    ? () => _start(nextSlot.shotType)
+                    : null,
+                icon: const Icon(Icons.photo_camera_outlined, size: 20),
+                label: const Text('Start Photography'),
+              ),
+            ),
+    );
+  }
+
+  bool get _canStart =>
+      _selectedCategoryId != null && _nameController.text.trim().isNotEmpty;
+
+  Future<void> _start(ShotType shotType) async {
+    if (_isStarting) return;
+
+    // Drop focus so the keyboard does not come back when the capture flow
+    // pops back to this screen.
+    FocusScope.of(context).unfocus();
+    setState(() => _isStarting = true);
+
+    try {
+      final controller = ref.read(shotSetsProvider.notifier);
+      var setId = _activeSetId;
+
+      // A brand-new product is only persisted once the artisan actually starts
+      // shooting, so abandoning the form leaves nothing behind.
+      if (setId == null) {
+        final created = await controller.createSet(
+          productName: _nameController.text.trim(),
+          categoryId: _selectedCategoryId!,
+        );
+        setId = created.id;
+        // Adopt it, so returning from the capture flow shows real progress
+        // rather than a fresh form.
+        if (mounted) setState(() => _activeSetId = setId);
+      }
+
+      final set = ref.read(shotSetProvider(setId));
+      final slot = set?.nextSlotFor(shotType) ??
+          ShotSlot(shotType: shotType, index: 0, label: shotType.slotLabels.first);
+
+      ref.read(captureSessionProvider.notifier)
+        ..startFor(setId)
+        ..chooseShotType(slot.shotType, slotIndex: slot.index);
+
+      if (!mounted) return;
+      context.pushNamed(
+        AppRoute.shotAndStyle,
+        pathParameters: {'setId': setId},
+      );
+    } finally {
+      if (mounted) setState(() => _isStarting = false);
+    }
+  }
+}
+
+class _CategoryGrid extends StatelessWidget {
+  const _CategoryGrid({
+    required this.categories,
+    required this.selectedId,
+    required this.onSelected,
+  });
+
+  final List<ProductCategory> categories;
+  final String? selectedId;
+  final ValueChanged<String>? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: categories.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: AppDimens.space12,
+        mainAxisSpacing: AppDimens.space16,
+        childAspectRatio: 0.82,
+      ),
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        final isSelected = category.id == selectedId;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: onSelected == null ? null : () => onSelected!(category.id),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppDimens.radiusLg),
+                    border: Border.all(
+                      color: isSelected ? AppColors.primary : AppColors.border,
+                      width: isSelected ? 2 : 1,
+                    ),
+                  ),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: PhotoThumb(
+                          path: category.thumbnailAsset,
+                          borderRadius:
+                              BorderRadius.circular(AppDimens.radiusMd),
+                        ),
+                      ),
+                      if (isSelected)
+                        const Positioned(
+                          top: AppDimens.space8,
+                          right: AppDimens.space8,
+                          child: CircleAvatar(
+                            radius: 13,
+                            backgroundColor: AppColors.primary,
+                            child: Icon(
+                              Icons.check,
+                              size: 15,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppDimens.space8),
+            Text(
+              category.name,
+              textAlign: TextAlign.center,
+              style: AppTypography.labelLarge.copyWith(
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ProTipBanner extends StatelessWidget {
+  const _ProTipBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final advisory = LightingAdvisory.forTime(DateTime.now());
+    final message = advisory.shouldWait
+        ? '${advisory.headline}: ${advisory.detail}'
+        : 'Pro-tip: Natural light is best now for product shots.';
+
+    return Container(
+      padding: const EdgeInsets.all(AppDimens.space12),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceSand,
+        borderRadius: BorderRadius.circular(AppDimens.radiusLg),
+        border: Border.all(color: AppColors.successBorder),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(
+            Icons.lightbulb_outline,
+            size: 18,
+            color: AppColors.success,
+          ),
+          const SizedBox(width: AppDimens.space8),
+          Expanded(
+            child: Text(
+              message,
+              style: AppTypography.labelSmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

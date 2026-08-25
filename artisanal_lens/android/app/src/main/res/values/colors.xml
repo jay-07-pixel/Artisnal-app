@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppColors.background. The launch window uses this so the platform
+         splash hands over to the opening sequence without a white flash. -->
+    <color name="launch_background">#FFF8F5</color>
+</resources>
