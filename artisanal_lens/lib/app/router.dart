@@ -10,7 +10,6 @@ import '../features/completion/presentation/completion_page.dart';
 import '../features/gallery/presentation/gallery_page.dart';
 import '../features/gallery/presentation/product_viewer_page.dart';
 import '../features/home/presentation/home_page.dart';
-import '../features/instruction/presentation/alignment_page.dart';
 import '../features/instruction/presentation/lighting_setup_page.dart';
 import '../features/instruction/presentation/tutorial_page.dart';
 import '../features/onboarding/presentation/opening_sequence_page.dart';
@@ -32,7 +31,6 @@ abstract final class AppRoute {
   static const String shotAndStyle = 'shotAndStyle';
   static const String lightingSetup = 'lightingSetup';
   static const String tutorial = 'tutorial';
-  static const String alignment = 'alignment';
   static const String capture = 'capture';
   static const String review = 'review';
   static const String completion = 'completion';
@@ -134,14 +132,8 @@ GoRouter createRouter() {
           setId: state.pathParameters['setId']!,
         ),
       ),
-      GoRoute(
-        path: '/product/:setId/align',
-        name: AppRoute.alignment,
-        parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state) => AlignmentPage(
-          setId: state.pathParameters['setId']!,
-        ),
-      ),
+      // Alignment is no longer a screen of its own: the grid, the alignment
+      // instruction and the live checks all live on the camera.
       GoRoute(
         path: '/product/:setId/capture',
         name: AppRoute.capture,

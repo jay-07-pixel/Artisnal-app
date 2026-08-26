@@ -8,8 +8,8 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/capture_feedback.dart';
+import '../../../domain/entities/preset_capture_guidance.dart';
 import '../../../domain/entities/shot_type.dart';
-import '../../../domain/entities/technique_preset.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 import '../camera_controller.dart';
@@ -19,9 +19,11 @@ import 'widgets/guide_overlay.dart';
 /// Guided capture — Figma frames "Guided Camera Interface" and
 /// "Refined Camera Interface".
 ///
-/// Live preview with the preset's ghost frame and grid, the Angle and Light
-/// chips, and the shutter row. The shutter stays enabled even when a prompt is
-/// showing: guidance advises, it never blocks.
+/// The camera inspects what is actually in front of the lens and says one
+/// thing about it. Every message on this screen comes from the current frame:
+/// there is no step sequence to walk through and no way to advance by
+/// pressing anything. The shutter stays enabled throughout — guidance
+/// advises, it never blocks.
 class CapturePage extends ConsumerStatefulWidget {
   const CapturePage({required this.setId, super.key});
 
@@ -39,11 +41,9 @@ class _CapturePageState extends ConsumerState<CapturePage> {
   }
 
   void _startCamera() {
-    ref.read(guidedCameraProvider.notifier).start(_resolveTechnique());
-  }
-
-  TechniquePreset _resolveTechnique() {
-    return ref.read(sessionTechniqueProvider);
+    ref
+        .read(guidedCameraProvider.notifier)
+        .start(ref.read(sessionCaptureGuidanceProvider));
   }
 
   @override
@@ -51,9 +51,10 @@ class _CapturePageState extends ConsumerState<CapturePage> {
     final camera = ref.watch(guidedCameraProvider);
     final session = ref.watch(captureSessionProvider);
     final guidance = ref.watch(sessionGuidanceProvider);
+    final captureGuidance = ref.watch(sessionCaptureGuidanceProvider);
     final set = ref.watch(shotSetProvider(widget.setId));
 
-    final technique = guidance.technique;
+    final technique = captureGuidance.technique;
     final slotLabel = session.shotType == null
         ? ''
         : (session.slotIndex != null &&
@@ -79,8 +80,11 @@ class _CapturePageState extends ConsumerState<CapturePage> {
             progress: '${(set?.completedCount ?? 0) + 1}'
                 '/${set?.requiredCount ?? ShotType.totalRequired}',
           ),
-          if (camera.isReady && GuidedCameraController.isGuidanceSupported)
-            _FeedbackChips(feedback: camera.feedback, technique: technique),
+          _LiveGuidancePill(
+            feedback: camera.feedback,
+            guidance: captureGuidance,
+            analysisAvailable: GuidedCameraController.isGuidanceSupported,
+          ),
           _ShutterBar(
             camera: camera,
             setId: widget.setId,
@@ -223,82 +227,129 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-/// The Angle and Light chips.
-class _FeedbackChips extends StatelessWidget {
-  const _FeedbackChips({required this.feedback, required this.technique});
+/// The single live suggestion, floated over the preview.
+///
+/// Small on purpose: the product is what the artisan needs to see, so this
+/// carries one sentence and nothing else. Its wording is whatever the last
+/// analysed frame produced, so it changes as the cloth and the phone move.
+/// Green only ever appears when the analyser has confirmed every check the
+/// preset can actually run.
+class _LiveGuidancePill extends StatelessWidget {
+  const _LiveGuidancePill({
+    required this.feedback,
+    required this.guidance,
+    required this.analysisAvailable,
+  });
 
   final CaptureFeedback feedback;
-  final TechniquePreset technique;
+  final PresetCaptureGuidance guidance;
+
+  /// False where the platform gives no frame stream (web). Nothing is
+  /// measured there, so the pill falls back to the preset's own rule and
+  /// never claims the shot is ready.
+  final bool analysisAvailable;
 
   @override
   Widget build(BuildContext context) {
-    final angleOk = feedback.angleQuality.isAcceptable;
+    final ready = analysisAvailable && feedback.isReadyToShoot;
+    final measured = analysisAvailable && feedback.hasVisiblePrompt;
+
+    final text = measured
+        ? feedback.message
+        : analysisAvailable
+            ? 'Reading the frame…'
+            : guidance.technique.composition.hint;
+
+    // Nothing in view is the one moment where the preset's own placement
+    // line helps more than a measurement can.
+    final detail = measured && feedback.prompt == CapturePrompt.noProduct
+        ? guidance.cameraGuidance.placementInstruction
+        : null;
 
     return Positioned(
-      top: AppDimens.appBarHeight + 56,
-      left: 0,
-      right: 0,
-      child: Column(
-        children: [
-          _Chip(
-            icon: angleOk ? Icons.check_circle : Icons.screen_rotation,
-            label: 'Angle: ${feedback.angleQuality.label}',
-            background: angleOk
-                ? AppColors.success.withValues(alpha: 0.92)
-                : AppColors.primary.withValues(alpha: 0.92),
+      left: AppDimens.pagePadding,
+      right: AppDimens.pagePadding,
+      bottom: 128,
+      child: Center(
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          child: Container(
+            key: ValueKey(text),
+            constraints: const BoxConstraints(maxWidth: 340),
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.space16,
+              AppDimens.space8 + 2,
+              AppDimens.space16,
+              AppDimens.space8 + 2,
+            ),
+            decoration: BoxDecoration(
+              color: ready
+                  ? AppColors.success.withValues(alpha: 0.94)
+                  : measured
+                      ? AppColors.warning.withValues(alpha: 0.95)
+                      : AppColors.cameraScrim,
+              borderRadius: BorderRadius.circular(AppDimens.radiusPill),
+              border: measured
+                  ? null
+                  : Border.all(color: AppColors.white.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      _iconFor(ready, measured),
+                      size: 16,
+                      color: AppColors.white,
+                    ),
+                    const SizedBox(width: AppDimens.space8),
+                    Flexible(
+                      child: Text(
+                        text,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.labelLargeBold.copyWith(
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (detail != null) ...[
+                  const SizedBox(height: AppDimens.space4),
+                  Text(
+                    detail,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTypography.labelSmall.copyWith(
+                      color: AppColors.white.withValues(alpha: 0.85),
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
-          const SizedBox(height: AppDimens.space8),
-          _Chip(
-            icon: feedback.isReadyToShoot
-                ? Icons.check_circle
-                : Icons.lightbulb_outline,
-            label: feedback.isReadyToShoot
-                ? 'Ready'
-                : feedback.prompt.message,
-            background: feedback.isReadyToShoot
-                ? AppColors.success.withValues(alpha: 0.92)
-                : AppColors.warning.withValues(alpha: 0.95),
-          ),
-        ],
+        ),
       ),
     );
   }
-}
 
-class _Chip extends StatelessWidget {
-  const _Chip({
-    required this.icon,
-    required this.label,
-    required this.background,
-  });
-
-  final IconData icon;
-  final String label;
-  final Color background;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimens.space12,
-        vertical: AppDimens.space8,
-      ),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(AppDimens.radiusPill),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 15, color: AppColors.white),
-          const SizedBox(width: AppDimens.space4 + 2),
-          Text(
-            label,
-            style: AppTypography.labelSmall.copyWith(color: AppColors.white),
-          ),
-        ],
-      ),
-    );
+  IconData _iconFor(bool ready, bool measured) {
+    if (ready) return Icons.check_circle;
+    if (!measured) return Icons.hourglass_empty;
+    return switch (feedback.prompt) {
+      CapturePrompt.tooDark ||
+      CapturePrompt.tooBright ||
+      CapturePrompt.backlightDetected =>
+        Icons.wb_sunny_outlined,
+      CapturePrompt.holdSteady => Icons.pan_tool_outlined,
+      CapturePrompt.tiltPhone => Icons.screen_rotation_outlined,
+      CapturePrompt.noProduct => Icons.center_focus_weak,
+      _ => Icons.center_focus_strong,
+    };
   }
 }
 

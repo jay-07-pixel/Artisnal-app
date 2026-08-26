@@ -7,9 +7,10 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../app/providers.dart';
 import '../../domain/entities/capture_feedback.dart';
-import '../../domain/entities/technique_preset.dart';
+import '../../domain/entities/preset_capture_guidance.dart';
 import '../../domain/services/capture_guidance_service.dart';
 import '../../domain/services/frame_analyzer.dart';
+import '../../domain/services/live_guidance_stabiliser.dart';
 
 /// Lifecycle state of the guided camera.
 enum CameraStatus { idle, initialising, ready, permissionDenied, unavailable }
@@ -87,7 +88,8 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
   List<CameraDescription> _cameras = const [];
   double _pitchDegrees = 0;
   FrameMetrics _metrics = const FrameMetrics.empty();
-  TechniquePreset? _technique;
+  PresetCaptureGuidance? _guidance;
+  final LiveGuidanceStabiliser _stabiliser = LiveGuidanceStabiliser();
   bool _isAnalysing = false;
   DateTime _lastAnalysis = DateTime.fromMillisecondsSinceEpoch(0);
 
@@ -101,9 +103,12 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
     return const GuidedCameraState();
   }
 
-  /// Starts the camera for a given technique preset.
-  Future<void> start(TechniquePreset technique) async {
-    _technique = technique;
+  /// Starts the camera for the photograph the session is set up to take.
+  ///
+  /// The guidance object carries both the technique (grid, angle, lighting)
+  /// and the profile of checks the analyser is allowed to run for this preset.
+  Future<void> start(PresetCaptureGuidance guidance) async {
+    _guidance = guidance;
     if (state.status == CameraStatus.initialising || state.isReady) return;
 
     state = state.copyWith(status: CameraStatus.initialising);
@@ -213,6 +218,10 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
         await previous.dispose();
       }
       _metrics = const FrameMetrics.empty();
+      // The new lens sees a different frame; carrying the old verdict over
+      // would show a reading of a picture that is no longer on screen.
+      _stabiliser.reset();
+      state = state.copyWith(feedback: _stabiliser.current);
       await _openLens(next);
     } on CameraException catch (error) {
       _reportCameraError(error);
@@ -250,8 +259,8 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
     _lastAnalysis = now;
 
     try {
-      final technique = _technique;
-      if (technique == null || image.planes.isEmpty) return;
+      final guidance = _guidance;
+      if (guidance == null || image.planes.isEmpty) return;
 
       // plane.bytes is already a Uint8List and the analyser only reads it, so
       // it is passed straight through — copying it every frame would allocate
@@ -262,14 +271,19 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
             width: image.width,
             height: image.height,
             bytesPerRow: plane.bytesPerRow,
+            // Measure the same rectangle the artisan can see drawn.
+            insetX: guidance.technique.grid.ghostInsetX,
+            insetY: guidance.technique.grid.ghostInsetY,
           );
 
-      final feedback = ref.read(captureGuidanceServiceProvider).evaluate(
+      final measured = ref.read(captureGuidanceServiceProvider).evaluate(
             metrics: _metrics,
-            technique: technique,
+            technique: guidance.technique,
             pitchDegrees: _pitchDegrees,
+            profile: guidance.cameraGuidance,
           );
 
+      final feedback = _stabiliser.accept(measured);
       if (feedback != state.feedback) {
         state = state.copyWith(feedback: feedback);
       }

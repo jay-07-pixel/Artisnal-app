@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
 import '../../domain/entities/fold_preset.dart';
+import '../../domain/entities/preset_capture_guidance.dart';
 import '../../domain/entities/shot_guidance.dart';
 import '../../domain/entities/shot_type.dart';
 import '../../domain/entities/technique_preset.dart';
@@ -146,4 +147,26 @@ final sessionGuidanceProvider = Provider<ShotGuidance>((ref) {
 /// technique after a fold is chosen; other categories keep the Detail fallback.
 final sessionTechniqueProvider = Provider<TechniquePreset>((ref) {
   return ref.watch(sessionGuidanceProvider).technique;
+});
+
+/// Setup steps + live camera profile for the current session.
+///
+/// Lighting and the camera both read this so the selected fold (and, for
+/// Saree, the photography template) cannot drift apart. The steps are played
+/// as cards over the live preview, not as screens before it.
+final sessionCaptureGuidanceProvider = Provider<PresetCaptureGuidance>((ref) {
+  final session = ref.watch(captureSessionProvider);
+  final shotGuidance = ref.watch(sessionGuidanceProvider);
+  final preset = ref.watch(selectedPresetProvider);
+  final setId = session.setId;
+  final categoryId =
+      setId == null ? null : ref.watch(shotSetProvider(setId))?.categoryId;
+  final categoryName = categoryId == null
+      ? null
+      : ref.watch(catalogRepositoryProvider).categoryById(categoryId)?.name;
+  return PresetCaptureGuidance.resolve(
+    shotGuidance: shotGuidance,
+    preset: preset,
+    productNoun: (categoryName ?? 'product').toLowerCase(),
+  );
 });

@@ -5,6 +5,54 @@ import 'package:equatable/equatable.dart';
 /// Source: BTP §8.2 "Live prompts on camera" — the exact prompt set added after
 /// user testing showed artisans got no feedback on framing or light.
 enum CapturePrompt {
+  /// Shown before the first analysed frame. Never rendered as ready.
+  waiting(
+    id: 'waiting',
+    message: '',
+    isBlocking: true,
+  ),
+
+  /// Nothing product-like is in the frame at all.
+  noProduct(
+    id: 'no_product',
+    message: 'Place the {product} in view',
+    isBlocking: true,
+  ),
+
+  /// Something is there, but almost none of it is inside the guide.
+  moveIntoFrame(
+    id: 'move_into_frame',
+    message: 'Move the {product} into the frame',
+    isBlocking: true,
+  ),
+
+  /// The product runs off the edge of the picture.
+  keepInsideFrame(
+    id: 'keep_inside_frame',
+    message: 'Keep the {product} inside the frame',
+    isBlocking: true,
+  ),
+
+  /// Folds should be parallel to the horizontal guides.
+  alignWithHorizontalGuides(
+    id: 'align_horizontal',
+    message: 'Line the folds up with the horizontal guides',
+    isBlocking: true,
+  ),
+
+  /// Fabric should run along the diagonal guides.
+  alignWithDiagonalGuides(
+    id: 'align_diagonal',
+    message: 'Let the fabric follow the diagonal guides',
+    isBlocking: true,
+  ),
+
+  /// The frame is too smeared to judge anything else from.
+  holdSteady(
+    id: 'hold_steady',
+    message: 'Hold the phone steady',
+    isBlocking: true,
+  ),
   moveCloser(
     id: 'move_closer',
     message: 'Move closer',
@@ -17,7 +65,22 @@ enum CapturePrompt {
   ),
   centerSubject(
     id: 'center_subject',
-    message: 'Center your subject',
+    message: 'Center the {product}',
+    isBlocking: true,
+  ),
+  keepTextureInCentre(
+    id: 'keep_texture_centre',
+    message: 'Keep the texture in the centre',
+    isBlocking: true,
+  ),
+  keepBorderInsideFrame(
+    id: 'keep_border_inside',
+    message: 'Keep the border inside the frame',
+    isBlocking: true,
+  ),
+  keepFoldsVisible(
+    id: 'keep_folds_visible',
+    message: 'Keep the folds visible',
     isBlocking: true,
   ),
   backlightDetected(
@@ -42,7 +105,7 @@ enum CapturePrompt {
   ),
   ready(
     id: 'ready',
-    message: 'Ready',
+    message: 'Ready to capture',
     isBlocking: false,
   );
 
@@ -53,7 +116,15 @@ enum CapturePrompt {
   });
 
   final String id;
+
+  /// The prompt's wording, with `{product}` still in place where the message
+  /// names what is being photographed.
   final String message;
+
+  /// The wording with `{product}` resolved to the category's own noun, so a
+  /// saree is called a saree and a cushion cover a cushion cover.
+  String messageFor(String product) =>
+      message.replaceAll('{product}', product);
 
   /// Whether this prompt indicates the frame is not yet good enough to shoot.
   ///
@@ -101,22 +172,36 @@ class CaptureFeedback extends Equatable {
     required this.meanLuminance,
     required this.pitchDegrees,
     required this.subjectFillRatio,
+    this.productNoun = 'product',
   });
 
-  /// The neutral state shown before the first frame has been analysed.
+  /// The state shown before the first frame has been analysed.
+  ///
+  /// Must not report Ready — opening the camera is not a framing verdict.
   const CaptureFeedback.initial()
       : lightQuality = LightQuality.good,
-        angleQuality = AngleQuality.ok,
-        prompt = CapturePrompt.ready,
+        angleQuality = AngleQuality.off,
+        prompt = CapturePrompt.waiting,
         meanLuminance = 0.5,
         pitchDegrees = 0,
-        subjectFillRatio = 0;
+        subjectFillRatio = 0,
+        productNoun = 'product';
 
   final LightQuality lightQuality;
   final AngleQuality angleQuality;
 
   /// The single most important thing to tell the artisan right now.
+  ///
+  /// Empty [CapturePrompt.waiting] messages are not drawn.
   final CapturePrompt prompt;
+
+  /// What this category is called, so prompts can name it.
+  final String productNoun;
+
+  /// The prompt as the artisan reads it.
+  String get message => prompt.messageFor(productNoun);
+
+  bool get hasVisiblePrompt => message.trim().isNotEmpty;
 
   /// Mean luminance of the preview frame, normalised to 0..1.
   final double meanLuminance;
@@ -138,5 +223,6 @@ class CaptureFeedback extends Equatable {
         meanLuminance,
         pitchDegrees,
         subjectFillRatio,
+        productNoun,
       ];
 }

@@ -11,7 +11,8 @@ import '../capture/capture_session_controller.dart';
 /// Photo list (and empty slots on the product viewer) call this so the
 /// session always carries the chosen set, shot type and slot. Style is
 /// inserted when the shot type needs a fold (Product, Lifestyle, Saree).
-/// Detail and Process skip it and go Lighting → Tutorial → Alignment → Camera.
+/// Detail and Process skip it and go Lighting → Camera, where the setup
+/// instructions play over the live preview.
 void beginCaptureForSlot(
   BuildContext context,
   WidgetRef ref, {

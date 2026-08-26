@@ -6,18 +6,20 @@ import '../../../app/router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
-import '../../../domain/entities/fold_preset.dart';
+import '../../../domain/entities/preset_capture_guidance.dart';
 import '../../../domain/entities/lighting_advisory.dart';
 import '../../../shared/widgets/asset_placeholder.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
+import 'tutorial_page.dart';
 
-/// Lighting and setup instructions shown before the tutorial.
+/// Lighting notes shown before the camera opens.
 ///
 /// Copy and placement advice come from the selected preset's technique and
 /// setup steps, plus the on-device daylight advisory. Missing illustrations
-/// are shown as labelled placeholders.
+/// are shown as labelled placeholders. The step-by-step arranging of the
+/// cloth is not done here — that happens over the live preview.
 class LightingSetupPage extends ConsumerWidget {
   const LightingSetupPage({required this.setId, super.key});
 
@@ -29,8 +31,10 @@ class LightingSetupPage extends ConsumerWidget {
     final session = ref.watch(captureSessionProvider);
     final preset = ref.watch(selectedPresetProvider);
     final guidance = ref.watch(sessionGuidanceProvider);
-    final technique = guidance.technique;
+    final captureGuidance = ref.watch(sessionCaptureGuidanceProvider);
+    final technique = captureGuidance.technique;
     final slotLabel = _slotLabel(session);
+    final hasTutorial = hasTutorialContent(preset);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -49,7 +53,7 @@ class LightingSetupPage extends ConsumerWidget {
           AppDimens.space32,
         ),
         children: [
-          const AppPill(label: 'Step 1 of 3'),
+          AppPill(label: hasTutorial ? 'Step 1 of 2' : 'Before you shoot'),
           const SizedBox(height: AppDimens.space16),
           Text('Lighting and setup', style: AppTypography.displayLarge),
           if (slotLabel.isNotEmpty) ...[
@@ -60,7 +64,7 @@ class LightingSetupPage extends ConsumerWidget {
           const _DaylightAdvisoryCard(),
           const SizedBox(height: AppDimens.space20),
           CatalogImage(
-            assetPath: _illustrationAsset(preset),
+            assetPath: _illustrationAsset(captureGuidance),
             placeholderLabel: 'Setup illustration to be added',
             height: 180,
           ),
@@ -81,11 +85,12 @@ class LightingSetupPage extends ConsumerWidget {
             ),
             const SizedBox(height: AppDimens.space12),
           ],
-          if (preset != null && preset.setupSteps.isNotEmpty)
+          if (captureGuidance.placement != null &&
+              captureGuidance.placement!.trim().isNotEmpty)
             _InfoCard(
               icon: Icons.place_outlined,
               title: 'Place the product',
-              body: preset.setupSteps.first.instruction,
+              body: captureGuidance.placement!,
             )
           else if (guidance.hasPlacement)
             _InfoCard(
@@ -93,7 +98,8 @@ class LightingSetupPage extends ConsumerWidget {
               title: 'Place the product',
               body: guidance.placement!,
             ),
-          if ((preset != null && preset.setupSteps.isNotEmpty) ||
+          if ((captureGuidance.placement != null &&
+                  captureGuidance.placement!.trim().isNotEmpty) ||
               guidance.hasPlacement)
             const SizedBox(height: AppDimens.space12),
           if (preset == null && guidance.hasSetupGuidance) ...[
@@ -128,10 +134,10 @@ class LightingSetupPage extends ConsumerWidget {
       bottomNavigationBar: BottomAction(
         child: FilledButton(
           onPressed: () => context.pushNamed(
-            AppRoute.tutorial,
+            hasTutorial ? AppRoute.tutorial : AppRoute.capture,
             pathParameters: {'setId': setId},
           ),
-          child: const Text('Continue'),
+          child: Text(hasTutorial ? 'Continue' : 'Open Camera'),
         ),
       ),
     );
@@ -146,10 +152,12 @@ class LightingSetupPage extends ConsumerWidget {
     return '${type.label} · ${type.slotLabels[index]}';
   }
 
-  /// First setup-step drawing, when the catalog names one.
-  static String? _illustrationAsset(FoldPreset? preset) {
-    if (preset == null || preset.setupSteps.isEmpty) return null;
-    return preset.setupSteps.first.illustrationAsset;
+  /// First setup-step drawing from the resolved guidance, when one is named.
+  static String? _illustrationAsset(PresetCaptureGuidance captureGuidance) {
+    for (final step in captureGuidance.setupSteps) {
+      if (step.hasIllustrationPath) return step.illustrationAsset;
+    }
+    return null;
   }
 }
 

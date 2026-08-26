@@ -18,6 +18,7 @@ class GuideOverlay extends StatelessWidget {
   final GridOverlayType grid;
 
   /// Instruction rendered under the ghost frame, e.g. "Align pallu here".
+  /// Empty while the guidance card is carrying the words instead.
   final String caption;
 
   @override
@@ -30,33 +31,35 @@ class GuideOverlay extends StatelessWidget {
               Positioned.fill(
                 child: CustomPaint(painter: _GuidePainter(grid: grid)),
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: constraints.maxHeight * 0.16,
-                child: Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.cameraScrim,
-                      borderRadius: BorderRadius.circular(9999),
-                    ),
-                    child: Text(
-                      caption,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        height: 16 / 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.white,
+              if (caption.trim().isNotEmpty)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  // Clears the guidance card that sits above the shutter.
+                  bottom: constraints.maxHeight * 0.28,
+                  child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.cameraScrim,
+                        borderRadius: BorderRadius.circular(9999),
+                      ),
+                      child: Text(
+                        caption,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          height: 16 / 12,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
             ],
           );
         },
@@ -85,23 +88,26 @@ class _GuidePainter extends CustomPainter {
     switch (grid) {
       case GridOverlayType.ruleOfThirds:
         _drawThirds(canvas, size, gridPaint);
-        _dashedRect(canvas, _inset(size, 0.10, 0.16), framePaint);
       case GridOverlayType.centerFocus:
         _drawThirds(canvas, size, gridPaint);
-        _dashedRect(canvas, _inset(size, 0.22, 0.28), framePaint);
       case GridOverlayType.leadingLines:
         _drawDiagonals(canvas, size, gridPaint);
-        _dashedRect(canvas, _inset(size, 0.12, 0.14), framePaint);
       case GridOverlayType.detailFrame:
         // Photography Guide Preset 4: detail frame + leading (diagonal) lines.
         _drawDiagonals(canvas, size, gridPaint);
-        _dashedRect(canvas, _inset(size, 0.28, 0.34), framePaint);
       case GridOverlayType.horizontalFolds:
         // Photography Guide Preset 5: horizontal folds with diagonal assists.
         _drawHorizontals(canvas, size, gridPaint);
         _drawDiagonals(canvas, size, gridPaint);
-        _dashedRect(canvas, _inset(size, 0.10, 0.24), framePaint);
     }
+
+    // The dashed rectangle is the region the analyser measures, so both read
+    // the same numbers off the grid rather than keeping private copies.
+    _dashedRect(
+      canvas,
+      _inset(size, grid.ghostInsetX, grid.ghostInsetY),
+      framePaint,
+    );
   }
 
   Rect _inset(Size size, double dx, double dy) => Rect.fromLTRB(

@@ -4,7 +4,8 @@ import 'package:artisanal_lens/domain/entities/shot_set.dart';
 import 'package:artisanal_lens/domain/entities/shot_type.dart';
 import 'package:artisanal_lens/features/capture/capture_session_controller.dart';
 import 'package:artisanal_lens/features/home/shot_sets_controller.dart';
-import 'package:artisanal_lens/features/instruction/presentation/alignment_page.dart';
+import 'package:artisanal_lens/features/capture/camera_controller.dart';
+import 'package:artisanal_lens/features/capture/presentation/capture_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/lighting_setup_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/tutorial_page.dart';
 import 'package:artisanal_lens/features/shot_type/presentation/shot_and_style_page.dart';
@@ -12,6 +13,8 @@ import 'package:artisanal_lens/shared/widgets/asset_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'support/live_camera_harness.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -47,6 +50,14 @@ Widget _harness({
       shotSetProvider.overrideWith((ref, id) {
         return _set(id: id, categoryId: categoryId, productName: productName);
       }),
+      guidedCameraProvider.overrideWith(
+        () => FakeGuidedCamera(
+          const GuidedCameraState(
+            status: CameraStatus.unavailable,
+            errorMessage: 'No camera in tests',
+          ),
+        ),
+      ),
     ],
     child: MaterialApp(home: child),
   );
@@ -262,7 +273,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('selected preset persists through Lighting Tutorial Alignment',
+  testWidgets('selected preset persists through Lighting Tutorial and Camera',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2400));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -272,35 +283,35 @@ void main() {
       String categoryId,
       String productName,
       String presetId,
-      String tutorialSubtitle,
+      String setupTitle,
     })>[
       (
         setId: 'saree_persist',
         categoryId: BundledCatalogDataSource.saree,
         productName: 'Test Saree',
         presetId: 'saree_pallu_drape',
-        tutorialSubtitle: 'Watch how to set up pallu drape (hanger).',
+        setupTitle: 'Hang the saree',
       ),
       (
         setId: 'cushion_persist',
         categoryId: BundledCatalogDataSource.cushionCover,
         productName: 'Test Cushion',
         presetId: 'cushion_flat_lay',
-        tutorialSubtitle: 'Watch how to set up flat lay.',
+        setupTitle: 'Lay it flat',
       ),
       (
         setId: 'shawl_persist',
         categoryId: BundledCatalogDataSource.shawl,
         productName: 'Test Shawl',
         presetId: 'shawl_draped_shoulder',
-        tutorialSubtitle: 'Watch how to set up draped on shoulder.',
+        setupTitle: 'Drape the shawl',
       ),
       (
         setId: 'stole_1',
         categoryId: BundledCatalogDataSource.stole,
         productName: 'Test Stole',
         presetId: 'stole_neck_wrap',
-        tutorialSubtitle: 'Watch how to set up neck wrap (worn).',
+        setupTitle: 'Wrap the stole',
       ),
     ];
 
@@ -334,18 +345,26 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text(item.tutorialSubtitle), findsOneWidget, reason: item.presetId);
+      expect(find.text('Watch how to set up'), findsOneWidget,
+          reason: item.presetId);
+      expect(find.text('Open Camera'), findsOneWidget, reason: item.presetId);
 
+      // The camera opens straight into live inspection: no scripted steps to
+      // walk through, and nothing claiming the shot is good yet.
       await tester.pumpWidget(
         _harness(
           session: session,
           categoryId: item.categoryId,
           productName: item.productName,
-          child: AlignmentPage(setId: item.setId),
+          child: CapturePage(setId: item.setId),
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Open Camera'), findsOneWidget, reason: item.presetId);
+      expect(find.text('Reading the frame…'), findsOneWidget,
+          reason: item.presetId);
+      expect(find.text('Ready to capture'), findsNothing,
+          reason: item.presetId);
+      expect(find.text('Next'), findsNothing, reason: item.presetId);
     }
   });
 }

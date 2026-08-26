@@ -22,11 +22,22 @@ List<String> spokenTranscriptFor(FoldPreset? preset) {
   return preset.tutorialTranscript;
 }
 
+/// True when the selected fold has catalog tutorial material worth a screen.
+///
+/// Folds without a video or transcript (and every template-only slot) skip
+/// straight to the camera — the setup steps are given there, over the live
+/// preview, not on a page the artisan has to read and remember.
+bool hasTutorialContent(FoldPreset? preset) {
+  if (preset == null) return false;
+  return preset.hasVideoTutorial || preset.tutorialTranscript.isNotEmpty;
+}
+
 /// Video tutorial with on-screen transcript.
 ///
 /// Catalog entries already name the `.mp4` files. Until those files are in
 /// `assets/videos/`, this screen shows a labelled placeholder. Transcript
-/// lines are shown only when the selected fold lists them.
+/// lines are shown only when the selected fold lists them. Setup steps are
+/// not repeated here: they play over the live camera on the next screen.
 class TutorialPage extends ConsumerWidget {
   const TutorialPage({required this.setId, super.key});
 
@@ -57,7 +68,7 @@ class TutorialPage extends ConsumerWidget {
           AppDimens.space32,
         ),
         children: [
-          const AppPill(label: 'Step 2 of 3'),
+          const AppPill(label: 'Step 2 of 2'),
           const SizedBox(height: AppDimens.space16),
           Text('Watch how to set up', style: AppTypography.displayLarge),
           const SizedBox(height: AppDimens.space8),
@@ -86,10 +97,10 @@ class TutorialPage extends ConsumerWidget {
       bottomNavigationBar: BottomAction(
         child: FilledButton(
           onPressed: () => context.pushNamed(
-            AppRoute.alignment,
+            AppRoute.capture,
             pathParameters: {'setId': setId},
           ),
-          child: const Text('Continue'),
+          child: const Text('Open Camera'),
         ),
       ),
     );

@@ -40,7 +40,7 @@ Opening sequence  (tap to skip)
                      Saree: five BTP photography templates
                      Others: seven Figma shots
                        └─ How should it look?  (skipped for Process and Detail)
-                            └─ Lighting → Tutorial → Alignment → Camera
+                            └─ Lighting → Tutorial → Camera (live guidance)
                                  └─ Review
 ```
 
@@ -102,29 +102,54 @@ album *The Artisanal Lens*.
 
 This is the part with real logic behind it, in `domain/services/`:
 
+The artisan is never walked through setup steps. The camera opens, analyses a
+frame every 250 ms, and shows one sentence about the cloth in front of it.
+
 `FrameAnalyzer` reads only the luma (Y) plane of each YUV420 preview frame,
-sampling every 8th pixel, and measures mean/centre/border brightness, local
-texture inside and outside the ghost frame, and the centre of mass of that
-texture. From those it derives backlight ratio, subject fill and centring
-offset.
+sampling every 8th pixel, and in one pass measures:
 
-`CaptureGuidanceService` turns those measurements plus device pitch into the
-single most useful prompt, in a deliberate priority order:
+- mean / centre / border brightness, plus clipped highlights and shadows;
+- local texture inside and outside the ghost frame, and its centre of mass;
+- a 16×16 occupancy map of where the product is — a cell counts as product if
+  it is noticeably woven, or noticeably brighter or darker than the surface
+  running around the edge of the picture. That yields subject coverage, how
+  much of the ghost frame is filled, the bounding box, and how much of the
+  frame edge the cloth runs over;
+- fine-versus-coarse detail, which collapses when a frame is smeared;
+- the dominant edge direction and how strongly the frame agrees on it, from a
+  structure tensor built with central differences.
 
-1. **Light** — too dark / too bright. Checked first: framing cannot rescue an
-   unusable exposure, and user testing found light was what artisans got wrong
-   most often.
-2. **Backlight** — unless the preset wants it (sheer fabrics are shot against
-   the light on purpose to show transparency).
-3. **Angle** — fixed by tilting, not moving.
-4. **Distance** — move closer / move further.
-5. **Centring**.
-6. **Ready**.
+`CaptureGuidanceService` turns those plus device pitch into the single most
+useful prompt, in triage order — an artisan cannot act on "improve the light"
+while the cloth is still out of shot:
+
+1. **Nothing in view** — or, if the exposure is what is hiding it, the light.
+2. **Position** — mostly outside the guide, or running off the edge.
+3. **Size** — too small or too large.
+4. **Fabric direction** — only for grids whose source guidance names one
+   (folds along the horizontal guides; fabric along the diagonals), and only
+   when the frame has a direction to speak of.
+5. **Light** — too dark / too bright / backlit, unless the preset wants
+   backlight (sheer fabrics are shot against the light on purpose).
+6. **Blur** — needs both a collapsed detail ratio and near-absent fine detail,
+   so a bold sharp weave is not mistaken for a shaky hand.
+7. **Angle and centring.**
+8. **Ready to capture.**
+
+Each preset contributes a `CameraGuidanceProfile`: its ghost frame, how much
+of it to fill, its product noun, its placement line, and which checks apply.
+Anything the analyser cannot measure — fabric, sheen, transparency,
+embroidery quality, whether a fold was made correctly — is listed in
+`undetectableConditions` and never emitted as a prompt.
+
+`LiveGuidanceStabiliser` requires a new verdict to repeat before it replaces
+what is on screen, and gives "Ready to capture" an extra frame, so the pill
+does not strobe between competing readings.
 
 Distance ordering is subtle and covered by a test: when the subject overflows
 the guide, the border becomes as textured as the centre, which drags the fill
 ratio down to the same low value an *empty* guide produces. The two are told
-apart by absolute centre texture, so that check runs before the ratio check.
+apart by the occupancy map, which knows where the cloth actually is.
 
 Guidance advises but never blocks — the shutter stays enabled whatever the
 prompt says.
@@ -166,9 +191,13 @@ replace one.
 ## Known gaps
 - **Cotton, Wool and Jute types** — those materials use the same type screen as
   Silk, with four empty boxes until a source names the varieties.
-- **Tutorial videos and step illustrations** — Lighting → Tutorial → Alignment
-  exists. Catalog video and illustration paths are still mostly missing, so
-  those screens fail safe with placeholders.
+- **Tutorial videos and step illustrations** — Lighting → Tutorial exists.
+  Catalog video and illustration paths are still mostly missing, so those
+  screens fail safe with placeholders.
+- **What the camera cannot see** — fabric type, sheen, transparency,
+  embroidery quality and correct folding need a model that is not on the
+  device. Each preset lists these in `undetectableConditions` rather than
+  guessing at them.
 - **Localisation** — the language choice is real: it persists across launches
   (`LocaleController`) and drives `MaterialApp.locale`. App copy is still
   English. Translation is left for a native Assamese speaker rather than

@@ -75,3 +75,7 @@ BTP_210205009_210205031 (2).pdf
 
 # Empty scratch folder from the original working directory.
 info/
+
+# Emulator screenshots taken while checking live camera guidance by hand.
+.shots/
+*.log

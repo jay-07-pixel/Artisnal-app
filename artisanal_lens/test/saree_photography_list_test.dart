@@ -1,4 +1,5 @@
 import 'package:artisanal_lens/data/datasources/preset_catalog.dart';
+import 'package:artisanal_lens/domain/entities/capture_feedback.dart';
 import 'package:artisanal_lens/domain/entities/photography_template.dart';
 import 'package:artisanal_lens/domain/entities/shot_guidance.dart';
 import 'package:artisanal_lens/domain/entities/shot_set.dart';
@@ -7,13 +8,15 @@ import 'package:artisanal_lens/domain/entities/technique_preset.dart';
 import 'package:artisanal_lens/features/capture/capture_session_controller.dart';
 import 'package:artisanal_lens/features/checklist/presentation/photo_list_page.dart';
 import 'package:artisanal_lens/features/home/shot_sets_controller.dart';
-import 'package:artisanal_lens/features/instruction/presentation/alignment_page.dart';
+import 'package:artisanal_lens/features/capture/camera_controller.dart';
+import 'package:artisanal_lens/features/capture/presentation/capture_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/lighting_setup_page.dart';
-import 'package:artisanal_lens/features/instruction/presentation/tutorial_page.dart';
 import 'package:artisanal_lens/features/shot_type/presentation/shot_and_style_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'support/live_camera_harness.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -51,16 +54,33 @@ Widget _listHarness(ShotSet set) {
 Widget _flowHarness({
   required CaptureSession session,
   required Widget child,
+  CaptureFeedback feedback = const CaptureFeedback.initial(),
 }) {
   return ProviderScope(
     key: ValueKey('${session.setId}-${session.slotIndex}'),
     overrides: [
       captureSessionProvider.overrideWith(() => _SeededSession(session)),
       shotSetProvider.overrideWith((ref, id) => _sareeSet()),
+      guidedCameraProvider.overrideWith(
+        () => FakeGuidedCamera(
+          GuidedCameraState(
+            status: CameraStatus.unavailable,
+            feedback: feedback,
+            errorMessage: 'No camera in tests',
+          ),
+        ),
+      ),
     ],
     child: MaterialApp(home: child),
   );
 }
+
+/// The verdict the analyser reports when the guide is empty, which is when
+/// the preset's own placement line is worth showing.
+final _nothingInView = measuredFeedback(
+  CapturePrompt.noProduct,
+  productNoun: 'saree',
+);
 
 void main() {
   const expectedNames = [
@@ -275,12 +295,32 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(400, 2400));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    const cases = <({int index, String lighting})>[
-      (index: 0, lighting: 'Colour, Pattern, Material'),
-      (index: 1, lighting: 'Texture, Thickness, Material, Transparency'),
-      (index: 2, lighting: 'Flimsiness, Sheen, Flow, Weight'),
-      (index: 3, lighting: 'Embroidery, Quality'),
-      (index: 4, lighting: 'Thickness, Material weight'),
+    const cases = <({int index, String lighting, String placement})>[
+      (
+        index: 0,
+        lighting: 'Colour, Pattern, Material',
+        placement: 'Saree spread flat or draped over a surface',
+      ),
+      (
+        index: 1,
+        lighting: 'Texture, Thickness, Material, Transparency',
+        placement: 'A well-lit section of the saree, preferably in natural light',
+      ),
+      (
+        index: 2,
+        lighting: 'Flimsiness, Sheen, Flow, Weight',
+        placement: 'Hanger, bamboo or mannequin',
+      ),
+      (
+        index: 3,
+        lighting: 'Embroidery, Quality',
+        placement: 'Close-up of the saree border or an embroidered section',
+      ),
+      (
+        index: 4,
+        lighting: 'Thickness, Material weight',
+        placement: 'Neatly stacked with visible folds',
+      ),
     ];
 
     for (final item in cases) {
@@ -305,36 +345,30 @@ void main() {
         reason: expectedNames[item.index],
       );
 
+      // With nothing in view, the camera offers this template's own
+      // placement copy — never the chosen fold's.
       await tester.pumpWidget(
         _flowHarness(
           session: session,
-          child: const TutorialPage(setId: 'saree_1'),
+          feedback: _nothingInView,
+          child: const CapturePage(setId: 'saree_1'),
         ),
       );
       await tester.pumpAndSettle();
+      expect(find.text('Place the saree in view'), findsOneWidget,
+          reason: expectedNames[item.index]);
       expect(
-        find.text('Watch how to set up pallu drape (hanger).'),
+        find.text(item.placement),
         findsOneWidget,
         reason: expectedNames[item.index],
       );
       expect(
         find.text('Hang the saree so its fall is clearly visible.'),
-        findsOneWidget,
+        findsNothing,
         reason: expectedNames[item.index],
       );
-
-      await tester.pumpWidget(
-        _flowHarness(
-          session: session,
-          child: const AlignmentPage(setId: 'saree_1'),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('Open Camera'), findsOneWidget, reason: expectedNames[item.index]);
-      final button = tester.widget<FilledButton>(
-        find.widgetWithText(FilledButton, 'Open Camera'),
-      );
-      expect(button.onPressed, isNotNull, reason: expectedNames[item.index]);
+      expect(find.text('Ready to capture'), findsNothing,
+          reason: expectedNames[item.index]);
     }
   });
 

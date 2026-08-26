@@ -78,7 +78,7 @@ Opening sequence  (tap to skip)
         │              └─ Category (Saree, Cushion Cover, Shawl, Stole) + name
         │                   └─ Photo list
         │                        └─ How should it look?  (fold / style; skipped for Process and Detail)
-        │                             └─ Lighting → Tutorial → Alignment → Camera
+        │                             └─ Lighting → Tutorial → Camera (live guidance)
         │                                  └─ Review (Use photo / Retake)
         │
         ├─ Previous sets  (All / Finished / Pending)
@@ -130,15 +130,35 @@ Cushion: Flat lay, Stacked pair, Propped, Corner tuck).
 In `artisanal_lens/lib/domain/services/`. This is real image analysis, not a
 scripted animation.
 
-**`FrameAnalyzer`** reads the luma (Y) plane of each YUV420 preview frame and
-measures brightness, texture inside the ghost frame, and how centred the
-subject is.
+There is no setup slideshow and nothing to press through. The camera opens,
+reads frames four times a second, and says one thing about the cloth actually
+in front of the lens. What it says changes as the cloth or the phone moves.
+
+**`FrameAnalyzer`** reads the luma (Y) plane of each YUV420 preview frame in a
+single pass and measures: brightness and clipped highlights, texture, a coarse
+map of where the product is (its bounding box, how much of the ghost frame it
+fills, how much of the frame edge it runs over), fine-versus-coarse detail for
+focus, and the dominant direction the fabric runs in.
 
 **`CaptureGuidanceService`** turns those plus device pitch into one prompt, in
-this order: light → backlight → angle → distance → centring → ready.
+triage order: nothing in view → product outside the guide or off the edge →
+too small or too large → fabric direction against the grid → light → blur →
+angle and centring → ready. Only the top complaint is shown, and prompts name
+the product ("Center the saree", "Place the cushion cover in view").
 
-Guidance advises but never blocks — the shutter stays live whatever it says.
-`camera_web` has no image stream, so this runs on Android only.
+Each preset supplies its own profile: its ghost frame, how much of it to fill,
+and whether its grid asks for a direction the analyser can measure. Only two
+do — folds parallel to the horizontal guides, and fabric along the diagonals.
+Fabric type, sheen, transparency, embroidery quality and whether a human
+folded something correctly are not measurable here and are never claimed;
+they are listed per preset in `CameraGuidanceProfile.undetectableConditions`.
+
+**`LiveGuidanceStabiliser`** holds a message on screen until a new verdict
+repeats, and makes "Ready to capture" earn an extra frame, so the pill does
+not strobe. Guidance advises but never blocks — the shutter stays live
+whatever it says. `camera_web` has no image stream, so this runs on Android
+only; on the web the pill shows the preset's composition rule and never
+claims the shot is ready.
 
 ---
 
@@ -154,7 +174,8 @@ artisanal_lens/lib/
 │   ├── entities/         ShotSet, ShotType, FoldPreset, PhotographyTemplate,
 │   │                     FabricMaterial, CaptureFeedback, …
 │   ├── repositories/     abstract interfaces
-│   └── services/         FrameAnalyzer, CaptureGuidanceService
+│   └── services/         FrameAnalyzer, CaptureGuidanceService,
+│                         LiveGuidanceStabiliser
 ├── data/
 │   ├── datasources/      preset_catalog · app_database · photo_storage
 │   └── repositories/     implementations

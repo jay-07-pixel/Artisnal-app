@@ -1,16 +1,20 @@
 import 'package:artisanal_lens/data/datasources/preset_catalog.dart';
+import 'package:artisanal_lens/domain/entities/capture_feedback.dart';
 import 'package:artisanal_lens/domain/entities/shot_guidance.dart';
 import 'package:artisanal_lens/domain/entities/shot_set.dart';
 import 'package:artisanal_lens/domain/entities/shot_type.dart';
 import 'package:artisanal_lens/domain/entities/technique_preset.dart';
 import 'package:artisanal_lens/features/capture/capture_session_controller.dart';
 import 'package:artisanal_lens/features/home/shot_sets_controller.dart';
-import 'package:artisanal_lens/features/instruction/presentation/alignment_page.dart';
+import 'package:artisanal_lens/domain/entities/preset_capture_guidance.dart';
+import 'package:artisanal_lens/features/capture/presentation/capture_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/lighting_setup_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/tutorial_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'support/live_camera_harness.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -133,33 +137,8 @@ void main() {
     expect(find.text('Centre focus'), findsOneWidget);
   });
 
-  testWidgets('Tutorial screen opens and missing video does not crash', (tester) async {
-    await tester.pumpWidget(
-      _harness(
-        session: const CaptureSession(
-          setId: 'set_1',
-          shotType: ShotType.sareePhotography,
-          slotIndex: 1,
-        ),
-        categoryId: BundledCatalogDataSource.saree,
-        child: const TutorialPage(setId: 'set_1'),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Watch how to set up'), findsOneWidget);
-    expect(find.text('Tutorial video to be added'), findsOneWidget);
-    expect(
-      find.text(
-        'The spoken transcript will appear here once the tutorial video is added.',
-      ),
-      findsOneWidget,
-    );
-    expect(find.text('The saree fills the frame.'), findsNothing);
-    expect(find.text('Continue'), findsOneWidget);
-  });
-
-  testWidgets('Pallu tutorial shows catalog transcript, not a fabricated one', (tester) async {
+  testWidgets('Tutorial keeps the catalog video and hands over to the camera',
+      (tester) async {
     await tester.pumpWidget(
       _harness(
         session: const CaptureSession(
@@ -174,52 +153,72 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(
-      find.text('Hang the saree so its fall is clearly visible.'),
-      findsOneWidget,
+    final transcript = spokenTranscriptFor(
+      catalog.presetById('saree_pallu_drape'),
     );
-    expect(find.text('Tutorial video to be added'), findsOneWidget);
+    expect(find.text('Watch how to set up'), findsOneWidget);
+    expect(find.text(transcript.first), findsOneWidget);
+    // Setup steps belong to the camera now, not to this screen.
+    expect(find.text('Hang the saree'), findsNothing);
+    expect(find.text('Open Camera'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Alignment screen shows Center Focus for Saree Weave', (tester) async {
+  testWidgets('a slot with no catalog tutorial opens the camera from Lighting',
+      (tester) async {
     await tester.pumpWidget(
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
           shotType: ShotType.sareePhotography,
           slotIndex: 1,
-          presetId: 'saree_pallu_drape',
         ),
         categoryId: BundledCatalogDataSource.saree,
-        child: const AlignmentPage(setId: 'set_1'),
+        child: const LightingSetupPage(setId: 'set_1'),
       ),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Align with the gridlines'), findsOneWidget);
-    expect(find.text('Centre focus', skipOffstage: false), findsOneWidget);
+    expect(hasTutorialContent(null), isFalse);
     expect(find.text('Open Camera'), findsOneWidget);
+    expect(find.text('Before you shoot'), findsOneWidget);
   });
 
-  testWidgets('Alignment screen shows Detail frame for Saree Border', (tester) async {
-    await tester.pumpWidget(
-      _harness(
-        session: const CaptureSession(
-          setId: 'set_1',
-          shotType: ShotType.sareePhotography,
-          slotIndex: 3,
-          presetId: 'saree_pallu_drape',
-        ),
+  test('Saree Weave takes Centre focus into the camera', () {
+    final pallu = catalog.presetById('saree_pallu_drape')!;
+    final weave = PresetCaptureGuidance.resolve(
+      shotGuidance: ShotGuidance.resolve(
+        shotType: ShotType.sareePhotography,
+        slotIndex: 1,
+        preset: pallu,
         categoryId: BundledCatalogDataSource.saree,
-        child: const AlignmentPage(setId: 'set_1'),
       ),
+      preset: pallu,
+      productNoun: 'saree',
     );
-    await tester.pumpAndSettle();
+    expect(weave.technique.grid, GridOverlayType.centerFocus);
+    expect(weave.technique.composition.label, 'Centre focus');
+  });
 
-    expect(find.text('Detail frame', skipOffstage: false), findsOneWidget);
+  test('Saree Border takes Detail frame into the camera', () {
+    final pallu = catalog.presetById('saree_pallu_drape')!;
+    final border = PresetCaptureGuidance.resolve(
+      shotGuidance: ShotGuidance.resolve(
+        shotType: ShotType.sareePhotography,
+        slotIndex: 3,
+        preset: pallu,
+        categoryId: BundledCatalogDataSource.saree,
+      ),
+      preset: pallu,
+      productNoun: 'saree',
+    );
+    expect(border.technique.grid, GridOverlayType.detailFrame);
+    // A detail shot asks for more of its smaller guide to be filled, and its
+    // overflow is worded for the border rather than the whole cloth.
+    expect(border.cameraGuidance.minTargetCoverage, 0.55);
     expect(
-      find.text('Keep the embroidery inside the frame', skipOffstage: false),
-      findsWidgets,
+      border.cameraGuidance.orientationTarget,
+      EdgeOrientationTarget.none,
     );
   });
 
@@ -243,9 +242,10 @@ void main() {
       expect(find.text('Texture & Weave'), findsNothing);
   });
 
-  testWidgets('Open Camera stays enabled when the session still has its slot', (tester) async {
+  testWidgets('the camera waits for a frame instead of scripting steps',
+      (tester) async {
     await tester.pumpWidget(
-      _harness(
+      cameraHarness(
         session: const CaptureSession(
           setId: 'set_1',
           shotType: ShotType.sareePhotography,
@@ -253,15 +253,48 @@ void main() {
           presetId: 'saree_pallu_drape',
         ),
         categoryId: BundledCatalogDataSource.saree,
-        child: const AlignmentPage(setId: 'set_1'),
+        child: const CapturePage(setId: 'set_1'),
       ),
     );
     await tester.pumpAndSettle();
 
-    final button = tester.widget<FilledButton>(
-      find.widgetWithText(FilledButton, 'Open Camera'),
+    expect(find.text('Reading the frame…'), findsOneWidget);
+    expect(find.text('Ready to capture'), findsNothing);
+    // Nothing to press: the frame decides what is said next.
+    expect(find.text('Next'), findsNothing);
+    expect(find.text('Done'), findsNothing);
+  });
+
+  testWidgets('a measured verdict replaces the waiting line', (tester) async {
+    await tester.pumpWidget(
+      cameraHarness(
+        session: const CaptureSession(
+          setId: 'set_1',
+          shotType: ShotType.sareePhotography,
+          slotIndex: 1,
+          presetId: 'saree_pallu_drape',
+        ),
+        categoryId: BundledCatalogDataSource.saree,
+        feedback: const CaptureFeedback(
+          lightQuality: LightQuality.good,
+          angleQuality: AngleQuality.ok,
+          prompt: CapturePrompt.noProduct,
+          meanLuminance: 0.5,
+          pitchDegrees: 0,
+          subjectFillRatio: 0,
+          productNoun: 'saree',
+        ),
+        child: const CapturePage(setId: 'set_1'),
+      ),
     );
-    expect(button.onPressed, isNotNull);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Place the saree in view'), findsOneWidget);
+    // With nothing in view the preset's own placement line rides along.
+    expect(
+      find.text('A well-lit section of the saree, preferably in natural light'),
+      findsOneWidget,
+    );
   });
 }
 

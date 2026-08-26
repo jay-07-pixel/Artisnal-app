@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'photography_guideline.dart';
 
 /// Camera angle options offered by the technique presets.
@@ -167,7 +169,71 @@ enum GridOverlayType {
 
   /// Horizontal guides for aligning folds, with diagonal assists
   /// (Photography Guide Preset 5).
-  horizontalFolds,
+  horizontalFolds;
+
+  /// How far the ghost frame is inset from the left/right edge, 0..0.5.
+  ///
+  /// One definition serves both the painter and the frame analyser, so the
+  /// region the artisan is asked to fill is the same region that is measured.
+  double get ghostInsetX => switch (this) {
+        GridOverlayType.ruleOfThirds => 0.10,
+        GridOverlayType.centerFocus => 0.22,
+        GridOverlayType.leadingLines => 0.12,
+        GridOverlayType.detailFrame => 0.28,
+        GridOverlayType.horizontalFolds => 0.10,
+      };
+
+  /// How far the ghost frame is inset from the top/bottom edge, 0..0.5.
+  double get ghostInsetY => switch (this) {
+        GridOverlayType.ruleOfThirds => 0.16,
+        GridOverlayType.centerFocus => 0.28,
+        GridOverlayType.leadingLines => 0.14,
+        GridOverlayType.detailFrame => 0.34,
+        GridOverlayType.horizontalFolds => 0.24,
+      };
+
+  /// The fabric direction this grid asks the artisan to follow, when the
+  /// source guidance names one.
+  ///
+  /// Only these two are checkable from a luma frame: the source asks for folds
+  /// parallel to the horizontal guides, or fabric running along the diagonals.
+  /// The other grids place no measurable orientation requirement.
+  EdgeOrientationTarget get orientationTarget => switch (this) {
+        GridOverlayType.horizontalFolds => EdgeOrientationTarget.horizontal,
+        GridOverlayType.leadingLines => EdgeOrientationTarget.diagonal,
+        GridOverlayType.ruleOfThirds ||
+        GridOverlayType.centerFocus ||
+        GridOverlayType.detailFrame =>
+          EdgeOrientationTarget.none,
+      };
+}
+
+/// The fabric direction a grid asks for, where it can be measured.
+enum EdgeOrientationTarget {
+  /// No measurable direction requirement.
+  none,
+
+  /// Folds should run parallel to the horizontal guides (edge angle near 0°).
+  horizontal,
+
+  /// Fabric should follow the diagonal guides (edge angle near ±45°).
+  diagonal;
+
+  /// How far, in degrees, the measured edge angle may sit from the target.
+  double get toleranceDegrees => 22;
+
+  /// Distance in degrees between [edgeAngleDegrees] and this target.
+  ///
+  /// Edge angles wrap at ±90°, so a near-vertical edge is compared against
+  /// both diagonals rather than only the positive one.
+  double driftFrom(double edgeAngleDegrees) => switch (this) {
+        EdgeOrientationTarget.none => 0,
+        EdgeOrientationTarget.horizontal => edgeAngleDegrees.abs(),
+        EdgeOrientationTarget.diagonal => math.min(
+            (edgeAngleDegrees - 45).abs(),
+            (edgeAngleDegrees + 45).abs(),
+          ),
+      };
 }
 
 /// The angle + lighting + composition + grid combination that a fold preset
