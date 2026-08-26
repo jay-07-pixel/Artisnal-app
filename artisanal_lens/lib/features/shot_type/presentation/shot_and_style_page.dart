@@ -179,36 +179,34 @@ class _StyleRow extends StatelessWidget {
                     ],
                     if (preset.contentLabel.isNotEmpty) ...[
                       const SizedBox(height: 2),
-                      Text(
-                        'Content: ${preset.contentLabel}',
-                        style: AppTypography.labelSmall,
+                      _LabeledValue(
+                        label: 'Content',
+                        value: preset.contentLabel,
                       ),
                     ],
                     if (preset.needsLabel != null) ...[
                       const SizedBox(height: AppDimens.space4),
-                      Text(
-                        'Needs: ${preset.needsLabel}',
-                        style: AppTypography.labelSmall.copyWith(
-                          color: AppColors.primary,
-                        ),
+                      _LabeledValue(
+                        label: 'Needs',
+                        value: preset.needsLabel!,
                       ),
                     ],
                     if (preset.setupSteps.isNotEmpty) ...[
                       const SizedBox(height: 2),
-                      Text(
-                        'Placement: ${preset.setupSteps.first.instruction}',
-                        style: AppTypography.labelSmall,
+                      _LabeledValue(
+                        label: 'Placement',
+                        value: preset.setupSteps.first.instruction,
                       ),
                     ],
                     const SizedBox(height: 2),
-                    Text(
-                      'Lighting: ${preset.technique.lighting.label}',
-                      style: AppTypography.labelSmall,
+                    _LabeledValue(
+                      label: 'Lighting',
+                      value: preset.technique.lighting.label,
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      'Grid: ${preset.technique.composition.label}',
-                      style: AppTypography.labelSmall,
+                    _LabeledValue(
+                      label: 'Grid',
+                      value: preset.technique.composition.label,
                     ),
                   ],
                 ),
@@ -224,6 +222,32 @@ class _StyleRow extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Terracotta label, body-colour value — easier to scan on fold cards.
+class _LabeledValue extends StatelessWidget {
+  const _LabeledValue({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: '$label: ',
+            style: AppTypography.labelSmall.copyWith(color: AppColors.primary),
+          ),
+          TextSpan(
+            text: value,
+            style: AppTypography.labelSmall,
+          ),
+        ],
       ),
     );
   }
