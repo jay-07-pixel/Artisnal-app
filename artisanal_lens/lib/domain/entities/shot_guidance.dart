@@ -4,12 +4,6 @@ import 'photography_template.dart';
 import 'shot_type.dart';
 import 'technique_preset.dart';
 
-/// BTP §7.3 photography templates are specified for Saree only.
-///
-/// Catalog id from [BundledCatalogDataSource.saree]. Kept here so domain
-/// guidance does not import the data layer.
-const String sareeCategoryId = 'saree';
-
 /// Content, needs and technique for one required photograph.
 ///
 /// Fold/styling presets and photography templates stay separate. This object
@@ -74,15 +68,24 @@ class ShotGuidance {
 
   /// Resolves guidance for the photograph about to be taken.
   ///
-  /// Product and Lifestyle use the chosen fold's technique. Detail and Process
-  /// skip the style step, so they load slot-specific documented techniques
-  /// when the source names them for this [categoryId].
+  /// Product and Lifestyle use the chosen fold's technique. Saree keeps the
+  /// photography-template technique even after a fold is chosen, so the five
+  /// BTP grids stay on Lighting, Alignment and Camera. The fold is still used
+  /// for How should it look, placement and the tutorial transcript. Detail
+  /// and Process skip the style step and load slot guidance instead.
   factory ShotGuidance.resolve({
     required ShotType shotType,
     required int slotIndex,
     FoldPreset? preset,
     String? categoryId,
   }) {
+    if (shotType == ShotType.sareePhotography) {
+      return ShotGuidance.forSlot(
+        shotType,
+        slotIndex,
+        categoryId: categoryId,
+      );
+    }
     if (preset != null) {
       return ShotGuidance.fromPreset(preset);
     }
@@ -117,6 +120,18 @@ class ShotGuidance {
     String? categoryId,
   }) {
     switch (shotType) {
+      case ShotType.sareePhotography:
+        final template = SareePhotographyTemplates.byIndex(slotIndex);
+        if (template == null) {
+          return ShotGuidance(
+            content: '',
+            technique: ShotType.sareePhotography.fallbackTechnique,
+            guidance: const [],
+            overlayCaption:
+                ShotType.sareePhotography.fallbackTechnique.composition.hint,
+          );
+        }
+        return ShotGuidance.fromTemplate(template);
       case ShotType.detail:
         return _detailSlot(slotIndex, categoryId);
       case ShotType.process:

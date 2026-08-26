@@ -142,8 +142,8 @@ final sessionGuidanceProvider = Provider<ShotGuidance>((ref) {
 /// Technique loaded into the camera and the instruction screens.
 ///
 /// Product and Lifestyle inherit this from the chosen fold preset. Process
-/// and Detail skip the style step. Saree Border/Weave use BTP templates;
-/// other categories keep the existing Detail fallback.
+/// and Detail skip the style step. Saree photography keeps the BTP template
+/// technique after a fold is chosen; other categories keep the Detail fallback.
 final sessionTechniqueProvider = Provider<TechniquePreset>((ref) {
   return ref.watch(sessionGuidanceProvider).technique;
 });

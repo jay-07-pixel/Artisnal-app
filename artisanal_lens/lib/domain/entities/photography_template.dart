@@ -23,6 +23,7 @@ class PhotographyTemplate {
     required this.guidelines,
     this.needs,
     this.overlayCaption,
+    this.referenceImageAsset,
   });
 
   final String id;
@@ -44,6 +45,9 @@ class PhotographyTemplate {
   final List<PhotographyGuideline> guidelines;
   final String? overlayCaption;
 
+  /// Reference thumbnail shown on the Saree photo list before a shot is taken.
+  final String? referenceImageAsset;
+
   TechniquePreset get technique => TechniquePreset(
         angle: angle,
         lighting: lighting,
@@ -53,15 +57,21 @@ class PhotographyTemplate {
       );
 }
 
+/// Catalog id for Saree. Kept in domain so templates and slot lists do not
+/// import the data layer.
+const String sareeCategoryId = 'saree';
+
 /// The five Saree photography templates in the Product Photography Guide.
 ///
-/// These are independent of the four Saree fold/styling presets.
+/// These are independent of the four Saree fold/styling presets. They are
+/// the Saree photography list — not Hero / Border / Weave / Motif / Styled.
 abstract final class SareePhotographyTemplates {
   static const fullDisplay = PhotographyTemplate(
     id: 'saree_full_display',
     name: 'Full Saree Display',
     content: 'Colour, Pattern, Material',
     needs: 'Natural daylight; neutral or contrasting background',
+    referenceImageAsset: 'assets/images/templates/saree_full_display.png',
     grid: GridOverlayType.ruleOfThirds,
     composition: CompositionRule.ruleOfThirds,
     // The guide does not name an angle; keep the existing full-product default.
@@ -88,9 +98,10 @@ abstract final class SareePhotographyTemplates {
 
   static const textureAndWeave = PhotographyTemplate(
     id: 'saree_texture_weave',
-    name: 'Close-up of Texture and Weave',
+    name: 'Texture & Weave',
     content: 'Texture, Thickness, Material, Transparency',
     needs: 'Preferably natural light',
+    referenceImageAsset: 'assets/images/templates/saree_texture_weave.png',
     grid: GridOverlayType.centerFocus,
     composition: CompositionRule.centerFocus,
     angle: CameraAngle.macroCloseUp,
@@ -127,6 +138,7 @@ abstract final class SareePhotographyTemplates {
     name: 'Draped Look',
     content: 'Flimsiness, Sheen, Flow, Weight',
     needs: 'Hanger, bamboo or mannequin; side lighting',
+    referenceImageAsset: 'assets/images/templates/saree_draped_look.png',
     grid: GridOverlayType.leadingLines,
     composition: CompositionRule.leadingFabricLines,
     // The guide does not name an angle; keep the existing drape default.
@@ -153,9 +165,10 @@ abstract final class SareePhotographyTemplates {
 
   static const embroideryAndBorder = PhotographyTemplate(
     id: 'saree_embroidery_border',
-    name: 'Embroidery and Border Details',
+    name: 'Embroidery & Border Details',
     content: 'Embroidery, Quality',
     needs: 'Side lighting; contrast background',
+    referenceImageAsset: 'assets/images/templates/saree_embroidery_border.png',
     grid: GridOverlayType.detailFrame,
     composition: CompositionRule.detailFrame,
     angle: CameraAngle.macroCloseUp,
@@ -182,9 +195,10 @@ abstract final class SareePhotographyTemplates {
 
   static const foldedStack = PhotographyTemplate(
     id: 'saree_folded_stack',
-    name: 'Folded Stack',
+    name: 'Folded Stack / Saree Stack',
     content: 'Thickness, Material weight',
     needs: 'Side lighting',
+    referenceImageAsset: 'assets/images/templates/saree_folded_stack.png',
     grid: GridOverlayType.horizontalFolds,
     composition: CompositionRule.negativeSpaceAroundFolds,
     // The guide does not name an angle; keep the existing stacked-fold default.
@@ -215,4 +229,9 @@ abstract final class SareePhotographyTemplates {
     embroideryAndBorder,
     foldedStack,
   ];
+
+  static PhotographyTemplate? byIndex(int index) {
+    if (index < 0 || index >= all.length) return null;
+    return all[index];
+  }
 }

@@ -8,15 +8,20 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fold_preset.dart';
+import '../../../domain/entities/photography_template.dart';
+import '../../../domain/entities/shot_type.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
 
-/// Style selection for Product and Lifestyle shots.
+/// Style selection for Product, Lifestyle and Saree photography.
 ///
-/// Shot type is already chosen on the photo list. This screen is only the
-/// fold/style decision, then it hands off to Lighting & Setup. Process and
-/// Detail never land here — they skip straight to lighting.
+/// Shot type (or Saree template) is already chosen on the photo list. This
+/// screen is only the fold/style decision, then it hands off to Lighting &
+/// Setup. Process and Detail never land here — they skip straight to lighting.
+///
+/// All four documented folds for the chosen category are listed. They are
+/// not filtered by shot type: that mapping was not in the Solution Deck.
 class ShotAndStylePage extends ConsumerWidget {
   const ShotAndStylePage({required this.setId, super.key});
 
@@ -27,13 +32,12 @@ class ShotAndStylePage extends ConsumerWidget {
     final set = ref.watch(shotSetProvider(setId));
     final session = ref.watch(captureSessionProvider);
     final shotType = session.shotType;
+    final catalog = ref.watch(catalogRepositoryProvider);
+    final category = catalog.categoryById(set?.categoryId ?? '');
 
     final presets = shotType == null
         ? const <FoldPreset>[]
-        : ref.watch(catalogRepositoryProvider).presets(
-              categoryId: set?.categoryId ?? '',
-              shotType: shotType,
-            );
+        : catalog.presets(categoryId: set?.categoryId ?? '');
 
     final needsStyle = shotType != null && !shotType.skipsStyleStep;
     final canContinue = session.canOpenCamera &&
@@ -61,9 +65,11 @@ class ShotAndStylePage extends ConsumerWidget {
           Text('How should it look?', style: AppTypography.displayLarge),
           const SizedBox(height: AppDimens.space8),
           Text(
-            shotType == null
-                ? 'Pick a photo from the list first.'
-                : 'Choose the arrangement for this ${shotType.label.toLowerCase()} photo.',
+            _styleSubtitle(
+              shotType: shotType,
+              slotIndex: session.slotIndex,
+              categoryName: category?.name,
+            ),
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space20),
@@ -75,6 +81,7 @@ class ShotAndStylePage extends ConsumerWidget {
           else
             for (final preset in presets) ...[
               _StyleRow(
+                key: ValueKey(preset.id),
                 preset: preset,
                 isSelected: session.presetId == preset.id,
                 onTap: () => ref
@@ -98,10 +105,30 @@ class ShotAndStylePage extends ConsumerWidget {
       ),
     );
   }
+
+  static String _styleSubtitle({
+    required ShotType? shotType,
+    required int? slotIndex,
+    required String? categoryName,
+  }) {
+    if (shotType == null) return 'Pick a photo from the list first.';
+    if (shotType == ShotType.sareePhotography) {
+      final templateName =
+          SareePhotographyTemplates.byIndex(slotIndex ?? -1)?.name;
+      if (templateName != null) {
+        return 'Choose the arrangement for this ${templateName.toLowerCase()} photo.';
+      }
+    }
+    if (categoryName == null) {
+      return 'Choose the arrangement for this ${shotType.label.toLowerCase()} photo.';
+    }
+    return 'Choose the arrangement for this ${categoryName.toLowerCase()} ${shotType.label.toLowerCase()} photo.';
+  }
 }
 
 class _StyleRow extends StatelessWidget {
   const _StyleRow({
+    super.key,
     required this.preset,
     required this.isSelected,
     required this.onTap,

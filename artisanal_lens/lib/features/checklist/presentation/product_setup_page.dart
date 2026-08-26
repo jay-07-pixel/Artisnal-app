@@ -8,7 +8,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/lighting_advisory.dart';
-import '../../../domain/entities/product_category.dart';
+import '../../../shared/widgets/choice_image_grid.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 
@@ -17,9 +17,16 @@ import '../../home/shot_sets_controller.dart';
 /// Category grid and product name, then the photo list. Category is locked
 /// once a shoot exists so its presets stay scoped to it.
 class ProductSetupPage extends ConsumerStatefulWidget {
-  const ProductSetupPage({this.setId, super.key});
+  const ProductSetupPage({
+    this.setId,
+    this.materialId,
+    this.silkTypeId,
+    super.key,
+  });
 
   final String? setId;
+  final String? materialId;
+  final String? silkTypeId;
 
   @override
   ConsumerState<ProductSetupPage> createState() => _ProductSetupPageState();
@@ -106,11 +113,16 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space20),
-          _CategoryGrid(
-            categories: categories,
+          ChoiceImageGrid(
+            choices: [
+              for (final category in categories)
+                ImageChoice(
+                  id: category.id,
+                  name: category.name,
+                  thumbnailAsset: category.thumbnailAsset,
+                ),
+            ],
             selectedId: _selectedCategoryId,
-            // Category is fixed once a shoot exists — its presets and
-            // checklist are already scoped to it.
             onSelected: _isExistingSet
                 ? null
                 : (id) => setState(() => _selectedCategoryId = id),
@@ -172,6 +184,8 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
         final created = await controller.createSet(
           productName: _nameController.text.trim(),
           categoryId: _selectedCategoryId!,
+          materialId: widget.materialId,
+          silkTypeId: widget.silkTypeId,
         );
         setId = created.id;
         if (mounted) setState(() => _activeSetId = setId);
@@ -185,92 +199,6 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
     } finally {
       if (mounted) setState(() => _isStarting = false);
     }
-  }
-}
-
-class _CategoryGrid extends StatelessWidget {
-  const _CategoryGrid({
-    required this.categories,
-    required this.selectedId,
-    required this.onSelected,
-  });
-
-  final List<ProductCategory> categories;
-  final String? selectedId;
-  final ValueChanged<String>? onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: categories.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: AppDimens.space12,
-        mainAxisSpacing: AppDimens.space16,
-        childAspectRatio: 0.82,
-      ),
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        final isSelected = category.id == selectedId;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: onSelected == null ? null : () => onSelected!(category.id),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimens.radiusLg),
-                    border: Border.all(
-                      color: isSelected ? AppColors.primary : AppColors.border,
-                      width: isSelected ? 2 : 1,
-                    ),
-                  ),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(3),
-                        child: PhotoThumb(
-                          path: category.thumbnailAsset,
-                          borderRadius:
-                              BorderRadius.circular(AppDimens.radiusMd),
-                        ),
-                      ),
-                      if (isSelected)
-                        const Positioned(
-                          top: AppDimens.space8,
-                          right: AppDimens.space8,
-                          child: CircleAvatar(
-                            radius: 13,
-                            backgroundColor: AppColors.primary,
-                            child: Icon(
-                              Icons.check,
-                              size: 15,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: AppDimens.space8),
-            Text(
-              category.name,
-              textAlign: TextAlign.center,
-              style: AppTypography.labelLarge.copyWith(
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 }
 

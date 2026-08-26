@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:artisanal_lens/data/datasources/preset_catalog.dart';
+import 'package:artisanal_lens/domain/entities/fabric_material.dart';
+import 'package:artisanal_lens/domain/entities/photography_template.dart';
 import 'package:artisanal_lens/shared/widgets/asset_placeholder.dart';
 import 'package:artisanal_lens/shared/widgets/catalog_video.dart';
 import 'package:flutter/material.dart';
@@ -33,16 +35,41 @@ void main() {
     }
   });
 
-  test('existing fold thumbnails are bundled; Roll display is still missing', () async {
+  test('Saree photography template thumbnails are bundled', () async {
+    for (final template in SareePhotographyTemplates.all) {
+      final path = template.referenceImageAsset;
+      expect(path, isNotNull, reason: template.id);
+      expect(path, startsWith('assets/images/templates/'));
+      expect(await isBundled(path!), isTrue, reason: path);
+    }
+  });
+
+  test('material and silk-type thumbnails are bundled', () async {
+    for (final material in FabricMaterial.all) {
+      expect(
+        await isBundled(material.thumbnailAsset),
+        isTrue,
+        reason: material.thumbnailAsset,
+      );
+    }
+    for (final variety in SilkVariety.all) {
+      expect(
+        await isBundled(variety.thumbnailAsset),
+        isTrue,
+        reason: variety.thumbnailAsset,
+      );
+    }
+  });
+
+  test('existing fold thumbnails are bundled', () async {
     for (final category in catalog.categories()) {
       for (final preset in catalog.presetsForCategory(category.id)) {
         final path = preset.referenceImageAsset;
-        final bundled = await isBundled(path);
-        if (path.endsWith('saree_roll_display.png')) {
-          expect(bundled, isFalse, reason: 'Roll display is a known missing source asset.');
-        } else {
-          expect(bundled, isTrue, reason: '$path should load.');
-        }
+        expect(
+          await isBundled(path),
+          isTrue,
+          reason: '$path should load.',
+        );
       }
     }
   });

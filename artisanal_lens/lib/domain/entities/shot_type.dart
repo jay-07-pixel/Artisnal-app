@@ -1,14 +1,11 @@
 import 'photography_guideline.dart';
 import 'technique_preset.dart';
 
-/// The four shot types, and how many photographs each contributes to a
-/// complete set.
+/// Shot types that fill a product's required-photo list.
 ///
-/// Source of truth: the Figma file "Artisans lens".
-///   • Product Setup Flow — PROCESS 0/2, PRODUCT 0/1, DETAIL 0/3, LIFESTYLE 0/1
-///     summing to the "0 / 7 Photos" progress counter.
-///   • Product Gallery & Viewer — the per-slot captions that name each
-///     required photograph.
+/// Cushion Cover, Shawl and Stole keep the Figma seven-slot checklist
+/// (Process, Product, Detail, Lifestyle). Saree uses the five BTP
+/// photography templates instead — that list is [sareePhotography] only.
 enum ShotType {
   process(
     id: 'process',
@@ -37,6 +34,23 @@ enum ShotType {
     checklistDescription: 'In a natural setting',
     pickerDescription: 'Draped/Styled',
     slotLabels: ['Styled shot'],
+  ),
+
+  /// Saree-only BTP §7.3 photography templates. Not a fold/style preset.
+  ///
+  /// Slot labels stay in lockstep with [SareePhotographyTemplates.all].
+  sareePhotography(
+    id: 'saree_photography',
+    label: 'Photography',
+    checklistDescription: 'Saree photography templates',
+    pickerDescription: 'Saree photography templates',
+    slotLabels: [
+      'Full Saree Display',
+      'Texture & Weave',
+      'Draped Look',
+      'Embroidery & Border Details',
+      'Folded Stack / Saree Stack',
+    ],
   );
 
   const ShotType({
@@ -65,15 +79,33 @@ enum ShotType {
   /// How many photographs this type contributes to a complete set.
   int get requiredCount => slotLabels.length;
 
-  /// Total photographs in a complete set — 7 in the current design.
-  static int get totalRequired =>
-      ShotType.values.fold(0, (sum, type) => sum + type.requiredCount);
+  /// Figma seven-shot total for Cushion Cover, Shawl and Stole.
+  ///
+  /// Saree does not use this. Its required count is the five BTP templates.
+  static int get totalRequired => figmaChecklistTypes.fold(
+        0,
+        (sum, type) => sum + type.requiredCount,
+      );
+
+  /// Process, Product, Detail, Lifestyle — the non-Saree checklist.
+  static const List<ShotType> figmaChecklistTypes = [
+    process,
+    product,
+    detail,
+    lifestyle,
+  ];
+
+  /// Required-photo types for one category. Saree is templates only.
+  static List<ShotType> checklistTypesFor(String categoryId) {
+    if (categoryId == 'saree') return const [sareePhotography];
+    return figmaChecklistTypes;
+  }
 
   /// The order the app walks through types when suggesting what to shoot next.
   ///
   /// Product comes first because the setup screen marks it
   /// "RECOMMENDED NEXT" on a fresh set, and it is the photograph a listing
-  /// cannot go live without.
+  /// cannot go live without. Saree ignores this and uses template order.
   static const List<ShotType> recommendedOrder = [
     ShotType.product,
     ShotType.detail,
@@ -83,11 +115,9 @@ enum ShotType {
 
   /// Whether the style step is offered for this type.
   ///
-  /// Fold presets describe how to *arrange the finished cloth*, so they only
-  /// apply to Product and Lifestyle. A Detail shot is framed against a grid
-  /// rather than folded, and a Process shot is of the loom or the dye bath —
-  /// there is no drape to choose in either case, so both go straight to the
-  /// camera and load slot-specific shot guidance.
+  /// Fold presets describe how to arrange the finished cloth. Product,
+  /// Lifestyle and Saree photography all offer that list. Detail and Process
+  /// skip it because they are close-ups and making shots, not styled layouts.
   bool get skipsStyleStep =>
       this == ShotType.detail || this == ShotType.process;
 
@@ -98,6 +128,18 @@ enum ShotType {
   /// guide does not define templates for those categories. Motif uses a
   /// Pattern close-up through `ShotGuidance.forSlot`.
   TechniquePreset get fallbackTechnique => switch (this) {
+        // Saree templates load BTP §7.3 through ShotGuidance.forSlot.
+        // This is only the last-resort overlay if a slot index is missing.
+        ShotType.sareePhotography => const TechniquePreset(
+            angle: CameraAngle.eyeLevel,
+            lighting: LightingSetup.diffusedDaylight,
+            composition: CompositionRule.ruleOfThirds,
+            grid: GridOverlayType.ruleOfThirds,
+            guidelines: [
+              PhotographyGuideline.diverseLighting,
+              PhotographyGuideline.variousAngles,
+            ],
+          ),
         // A loom or a dye bath is a scene, not an object. The photography
         // guide does not define a process grid, so the existing rule-of-thirds
         // scene framing is kept.

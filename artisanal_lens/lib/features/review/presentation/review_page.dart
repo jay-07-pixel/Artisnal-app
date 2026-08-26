@@ -122,6 +122,15 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                         ),
                       ],
                     ),
+                  )
+                else if (ref.watch(sessionGuidanceProvider).templateName !=
+                    null)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      ref.watch(sessionGuidanceProvider).templateName!,
+                      style: AppTypography.displaySmall.copyWith(fontSize: 20),
+                    ),
                   ),
                 const SizedBox(height: AppDimens.space20),
                 Row(

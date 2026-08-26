@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import 'photography_template.dart';
 import 'shot_type.dart';
 
 /// A single photograph the artisan captured and accepted.
@@ -64,6 +65,7 @@ class ShotSlot extends Equatable {
     required this.index,
     required this.label,
     this.shot,
+    this.template,
   });
 
   final ShotType shotType;
@@ -73,10 +75,15 @@ class ShotSlot extends Equatable {
   /// The photograph filling this slot, if one has been accepted.
   final CapturedShot? shot;
 
+  /// BTP photography template when this slot is a Saree template.
+  ///
+  /// Null for Cushion Cover, Shawl and Stole checklist slots.
+  final PhotographyTemplate? template;
+
   bool get isFilled => shot != null;
 
   @override
-  List<Object?> get props => [shotType, index, label, shot];
+  List<Object?> get props => [shotType, index, label, shot, template];
 }
 
 /// Filter states offered on the gallery screen.
@@ -98,6 +105,44 @@ class GalleryFilter extends Equatable {
   List<Object?> get props => [categoryId];
 }
 
+/// Progress chips on the home "Previous sets" list: All, Finished, Pending.
+enum PreviousSetsFilter {
+  all,
+  finished,
+  pending,
+}
+
+extension PreviousSetsFilterMatching on PreviousSetsFilter {
+  bool matches(ShotSet set) => switch (this) {
+        PreviousSetsFilter.all => true,
+        PreviousSetsFilter.finished => set.isFinished,
+        PreviousSetsFilter.pending => !set.isFinished,
+      };
+
+  List<ShotSet> apply(List<ShotSet> sets) =>
+      sets.where(matches).toList(growable: false);
+}
+
+/// Home list date, matching the BTP previous-sets cards (`22 Jan, 2025`).
+String formatPreviousSetDate(DateTime date) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  final day = date.day.toString().padLeft(2, '0');
+  return '$day ${months[date.month - 1]}, ${date.year}';
+}
+
 /// A photo shoot for one product — the unit the home and gallery screens list
 /// and the checklist tracks.
 class ShotSet extends Equatable {
@@ -106,6 +151,8 @@ class ShotSet extends Equatable {
     required this.productName,
     required this.categoryId,
     required this.createdAt,
+    this.materialId,
+    this.silkTypeId,
     this.shots = const [],
   });
 
@@ -115,14 +162,37 @@ class ShotSet extends Equatable {
   final String productName;
 
   final String categoryId;
+
+  /// Fibre chosen on New Product: silk, cotton, wool or jute.
+  final String? materialId;
+
+  /// Silk variety when [materialId] is silk: mulberry, eri, tasar or muga.
+  final String? silkTypeId;
+
   final DateTime createdAt;
   final List<CapturedShot> shots;
+
+  /// Saree uses the five BTP photography templates, not the Figma 7-shot list.
+  bool get usesSareePhotographyTemplates => categoryId == sareeCategoryId;
 
   /// Every required photograph in the set, in checklist order, each paired
   /// with the shot filling it if there is one.
   List<ShotSlot> get slots {
+    if (usesSareePhotographyTemplates) {
+      return [
+        for (var i = 0; i < SareePhotographyTemplates.all.length; i++)
+          ShotSlot(
+            shotType: ShotType.sareePhotography,
+            index: i,
+            label: SareePhotographyTemplates.all[i].name,
+            shot: _shotFor(ShotType.sareePhotography, i),
+            template: SareePhotographyTemplates.all[i],
+          ),
+      ];
+    }
+
     final result = <ShotSlot>[];
-    for (final type in ShotType.values) {
+    for (final type in ShotType.figmaChecklistTypes) {
       for (var i = 0; i < type.requiredCount; i++) {
         result.add(
           ShotSlot(
@@ -146,16 +216,18 @@ class ShotSet extends Equatable {
 
   /// Photographs accepted for a given type.
   int completedCountFor(ShotType type) =>
-      shots.where((shot) => shot.shotType == type).length;
+      slots.where((slot) => slot.shotType == type && slot.isFilled).length;
 
   List<CapturedShot> shotsFor(ShotType type) =>
       shots.where((shot) => shot.shotType == type).toList()
         ..sort((a, b) => a.slotIndex.compareTo(b.slotIndex));
 
-  /// Total accepted photographs, capped at what the set actually requires.
-  int get completedCount => shots.length;
+  /// Accepted photographs that fill a required slot.
+  int get completedCount => slots.where((slot) => slot.isFilled).length;
 
-  int get requiredCount => ShotType.totalRequired;
+  int get requiredCount => usesSareePhotographyTemplates
+      ? SareePhotographyTemplates.all.length
+      : ShotType.totalRequired;
 
   bool get isFinished => completedCount >= requiredCount;
 
@@ -165,7 +237,14 @@ class ShotSet extends Equatable {
   /// The next empty slot, following the recommended order.
   ///
   /// This drives the "RECOMMENDED NEXT" badge and the "Start with …" button.
+  /// Saree walks the five BTP templates in source order.
   ShotSlot? get nextSlot {
+    if (usesSareePhotographyTemplates) {
+      for (final slot in slots) {
+        if (!slot.isFilled) return slot;
+      }
+      return null;
+    }
     for (final type in ShotType.recommendedOrder) {
       for (var i = 0; i < type.requiredCount; i++) {
         if (_shotFor(type, i) == null) {
@@ -202,10 +281,20 @@ class ShotSet extends Equatable {
         id: id,
         productName: productName ?? this.productName,
         categoryId: categoryId,
+        materialId: materialId,
+        silkTypeId: silkTypeId,
         createdAt: createdAt,
         shots: shots ?? this.shots,
       );
 
   @override
-  List<Object?> get props => [id, productName, categoryId, createdAt, shots];
+  List<Object?> get props => [
+        id,
+        productName,
+        categoryId,
+        materialId,
+        silkTypeId,
+        createdAt,
+        shots,
+      ];
 }

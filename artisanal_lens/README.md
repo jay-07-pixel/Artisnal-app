@@ -32,39 +32,23 @@ flutter test        # unit tests
 ## The flow
 
 ```
-Opening sequence  (4.2s, tap to skip)
-  └─ Home ──────────────┬─ New Product ─┐
-     (bottom nav)       ├─ Continue ────┤
-                        └─ Recent ──────┼─> Product Setup
-                                        │     (category · name · Start Photography)
-                                        │        └─> Shot & Style
-                                        │              (step 1: type · step 2: style)
-                                        │                 └─> Guided Capture
-                                        │                       └─> Review & Retake
-                                        │                             ├─ Retake ─┘
-                                        │                             └─ Use Photo
-                                        │                                  ├─ set incomplete ─> Product Setup
-                                        │                                  └─ set complete ───> Completion
-                                        └─> Product Viewer  <── Gallery
+Opening sequence  (tap to skip)
+  └─ Home  (New Product · Continue · Previous sets)
+        └─ New Product
+              Material → fibre type → category + name
+                └─ Photo list
+                     Saree: five BTP photography templates
+                     Others: seven Figma shots
+                       └─ How should it look?  (skipped for Process and Detail)
+                            └─ Lighting → Tutorial → Alignment → Camera
+                                 └─ Review
 ```
 
-Every empty slot in the Product Viewer is tappable and re-enters the capture
-flow aimed at that specific photograph.
+New Product does not jump straight to Saree. Every material opens a type
+screen; Cotton, Wool and Jute show empty boxes until varieties are documented.
 
-## A complete set is seven photographs
-
-Taken from the Figma checklist (`0 / 7 Photos`) and the gallery captions:
-
-| Shot type | Count | Slots                     |
-|-----------|-------|---------------------------|
-| Process   | 2     | Loom setup, Dyeing        |
-| Product   | 1     | Hero shot                 |
-| Detail    | 3     | Border, Weave, Motif      |
-| Lifestyle | 1     | Styled shot               |
-
-Process and Detail shots skip the style step: a fold preset describes how to
-arrange finished cloth, and neither a loom nor a macro shot of the weave has a
-drape to choose. Both use their shot type's own `fallbackTechnique`.
+The root [`README.md`](../README.md) has the full flow, Saree template list,
+and fold names.
 
 ## The opening sequence
 
@@ -180,20 +164,12 @@ drop a photograph into `tools/figma_src/` and add it to `salvage_saree()` to
 replace one.
 
 ## Known gaps
-- **Setup tutorials** — `FoldPreset` carries `setupSteps`, `tutorialVideoAsset`
-  and `tutorialTranscript`, which the BTP report calls for (§8.2: static
-  illustrations were replaced by short localised videos after user testing).
-  No screen consumes them yet because the Figma file has no tutorial screen.
-  The data is in place for when that screen is designed.
+- **Cotton, Wool and Jute types** — those materials use the same type screen as
+  Silk, with four empty boxes until a source names the varieties.
+- **Tutorial videos and step illustrations** — Lighting → Tutorial → Alignment
+  exists. Catalog video and illustration paths are still mostly missing, so
+  those screens fail safe with placeholders.
 - **Localisation** — the language choice is real: it persists across launches
-  (`LocaleController`) and drives `MaterialApp.locale`, so Flutter's own
-  widgets follow it. The app's own copy does not: roughly 108 strings in the
-  screens and another ~200 in the preset catalogue are still English literals.
-
-  Translating them is deliberately left open rather than machine-filled. This
-  app exists because artisans cannot read English instructions (BTP: 42% cite
-  language barriers), so a wrong Assamese verb in "Move closer to the window"
-  is worse than no translation at all — these need a native speaker from the
-  Kamrup cluster, ideally the same artisans from the §8 testing round. The
-  plumbing is in place: add `flutter_localizations` ARB files and swap the
-  literals for generated getters.
+  (`LocaleController`) and drives `MaterialApp.locale`. App copy is still
+  English. Translation is left for a native Assamese speaker rather than
+  machine-filled.

@@ -71,7 +71,7 @@ void main() {
 
   test('camera technique is the same object the instruction screens read', () {
     final weave = ShotGuidance.forSlot(
-      ShotType.detail,
+      ShotType.sareePhotography,
       1,
       categoryId: BundledCatalogDataSource.saree,
     );
@@ -84,6 +84,15 @@ void main() {
     );
     expect(weave.technique.grid, GridOverlayType.centerFocus);
     expect(hero.technique.grid, GridOverlayType.leadingLines);
+
+    final weaveWithFold = ShotGuidance.resolve(
+      shotType: ShotType.sareePhotography,
+      slotIndex: 1,
+      preset: pallu,
+      categoryId: BundledCatalogDataSource.saree,
+    );
+    expect(weaveWithFold.technique.grid, GridOverlayType.centerFocus);
+    expect(weaveWithFold.templateName, 'Texture & Weave');
   });
 
   test('Pallu alignment illustration path is the catalog step, not the fold thumbnail', () {
@@ -101,7 +110,7 @@ void main() {
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
-          shotType: ShotType.detail,
+          shotType: ShotType.sareePhotography,
           slotIndex: 1,
         ),
         categoryId: BundledCatalogDataSource.saree,
@@ -129,7 +138,7 @@ void main() {
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
-          shotType: ShotType.detail,
+          shotType: ShotType.sareePhotography,
           slotIndex: 1,
         ),
         categoryId: BundledCatalogDataSource.saree,
@@ -177,8 +186,9 @@ void main() {
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
-          shotType: ShotType.detail,
+          shotType: ShotType.sareePhotography,
           slotIndex: 1,
+          presetId: 'saree_pallu_drape',
         ),
         categoryId: BundledCatalogDataSource.saree,
         child: const AlignmentPage(setId: 'set_1'),
@@ -196,8 +206,9 @@ void main() {
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
-          shotType: ShotType.detail,
-          slotIndex: 0,
+          shotType: ShotType.sareePhotography,
+          slotIndex: 3,
+          presetId: 'saree_pallu_drape',
         ),
         categoryId: BundledCatalogDataSource.saree,
         child: const AlignmentPage(setId: 'set_1'),
@@ -228,7 +239,8 @@ void main() {
 
     expect(find.text('Texture, Thickness, Material, Transparency'), findsNothing);
     expect(find.text('Preferably natural light'), findsNothing);
-    expect(find.text('Close-up of Texture and Weave'), findsNothing);
+      expect(find.text('Close-up of Texture and Weave'), findsNothing);
+      expect(find.text('Texture & Weave'), findsNothing);
   });
 
   testWidgets('Open Camera stays enabled when the session still has its slot', (tester) async {
@@ -236,8 +248,9 @@ void main() {
       _harness(
         session: const CaptureSession(
           setId: 'set_1',
-          shotType: ShotType.detail,
+          shotType: ShotType.sareePhotography,
           slotIndex: 1,
+          presetId: 'saree_pallu_drape',
         ),
         categoryId: BundledCatalogDataSource.saree,
         child: const AlignmentPage(setId: 'set_1'),

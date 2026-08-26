@@ -18,10 +18,14 @@ class ShotSetsController extends AsyncNotifier<List<ShotSet>> {
   Future<ShotSet> createSet({
     required String productName,
     required String categoryId,
+    String? materialId,
+    String? silkTypeId,
   }) async {
     final created = await _repository.createSet(
       productName: productName,
       categoryId: categoryId,
+      materialId: materialId,
+      silkTypeId: silkTypeId,
     );
     await _refresh();
     return created;

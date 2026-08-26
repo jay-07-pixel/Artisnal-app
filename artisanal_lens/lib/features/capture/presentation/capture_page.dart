@@ -77,7 +77,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
             productName: set?.productName ?? '',
             shotTypeLabel: session.shotType?.label.toUpperCase() ?? '',
             progress: '${(set?.completedCount ?? 0) + 1}'
-                '/${ShotType.totalRequired}',
+                '/${set?.requiredCount ?? ShotType.totalRequired}',
           ),
           if (camera.isReady && GuidedCameraController.isGuidanceSupported)
             _FeedbackChips(feedback: camera.feedback, technique: technique),

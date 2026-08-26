@@ -42,6 +42,7 @@ class PhotoListPage extends ConsumerWidget {
 
     final slots = _orderedSlots(set);
     final next = set.nextSlot;
+    final isSaree = set.usesSareePhotographyTemplates;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -60,10 +61,15 @@ class PhotoListPage extends ConsumerWidget {
           AppDimens.space32,
         ),
         children: [
-          Text('Photos to capture', style: AppTypography.displayLarge),
+          Text(
+            isSaree ? 'Saree photography templates' : 'Photos to capture',
+            style: AppTypography.displayLarge,
+          ),
           const SizedBox(height: AppDimens.space8),
           Text(
-            'These are the photos you need to take.',
+            isSaree
+                ? 'These are the five photographs to take.'
+                : 'These are the photos you need to take.',
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space16),
@@ -87,14 +93,14 @@ class PhotoListPage extends ConsumerWidget {
               isNext: next != null &&
                   next.shotType == slots[i].shotType &&
                   next.index == slots[i].index,
-              onTap: slots[i].isFilled
-                  ? null
-                  : () => beginCaptureForSlot(
+              onTap: (!slots[i].isFilled || isSaree)
+                  ? () => beginCaptureForSlot(
                         context,
                         ref,
                         setId: setId,
                         slot: slots[i],
-                      ),
+                      )
+                  : null,
             ),
             if (i != slots.length - 1) const SizedBox(height: AppDimens.space12),
           ],
@@ -134,6 +140,7 @@ class PhotoListPage extends ConsumerWidget {
 /// Checklist order follows the recommended shooting order, not enum order,
 /// so the next photograph sits where the artisan expects it.
 List<ShotSlot> _orderedSlots(ShotSet set) {
+  if (set.usesSareePhotographyTemplates) return set.slots;
   final lookup = {
     for (final slot in set.slots) '${slot.shotType.id}-${slot.index}': slot,
   };
@@ -160,13 +167,16 @@ class _PhotoSlotCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filled = slot.isFilled;
-    final guidance = slot.shotType.skipsStyleStep
-        ? ShotGuidance.forSlot(
-            slot.shotType,
-            slot.index,
-            categoryId: categoryId,
-          )
-        : null;
+    final template = slot.template;
+    final guidance = template != null
+        ? ShotGuidance.fromTemplate(template)
+        : slot.shotType.skipsStyleStep
+            ? ShotGuidance.forSlot(
+                slot.shotType,
+                slot.index,
+                categoryId: categoryId,
+              )
+            : null;
     final borderColor = isNext
         ? AppColors.primary
         : filled
@@ -200,7 +210,9 @@ class _PhotoSlotCard extends StatelessWidget {
                 height: 88,
                 child: filled
                     ? PhotoThumb(path: slot.shot!.filePath)
-                    : const PhotoThumb(path: ''),
+                    : PhotoThumb(
+                        path: template?.referenceImageAsset ?? '',
+                      ),
               ),
               const SizedBox(width: AppDimens.space12),
               Expanded(
@@ -208,7 +220,9 @@ class _PhotoSlotCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      slot.shotType.label.toUpperCase(),
+                      template != null
+                          ? 'TEMPLATE'
+                          : slot.shotType.label.toUpperCase(),
                       style: AppTypography.overline,
                     ),
                     const SizedBox(height: 2),

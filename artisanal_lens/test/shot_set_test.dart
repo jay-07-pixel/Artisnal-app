@@ -2,12 +2,14 @@ import 'package:artisanal_lens/domain/entities/shot_set.dart';
 import 'package:artisanal_lens/domain/entities/shot_type.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-ShotSet emptySet() => ShotSet(
+ShotSet emptySet({String categoryId = 'cushion_cover'}) => ShotSet(
       id: 'set_1',
       productName: 'Blue Silk Saree',
-      categoryId: 'saree',
+      categoryId: categoryId,
       createdAt: DateTime(2026, 8, 24, 10),
     );
+
+ShotSet emptySareeSet() => emptySet(categoryId: 'saree');
 
 CapturedShot shot(ShotType type, int slotIndex, {int minute = 0}) =>
     CapturedShot(
@@ -64,7 +66,7 @@ void main() {
 
     test('is finished only when all seven slots are filled', () {
       final all = <CapturedShot>[];
-      for (final type in ShotType.values) {
+      for (final type in ShotType.figmaChecklistTypes) {
         for (var i = 0; i < type.requiredCount; i++) {
           all.add(shot(type, i));
         }
@@ -152,6 +154,112 @@ void main() {
     });
   });
 
+  group('Saree photography templates replace the seven-shot list', () {
+    test('Saree requires exactly five BTP templates', () {
+      final set = emptySareeSet();
+      expect(set.requiredCount, 5);
+      expect(set.slots.length, 5);
+      expect(
+        set.slots.map((slot) => slot.label).toList(),
+        [
+          'Full Saree Display',
+          'Texture & Weave',
+          'Draped Look',
+          'Embroidery & Border Details',
+          'Folded Stack / Saree Stack',
+        ],
+      );
+      expect(
+        set.slots.map((slot) => slot.label),
+        isNot(contains('Hero shot')),
+      );
+      expect(
+        set.slots.map((slot) => slot.label),
+        isNot(contains('Loom setup')),
+      );
+    });
+
+    test('Saree progress is 0/5 through 5/5', () {
+      var set = emptySareeSet();
+      expect(set.completedCount, 0);
+      expect('${set.completedCount}/${set.requiredCount}', '0/5');
+
+      for (var i = 0; i < 5; i++) {
+        set = set.copyWith(
+          shots: [
+            ...set.shots,
+            shot(ShotType.sareePhotography, i, minute: i),
+          ],
+        );
+        expect('${set.completedCount}/${set.requiredCount}', '${i + 1}/5');
+      }
+      expect(set.isFinished, isTrue);
+      expect(set.nextSlot, isNull);
+    });
+
+    test('replacing a Saree template slot does not add a duplicate', () {
+      final first = shot(ShotType.sareePhotography, 0, minute: 1);
+      final retake = CapturedShot(
+        id: 'retake_full_display',
+        setId: 'set_1',
+        shotType: ShotType.sareePhotography,
+        slotIndex: 0,
+        filePath: '/photos/retake.jpg',
+        capturedAt: DateTime(2026, 8, 24, 10, 20),
+      );
+      final set = emptySareeSet().copyWith(shots: [first, retake]);
+
+      expect(set.slots, hasLength(5));
+      expect(set.completedCount, 1);
+      expect(set.slots.first.shot!.filePath, first.filePath);
+    });
+  });
+
+  group('previous sets progress filter', () {
+    ShotSet finishedSet() {
+      final all = <CapturedShot>[];
+      for (final type in ShotType.figmaChecklistTypes) {
+        for (var i = 0; i < type.requiredCount; i++) {
+          all.add(shot(type, i));
+        }
+      }
+      return emptySet().copyWith(shots: all);
+    }
+
+    test('All keeps finished and pending sets', () {
+      final pending = emptySet();
+      final finished = finishedSet();
+
+      expect(
+        PreviousSetsFilter.all.apply([pending, finished]),
+        [pending, finished],
+      );
+    });
+
+    test('Finished keeps only completed sets', () {
+      final pending = emptySet();
+      final finished = finishedSet();
+
+      expect(PreviousSetsFilter.finished.matches(pending), isFalse);
+      expect(PreviousSetsFilter.finished.matches(finished), isTrue);
+      expect(PreviousSetsFilter.finished.apply([pending, finished]), [finished]);
+    });
+
+    test('Pending keeps only unfinished sets', () {
+      final pending = emptySet();
+      final finished = finishedSet();
+
+      expect(PreviousSetsFilter.pending.matches(pending), isTrue);
+      expect(PreviousSetsFilter.pending.matches(finished), isFalse);
+      expect(PreviousSetsFilter.pending.apply([pending, finished]), [pending]);
+    });
+
+    test('formats the BTP card date', () {
+      expect(formatPreviousSetDate(DateTime(2025, 1, 22)), '22 Jan, 2025');
+      expect(formatPreviousSetDate(DateTime(2025, 1, 2)), '02 Jan, 2025');
+    });
+  });
+
   group('gallery filtering', () {
     test('"All" matches every set', () {
       expect(const GalleryFilter.all().matches(emptySet()), isTrue);
@@ -160,7 +268,8 @@ void main() {
     test('a category filter matches only that category', () {
       const filter = GalleryFilter.category('saree');
 
-      expect(filter.matches(emptySet()), isTrue);
+      expect(filter.matches(emptySareeSet()), isTrue);
+      expect(filter.matches(emptySet()), isFalse);
       expect(
         filter.matches(
           ShotSet(

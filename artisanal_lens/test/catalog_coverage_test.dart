@@ -16,7 +16,7 @@ void main() {
 
   group('every category can reach the camera for every shot type', () {
     for (final category in catalog.categories()) {
-      for (final shotType in ShotType.values) {
+      for (final shotType in ShotType.checklistTypesFor(category.id)) {
         test('${category.name} / ${shotType.label}', () {
           final presets = catalog
               .presetsForCategory(category.id)
@@ -39,7 +39,13 @@ void main() {
     // Product and Lifestyle always show the style step, so an empty list there
     // means the artisan sees "Choose a style" with nothing under it.
     for (final category in catalog.categories()) {
-      for (final shotType in [ShotType.product, ShotType.lifestyle]) {
+      final styleTypes = [
+        ShotType.product,
+        ShotType.lifestyle,
+        if (category.id == BundledCatalogDataSource.saree)
+          ShotType.sareePhotography,
+      ];
+      for (final shotType in styleTypes) {
         test('${category.name} / ${shotType.label} has at least one style', () {
           final presets = catalog
               .presetsForCategory(category.id)

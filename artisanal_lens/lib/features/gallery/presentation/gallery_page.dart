@@ -120,7 +120,7 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
                         else
                           FilledButton.icon(
                             onPressed: () =>
-                                context.pushNamed(AppRoute.productSetup),
+                                context.pushNamed(AppRoute.material),
                             icon: const Icon(
                               Icons.add_a_photo_outlined,
                               size: 18,

@@ -83,6 +83,9 @@ flutter:
     - assets/images/categories/
     - assets/images/presets/
     - assets/images/steps/
+    - assets/images/templates/
+    - assets/images/materials/
+    - assets/images/silk_types/
     - assets/videos/
 
   fonts:

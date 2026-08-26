@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/capture/presentation/capture_page.dart';
+import '../features/checklist/presentation/material_selection_page.dart';
 import '../features/checklist/presentation/photo_list_page.dart';
 import '../features/checklist/presentation/product_setup_page.dart';
+import '../features/checklist/presentation/silk_type_page.dart';
 import '../features/completion/presentation/completion_page.dart';
 import '../features/gallery/presentation/gallery_page.dart';
 import '../features/gallery/presentation/product_viewer_page.dart';
@@ -24,6 +26,8 @@ abstract final class AppRoute {
   static const String gallery = 'gallery';
   static const String settings = 'settings';
   static const String productSetup = 'productSetup';
+  static const String material = 'material';
+  static const String silkType = 'silkType';
   static const String photoList = 'photoList';
   static const String shotAndStyle = 'shotAndStyle';
   static const String lightingSetup = 'lightingSetup';
@@ -75,11 +79,27 @@ GoRouter createRouter() {
       // The capture flow runs above the shell so the bottom bar is out of the
       // way once a shoot has started.
       GoRoute(
+        path: '/product/material',
+        name: AppRoute.material,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const MaterialSelectionPage(),
+      ),
+      GoRoute(
+        path: '/product/silk-type',
+        name: AppRoute.silkType,
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => SilkTypePage(
+          materialId: state.uri.queryParameters['material'],
+        ),
+      ),
+      GoRoute(
         path: '/product/setup',
         name: AppRoute.productSetup,
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => ProductSetupPage(
           setId: state.uri.queryParameters['setId'],
+          materialId: state.uri.queryParameters['material'],
+          silkTypeId: state.uri.queryParameters['silkType'],
         ),
       ),
       GoRoute(

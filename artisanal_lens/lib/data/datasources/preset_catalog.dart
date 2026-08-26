@@ -109,7 +109,11 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/saree_pallu_drape.png',
       requiresProp: 'A hanger, bamboo pole or mannequin',
-      supportedShotTypes: const [ShotType.product, ShotType.lifestyle],
+      supportedShotTypes: const [
+        ShotType.product,
+        ShotType.lifestyle,
+        ShotType.sareePhotography,
+      ],
       tutorialVideoAsset: 'assets/videos/saree_pallu_drape.mp4',
       tutorialTranscript: const [
         'Hang the saree so its fall is clearly visible.',
@@ -162,7 +166,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         FabricProperty.material,
       ],
       referenceImageAsset: 'assets/images/presets/saree_box_fold.png',
-      supportedShotTypes: const [ShotType.product],
+      supportedShotTypes: const [ShotType.product, ShotType.sareePhotography],
       tutorialVideoAsset: 'assets/videos/saree_box_fold.mp4',
       tutorialTranscript: const [
         'Fold the saree into a neat stack so the layers stay visible.',
@@ -218,7 +222,11 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/saree_worn_drape.png',
       requiresProp: 'Someone to wear the saree',
-      supportedShotTypes: const [ShotType.product, ShotType.lifestyle],
+      supportedShotTypes: const [
+        ShotType.product,
+        ShotType.lifestyle,
+        ShotType.sareePhotography,
+      ],
       tutorialVideoAsset: 'assets/videos/saree_worn_drape.mp4',
       tutorialTranscript: const [
         'A worn shot shows the full saree — colour, pattern and material.',
@@ -271,7 +279,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         FabricProperty.material,
       ],
       referenceImageAsset: 'assets/images/presets/saree_roll_display.png',
-      supportedShotTypes: const [ShotType.product],
+      supportedShotTypes: const [ShotType.product, ShotType.sareePhotography],
       tutorialTranscript: const [
         'Roll the saree so the pallu and border face the camera.',
         'Let the roll cover most of the frame.',

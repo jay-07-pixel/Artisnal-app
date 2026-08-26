@@ -67,7 +67,7 @@ class ProductViewerPage extends ConsumerWidget {
               ),
             ),
           const SizedBox(height: AppDimens.space24),
-          for (final type in ShotType.values) ...[
+          for (final type in ShotType.checklistTypesFor(set.categoryId)) ...[
             _TypeSection(set: set, shotType: type, setId: setId),
             const SizedBox(height: AppDimens.space24),
           ],

@@ -101,7 +101,7 @@ class CompletionPage extends ConsumerWidget {
                       context.goNamed(AppRoute.home);
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         if (context.mounted) {
-                          context.pushNamed(AppRoute.productSetup);
+                          context.pushNamed(AppRoute.material);
                         }
                       });
                     },

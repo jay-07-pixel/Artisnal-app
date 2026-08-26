@@ -10,11 +10,11 @@ import '../../../domain/entities/shot_set.dart';
 import '../../../shared/widgets/common.dart';
 import '../shot_sets_controller.dart';
 
-/// Home dashboard — Figma frame "Home Dashboard".
+/// Home dashboard — Figma frame "Home Dashboard" plus BTP "Previous sets".
 ///
 /// Wordmark app bar, the "What are you photographing today?" headline, the
 /// New Product card, a Continue Photography card for the most recent
-/// unfinished shoot, and a Recent Products grid.
+/// unfinished shoot, and the previous-sets list with All / Finished / Pending.
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -50,18 +50,8 @@ class HomePage extends ConsumerWidget {
                   const SizedBox(height: AppDimens.space12),
                   _ContinueCard(set: continuable),
                 ],
-                if (sets.isNotEmpty) ...[
-                  const SizedBox(height: AppDimens.space32),
-                  SectionHeader(
-                    'Recent products',
-                    trailing: TextButton(
-                      onPressed: () => context.goNamed(AppRoute.gallery),
-                      child: const Text('View All'),
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.space12),
-                  _RecentGrid(sets: sets.take(4).toList()),
-                ],
+                const SizedBox(height: AppDimens.space32),
+                _PreviousSetsSection(sets: sets),
               ],
             ),
           ),
@@ -128,7 +118,7 @@ class _NewProductCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppDimens.radiusLg),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppDimens.radiusLg),
-        onTap: () => context.pushNamed(AppRoute.productSetup),
+        onTap: () => context.pushNamed(AppRoute.material),
         child: SizedBox(
           height: 136,
           child: Column(
@@ -219,39 +209,137 @@ class _ContinueCard extends StatelessWidget {
   }
 }
 
-class _RecentGrid extends StatelessWidget {
-  const _RecentGrid({required this.sets});
+class _PreviousSetsSection extends StatefulWidget {
+  const _PreviousSetsSection({required this.sets});
 
   final List<ShotSet> sets;
 
   @override
+  State<_PreviousSetsSection> createState() => _PreviousSetsSectionState();
+}
+
+class _PreviousSetsSectionState extends State<_PreviousSetsSection> {
+  PreviousSetsFilter _filter = PreviousSetsFilter.all;
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: sets.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: AppDimens.space12,
-        mainAxisSpacing: AppDimens.space12,
-        childAspectRatio: 0.72,
+    final visible = _filter.apply(widget.sets);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Previous sets.',
+          style: AppTypography.displayMedium.copyWith(
+            fontFamily: AppTypography.sans,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: AppDimens.space16),
+        Row(
+          children: [
+            _ProgressChip(
+              label: 'All',
+              selected: _filter == PreviousSetsFilter.all,
+              onTap: () => setState(() => _filter = PreviousSetsFilter.all),
+            ),
+            const SizedBox(width: AppDimens.space8),
+            _ProgressChip(
+              label: 'Finished',
+              selected: _filter == PreviousSetsFilter.finished,
+              onTap: () =>
+                  setState(() => _filter = PreviousSetsFilter.finished),
+            ),
+            const SizedBox(width: AppDimens.space8),
+            _ProgressChip(
+              label: 'Pending',
+              selected: _filter == PreviousSetsFilter.pending,
+              onTap: () => setState(() => _filter = PreviousSetsFilter.pending),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppDimens.space16),
+        if (visible.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppDimens.space12),
+            child: Text(
+              _emptyMessage,
+              style: AppTypography.bodyMedium,
+            ),
+          )
+        else
+          ...[
+            for (var i = 0; i < visible.length; i++) ...[
+              if (i > 0) const SizedBox(height: AppDimens.space12),
+              _PreviousSetCard(set: visible[i]),
+            ],
+          ],
+      ],
+    );
+  }
+
+  String get _emptyMessage => switch (_filter) {
+        PreviousSetsFilter.all => 'No previous sets yet.',
+        PreviousSetsFilter.finished => 'No finished sets yet.',
+        PreviousSetsFilter.pending => 'No pending sets.',
+      };
+}
+
+class _ProgressChip extends StatelessWidget {
+  const _ProgressChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: selected ? AppColors.successBorder : AppColors.white,
+      shape: StadiumBorder(
+        side: BorderSide(
+          color: selected ? AppColors.successBorder : AppColors.borderLight,
+        ),
       ),
-      itemBuilder: (context, index) => _RecentCard(set: sets[index]),
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const StadiumBorder(),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: AppDimens.minTapTarget),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.space20),
+            child: Center(
+              child: Text(
+                label,
+                style: AppTypography.labelLarge.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
 
-class _RecentCard extends StatelessWidget {
-  const _RecentCard({required this.set});
+class _PreviousSetCard extends StatelessWidget {
+  const _PreviousSetCard({required this.set});
 
   final ShotSet set;
 
   @override
   Widget build(BuildContext context) {
-    final cover = set.coverShot;
-
     return Material(
-      color: AppColors.surface,
+      color: AppColors.white,
+      elevation: 1,
+      shadowColor: AppColors.textPrimary.withValues(alpha: 0.08),
       borderRadius: BorderRadius.circular(AppDimens.radiusLg),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppDimens.radiusLg),
@@ -260,61 +348,42 @@ class _RecentCard extends StatelessWidget {
           pathParameters: {'setId': set.id},
         ),
         child: Padding(
-          padding: const EdgeInsets.all(AppDimens.space8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(AppDimens.space12),
+          child: Row(
             children: [
+              SizedBox(
+                width: 56,
+                height: 56,
+                child: PhotoThumb(path: set.coverShot?.filePath ?? ''),
+              ),
+              const SizedBox(width: AppDimens.space12),
               Expanded(
-                child: Stack(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Positioned.fill(
-                      child: PhotoThumb(path: cover?.filePath ?? ''),
-                    ),
-                    if (set.isFinished)
-                      const Positioned(
-                        top: AppDimens.space8,
-                        right: AppDimens.space8,
-                        child: CircleAvatar(
-                          radius: 13,
-                          backgroundColor: AppColors.success,
-                          child: Icon(
-                            Icons.check,
-                            size: 15,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppDimens.space8),
-              Text(
-                set.productName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: AppDimens.space4),
-              if (set.isFinished)
-                Text(
-                  '${set.completedCount}/${set.requiredCount} Complete',
-                  style: AppTypography.labelSmall,
-                )
-              else
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppProgressBar(value: set.completionRatio),
-                    ),
-                    const SizedBox(width: AppDimens.space8),
                     Text(
-                      '${set.completedCount}/${set.requiredCount}',
-                      style: AppTypography.labelSmall,
+                      set.productName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: AppDimens.space4),
+                    Text(
+                      formatPreviousSetDate(set.createdAt),
+                      style: AppTypography.labelSmall.copyWith(
+                        color: AppColors.textMuted,
+                      ),
                     ),
                   ],
                 ),
+              ),
+              const Icon(
+                Icons.chevron_right,
+                color: AppColors.textMuted,
+              ),
             ],
           ),
         ),

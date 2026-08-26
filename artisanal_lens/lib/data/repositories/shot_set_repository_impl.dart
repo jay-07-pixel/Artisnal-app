@@ -54,12 +54,16 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
   Future<ShotSet> createSet({
     required String productName,
     required String categoryId,
+    String? materialId,
+    String? silkTypeId,
   }) async {
     final now = DateTime.now();
     final set = ShotSet(
       id: 'set_${now.microsecondsSinceEpoch}',
       productName: productName,
       categoryId: categoryId,
+      materialId: materialId,
+      silkTypeId: silkTypeId,
       createdAt: now,
     );
 
@@ -67,6 +71,8 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
       'id': set.id,
       'product_name': set.productName,
       'category_id': set.categoryId,
+      'material_id': set.materialId,
+      'silk_type_id': set.silkTypeId,
       'created_at': set.createdAt.millisecondsSinceEpoch,
     });
 
@@ -147,6 +153,8 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
       id: row['id'] as String,
       productName: row['product_name'] as String,
       categoryId: row['category_id'] as String,
+      materialId: row['material_id'] as String?,
+      silkTypeId: row['silk_type_id'] as String?,
       createdAt:
           DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int),
       shots: shots,

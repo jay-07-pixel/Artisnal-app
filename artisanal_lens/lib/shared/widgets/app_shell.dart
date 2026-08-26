@@ -64,7 +64,7 @@ class _BottomNav extends StatelessWidget {
                 icon: Icons.add_a_photo_outlined,
                 label: 'New Product',
                 isActive: false,
-                onTap: () => context.pushNamed(AppRoute.productSetup),
+                onTap: () => context.pushNamed(AppRoute.material),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,

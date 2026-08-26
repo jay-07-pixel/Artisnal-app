@@ -15,6 +15,8 @@ abstract interface class ShotSetRepository {
   Future<ShotSet> createSet({
     required String productName,
     required String categoryId,
+    String? materialId,
+    String? silkTypeId,
   });
 
   /// Records an accepted photograph against a set.

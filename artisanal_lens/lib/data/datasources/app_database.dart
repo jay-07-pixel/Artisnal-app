@@ -28,9 +28,10 @@ class AppDatabase {
     final directory = await getDatabasesPath();
     final database = await openDatabase(
       p.join(directory, fileName),
-      version: 1,
+      version: 2,
       onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
       onCreate: _createSchema,
+      onUpgrade: _upgradeSchema,
     );
     return AppDatabase._(database);
   }
@@ -41,6 +42,8 @@ class AppDatabase {
         id           TEXT    PRIMARY KEY,
         product_name TEXT    NOT NULL,
         category_id  TEXT    NOT NULL,
+        material_id  TEXT,
+        silk_type_id TEXT,
         created_at   INTEGER NOT NULL
       )
     ''');
@@ -63,6 +66,21 @@ class AppDatabase {
     await db.execute(
       'CREATE INDEX idx_shots_set ON $tableShots (set_id)',
     );
+  }
+
+  static Future<void> _upgradeSchema(
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {
+    if (oldVersion < 2) {
+      await db.execute(
+        'ALTER TABLE $tableSets ADD COLUMN material_id TEXT',
+      );
+      await db.execute(
+        'ALTER TABLE $tableSets ADD COLUMN silk_type_id TEXT',
+      );
+    }
   }
 
   Future<void> close() => _db.close();

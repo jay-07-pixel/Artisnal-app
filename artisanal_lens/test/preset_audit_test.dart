@@ -74,15 +74,15 @@ void main() {
     expect(catalog.presetById('saree_hanger'), isNull);
   });
 
-  group('Saree Weave uses Close-up of Texture and Weave', () {
+  group('Saree Weave uses Texture & Weave', () {
     final weave = ShotGuidance.forSlot(
-      ShotType.detail,
+      ShotType.sareePhotography,
       1,
       categoryId: BundledCatalogDataSource.saree,
     );
 
-    test('uses the Texture and Weave technique', () {
-      expect(weave.templateName, 'Close-up of Texture and Weave');
+    test('uses the Texture & Weave technique', () {
+      expect(weave.templateName, 'Texture & Weave');
       expect(weave.content, 'Texture, Thickness, Material, Transparency');
       expect(weave.needs, 'Preferably natural light');
     });
@@ -93,15 +93,15 @@ void main() {
     });
   });
 
-  group('Saree Border uses Embroidery and Border Details', () {
+  group('Saree Border uses Embroidery & Border Details', () {
     final border = ShotGuidance.forSlot(
-      ShotType.detail,
-      0,
+      ShotType.sareePhotography,
+      3,
       categoryId: BundledCatalogDataSource.saree,
     );
 
-    test('uses the Embroidery and Border technique', () {
-      expect(border.templateName, 'Embroidery and Border Details');
+    test('uses the Embroidery & Border technique', () {
+      expect(border.templateName, 'Embroidery & Border Details');
       expect(border.content, 'Embroidery, Quality');
       expect(border.needs, 'Side lighting; contrast background');
     });
@@ -114,12 +114,12 @@ void main() {
 
   test('Weave and Border do not use the same generic Detail technique', () {
     final border = ShotGuidance.forSlot(
-      ShotType.detail,
-      0,
+      ShotType.sareePhotography,
+      3,
       categoryId: BundledCatalogDataSource.saree,
     );
     final weave = ShotGuidance.forSlot(
-      ShotType.detail,
+      ShotType.sareePhotography,
       1,
       categoryId: BundledCatalogDataSource.saree,
     );
@@ -194,9 +194,9 @@ void main() {
       expect(template.grid, GridOverlayType.ruleOfThirds);
     });
 
-    test('Close-up of Texture and Weave uses Centre Focus', () {
+    test('Texture & Weave uses Centre Focus', () {
       const template = SareePhotographyTemplates.textureAndWeave;
-      expect(template.name, 'Close-up of Texture and Weave');
+      expect(template.name, 'Texture & Weave');
       expect(template.grid, GridOverlayType.centerFocus);
     });
 
@@ -207,9 +207,9 @@ void main() {
       );
     });
 
-    test('Embroidery and Border Details uses Detail Frame', () {
+    test('Embroidery & Border Details uses Detail Frame', () {
       const template = SareePhotographyTemplates.embroideryAndBorder;
-      expect(template.name, 'Embroidery and Border Details');
+      expect(template.name, 'Embroidery & Border Details');
       expect(template.grid, GridOverlayType.detailFrame);
     });
 
