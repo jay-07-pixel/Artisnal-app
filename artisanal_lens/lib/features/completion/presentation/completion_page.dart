@@ -6,6 +6,7 @@ import '../../../app/router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 
@@ -26,7 +27,10 @@ class CompletionPage extends ConsumerWidget {
       return Scaffold(
         backgroundColor: AppColors.background,
         body: Center(
-          child: Text('Product not found.', style: AppTypography.bodyMedium),
+          child: Text(
+            AppLocalizations.of(context).productNotFound,
+            style: AppTypography.bodyMedium,
+          ),
         ),
       );
     }
@@ -50,7 +54,7 @@ class CompletionPage extends ConsumerWidget {
                 ),
                 children: [
                   Text(
-                    'Your photo set is complete 🎉',
+                    AppLocalizations.of(context).photoSetComplete,
                     textAlign: TextAlign.center,
                     style: AppTypography.displayLarge.copyWith(
                       color: AppColors.primary,
@@ -91,7 +95,7 @@ class CompletionPage extends ConsumerWidget {
                       AppRoute.productViewer,
                       pathParameters: {'setId': setId},
                     ),
-                    child: const Text('View Photo Set'),
+                    child: Text(AppLocalizations.of(context).viewPhotoSet),
                   ),
                   const SizedBox(height: AppDimens.space12),
                   OutlinedButton(
@@ -105,7 +109,7 @@ class CompletionPage extends ConsumerWidget {
                         }
                       });
                     },
-                    child: const Text('Start New Product'),
+                    child: Text(AppLocalizations.of(context).startNewProduct),
                   ),
                 ],
               ),
@@ -137,7 +141,7 @@ class _OfflineBanner extends StatelessWidget {
           ),
           const SizedBox(width: AppDimens.space8),
           Text(
-            'Offline — photos will sync when connected',
+            AppLocalizations.of(context).offlineBanner,
             style: AppTypography.labelSmall,
           ),
         ],

@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/live_camera_harness.dart';
+import 'support/test_l10n.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -47,7 +48,7 @@ Widget _listHarness(ShotSet set) {
     overrides: [
       shotSetProvider.overrideWith((ref, id) => set),
     ],
-    child: MaterialApp(home: PhotoListPage(setId: set.id)),
+    child: l10nApp(home: PhotoListPage(setId: set.id)),
   );
 }
 
@@ -71,7 +72,7 @@ Widget _flowHarness({
         ),
       ),
     ],
-    child: MaterialApp(home: child),
+    child: l10nApp(home: child),
   );
 }
 

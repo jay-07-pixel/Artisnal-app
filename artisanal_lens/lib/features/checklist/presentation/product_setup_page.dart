@@ -8,6 +8,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/lighting_advisory.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/choice_image_grid.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
@@ -97,7 +98,7 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
         title: Text(
           existingSet?.productName.isNotEmpty == true
               ? existingSet!.productName
-              : 'New Product',
+              : AppLocalizations.of(context).newProduct,
         ),
       ),
       body: ListView(
@@ -109,7 +110,7 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
         ),
         children: [
           Text(
-            'What are you\nphotographing today?',
+            AppLocalizations.of(context).whatPhotographing,
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space20),
@@ -118,7 +119,10 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
               for (final category in categories)
                 ImageChoice(
                   id: category.id,
-                  name: category.name,
+                  name: AppCopy.categoryName(
+                    AppLocalizations.of(context),
+                    category.id,
+                  ),
                   thumbnailAsset: category.thumbnailAsset,
                 ),
             ],
@@ -131,9 +135,18 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
             const SizedBox(height: AppDimens.space32),
             const Divider(),
             const SizedBox(height: AppDimens.space24),
-            Text(selectedCategory.name, style: AppTypography.displayMedium),
+            Text(
+              AppCopy.categoryName(
+                AppLocalizations.of(context),
+                selectedCategory.id,
+              ),
+              style: AppTypography.displayMedium,
+            ),
             const SizedBox(height: AppDimens.space12),
-            Text('Give your product a name', style: AppTypography.labelSmall),
+            Text(
+              AppLocalizations.of(context).giveProductName,
+              style: AppTypography.labelSmall,
+            ),
             const SizedBox(height: AppDimens.space8),
             TextField(
               controller: _nameController,
@@ -143,7 +156,12 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
-                hintText: 'e.g. Blue Silk ${selectedCategory.name}',
+                hintText: AppLocalizations.of(context).nameHint(
+                  AppCopy.categoryName(
+                    AppLocalizations.of(context),
+                    selectedCategory.id,
+                  ),
+                ),
               ),
               onChanged: (_) => setState(() {}),
             ),
@@ -159,7 +177,7 @@ class _ProductSetupPageState extends ConsumerState<ProductSetupPage> {
               child: FilledButton.icon(
                 onPressed: _canStart && !_isStarting ? _start : null,
                 icon: const Icon(Icons.arrow_forward, size: 20),
-                label: const Text('Continue'),
+                label: Text(AppLocalizations.of(context).continueAction),
               ),
             ),
     );
@@ -208,9 +226,10 @@ class _ProTipBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final advisory = LightingAdvisory.forTime(DateTime.now());
+    final l10n = AppLocalizations.of(context);
     final message = advisory.shouldWait
-        ? '${advisory.headline}: ${advisory.detail}'
-        : 'Pro-tip: Natural light is best now for product shots.';
+        ? '${AppCopy.advisoryHeadline(l10n, advisory.reason)}: ${AppCopy.advisoryDetail(l10n, advisory.reason)}'
+        : l10n.proTipGoodLight;
 
     return Container(
       padding: const EdgeInsets.all(AppDimens.space12),

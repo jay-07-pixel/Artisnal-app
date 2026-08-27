@@ -93,6 +93,11 @@ enum CapturePrompt {
     message: 'Too dark — move near a window or outside',
     isBlocking: true,
   ),
+  lowLight(
+    id: 'low_light',
+    message: 'Light is low — move nearer a window',
+    isBlocking: true,
+  ),
   tooBright(
     id: 'too_bright',
     message: 'Too bright — move into open shade',
@@ -139,14 +144,42 @@ enum CapturePrompt {
 /// Rendered as the "Light: Good" chip in the deck's guided-capture screen.
 enum LightQuality {
   tooDark(label: 'Too dark'),
-  good(label: 'Good'),
-  tooBright(label: 'Too bright');
+  low(label: 'Low'),
+  good(label: 'OK'),
+  tooBright(label: 'Bright');
 
   const LightQuality({required this.label});
 
   final String label;
 
   bool get isAcceptable => this == LightQuality.good;
+}
+
+/// How far the product sits from a well-filled ghost frame.
+enum DistanceQuality {
+  unknown(label: '—'),
+  tooFar(label: 'Move closer'),
+  ok(label: 'OK'),
+  tooClose(label: 'Move back');
+
+  const DistanceQuality({required this.label});
+
+  final String label;
+
+  bool get isAcceptable => this == DistanceQuality.ok;
+}
+
+/// Whether the product sits in the middle of the frame.
+enum CentreQuality {
+  unknown(label: '—'),
+  off(label: 'Move in'),
+  ok(label: 'OK');
+
+  const CentreQuality({required this.label});
+
+  final String label;
+
+  bool get isAcceptable => this == CentreQuality.ok;
 }
 
 /// Whether the device pitch matches the angle the preset asks for.
@@ -172,6 +205,8 @@ class CaptureFeedback extends Equatable {
     required this.meanLuminance,
     required this.pitchDegrees,
     required this.subjectFillRatio,
+    this.distanceQuality = DistanceQuality.unknown,
+    this.centreQuality = CentreQuality.unknown,
     this.productNoun = 'product',
   });
 
@@ -185,10 +220,14 @@ class CaptureFeedback extends Equatable {
         meanLuminance = 0.5,
         pitchDegrees = 0,
         subjectFillRatio = 0,
+        distanceQuality = DistanceQuality.unknown,
+        centreQuality = CentreQuality.unknown,
         productNoun = 'product';
 
   final LightQuality lightQuality;
   final AngleQuality angleQuality;
+  final DistanceQuality distanceQuality;
+  final CentreQuality centreQuality;
 
   /// The single most important thing to tell the artisan right now.
   ///
@@ -223,6 +262,8 @@ class CaptureFeedback extends Equatable {
         meanLuminance,
         pitchDegrees,
         subjectFillRatio,
+        distanceQuality,
+        centreQuality,
         productNoun,
       ];
 }

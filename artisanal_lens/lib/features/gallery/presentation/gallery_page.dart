@@ -8,6 +8,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_set.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 
@@ -29,6 +30,7 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
   Widget build(BuildContext context) {
     final categories = ref.watch(catalogRepositoryProvider).categories();
     final setsAsync = ref.watch(shotSetsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       children: [
@@ -42,7 +44,7 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
               border: Border(bottom: BorderSide(color: AppColors.divider)),
             ),
             child: Text(
-              'Gallery',
+              l10n.gallery,
               style: AppTypography.displayMedium.copyWith(
                 color: AppColors.primary,
               ),
@@ -59,13 +61,13 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
             ),
             children: [
               _FilterChip(
-                label: 'All',
+                label: l10n.filterAll,
                 isSelected: _categoryFilter == null,
                 onTap: () => setState(() => _categoryFilter = null),
               ),
               for (final category in categories)
                 _FilterChip(
-                  label: _plural(category.name),
+                  label: AppCopy.categoryPlural(l10n, category.id),
                   isSelected: _categoryFilter == category.id,
                   onTap: () =>
                       setState(() => _categoryFilter = category.id),
@@ -103,9 +105,8 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
                         const SizedBox(height: AppDimens.space16),
                         Text(
                           isFiltered
-                              ? 'Nothing in this category yet.'
-                              : 'No photo sets yet.\n'
-                                  'Start a new product to begin.',
+                              ? l10n.galleryEmptyFiltered
+                              : l10n.galleryEmpty,
                           textAlign: TextAlign.center,
                           style: AppTypography.bodyMedium,
                         ),
@@ -115,7 +116,7 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
                             onPressed: () =>
                                 setState(() => _categoryFilter = null),
                             icon: const Icon(Icons.clear, size: 18),
-                            label: const Text('Show all'),
+                            label: Text(l10n.showAll),
                           )
                         else
                           FilledButton.icon(
@@ -125,7 +126,7 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
                               Icons.add_a_photo_outlined,
                               size: 18,
                             ),
-                            label: const Text('New Product'),
+                            label: Text(l10n.newProduct),
                           ),
                       ],
                     ),
@@ -152,10 +153,6 @@ class _GalleryPageState extends ConsumerState<GalleryPage> {
       ],
     );
   }
-
-  /// The filter chips are pluralised in the design ("Sarees", "Shawls").
-  static String _plural(String name) =>
-      name.endsWith('s') ? name : '${name}s';
 }
 
 class _FilterChip extends StatelessWidget {

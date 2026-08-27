@@ -6,6 +6,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/photography_guideline.dart';
+import '../../../l10n/app_copy.dart';
 
 /// Settings.
 ///
@@ -19,6 +20,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(localeProvider);
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
         SafeArea(
@@ -31,7 +33,7 @@ class SettingsPage extends ConsumerWidget {
               border: Border(bottom: BorderSide(color: AppColors.divider)),
             ),
             child: Text(
-              'Settings',
+              l10n.settings,
               style: AppTypography.displayMedium.copyWith(
                 color: AppColors.primary,
               ),
@@ -47,7 +49,7 @@ class SettingsPage extends ConsumerWidget {
               AppDimens.space32,
             ),
             children: [
-              Text('Language', style: AppTypography.displayMedium),
+              Text(l10n.language, style: AppTypography.displayMedium),
               const SizedBox(height: AppDimens.space12),
               RadioGroup<AppLanguage>(
                 groupValue: selected,
@@ -76,10 +78,10 @@ class SettingsPage extends ConsumerWidget {
               const SizedBox(height: AppDimens.space24),
               const Divider(),
               const SizedBox(height: AppDimens.space24),
-              Text('Photography guide', style: AppTypography.displayMedium),
+              Text(l10n.photographyGuide, style: AppTypography.displayMedium),
               const SizedBox(height: AppDimens.space4),
               Text(
-                'The rules behind every prompt this app gives you.',
+                l10n.photographyGuideSubtitle,
                 style: AppTypography.labelSmall,
               ),
               const SizedBox(height: AppDimens.space16),
@@ -135,14 +137,14 @@ class _GuidelineTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  guideline.title,
+                  AppCopy.guidelineTitle(AppLocalizations.of(context), guideline),
                   style: AppTypography.labelLargeBold.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  guideline.description,
+                  AppCopy.guidelineBody(AppLocalizations.of(context), guideline),
                   style: AppTypography.labelSmall,
                 ),
               ],

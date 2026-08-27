@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/live_camera_harness.dart';
+import 'support/test_l10n.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -290,11 +291,52 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Place the saree in view'), findsOneWidget);
+    expect(find.text('Light'), findsOneWidget);
+    expect(find.text('Distance'), findsOneWidget);
+    expect(find.text('Centre'), findsOneWidget);
+    expect(find.text('OK'), findsOneWidget);
+    expect(find.text('—'), findsNWidgets(2));
     // With nothing in view the preset's own placement line rides along.
     expect(
       find.text('A well-lit section of the saree, preferably in natural light'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('light, distance and centre stay on screen with the action pill',
+      (tester) async {
+    await tester.pumpWidget(
+      cameraHarness(
+        session: const CaptureSession(
+          setId: 'set_1',
+          shotType: ShotType.sareePhotography,
+          slotIndex: 1,
+          presetId: 'saree_pallu_drape',
+        ),
+        categoryId: BundledCatalogDataSource.saree,
+        feedback: const CaptureFeedback(
+          lightQuality: LightQuality.low,
+          angleQuality: AngleQuality.ok,
+          prompt: CapturePrompt.lowLight,
+          meanLuminance: 0.32,
+          pitchDegrees: 0,
+          subjectFillRatio: 0.6,
+          distanceQuality: DistanceQuality.ok,
+          centreQuality: CentreQuality.off,
+          productNoun: 'saree',
+        ),
+        child: const CapturePage(setId: 'set_1'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Light'), findsOneWidget);
+    expect(find.text('Low'), findsOneWidget);
+    expect(find.text('Distance'), findsOneWidget);
+    expect(find.text('OK'), findsOneWidget);
+    expect(find.text('Centre'), findsOneWidget);
+    expect(find.text('Move in'), findsOneWidget);
+    expect(find.text('Light is low — move nearer a window'), findsOneWidget);
   });
 }
 
@@ -310,6 +352,6 @@ Widget _harness({
         return _set(id: id, categoryId: categoryId);
       }),
     ],
-    child: MaterialApp(home: child),
+    child: l10nApp(home: child),
   );
 }

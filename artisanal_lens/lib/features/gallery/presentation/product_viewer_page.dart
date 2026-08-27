@@ -10,6 +10,7 @@ import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_set.dart';
 import '../../../domain/entities/shot_type.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 import '../../instruction/instruction_flow.dart';
@@ -31,10 +32,12 @@ class ProductViewerPage extends ConsumerWidget {
     if (set == null) {
       return Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(title: const Text('Product')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context).product)),
         body: Center(
-          child: Text('This product is no longer available.',
-              style: AppTypography.bodyMedium),
+          child: Text(
+            AppLocalizations.of(context).productUnavailable,
+            style: AppTypography.bodyMedium,
+          ),
         ),
       );
     }
@@ -78,7 +81,7 @@ class ProductViewerPage extends ConsumerWidget {
             ? FilledButton.icon(
                 onPressed: () => _exportSet(context, ref, set),
                 icon: const Icon(Icons.ios_share, size: 18),
-                label: const Text('Export Photo Set'),
+                label: Text(AppLocalizations.of(context).exportPhotoSet),
               )
             : FilledButton.icon(
                 onPressed: () => context.pushNamed(
@@ -87,7 +90,10 @@ class ProductViewerPage extends ConsumerWidget {
                 ),
                 icon: const Icon(Icons.photo_camera_outlined, size: 18),
                 label: Text(
-                  'Continue — ${set.completedCount}/${set.requiredCount}',
+                  AppLocalizations.of(context).continueCount(
+                    set.completedCount,
+                    set.requiredCount,
+                  ),
                 ),
               ),
       ),
@@ -103,6 +109,7 @@ class ProductViewerPage extends ConsumerWidget {
     ShotSet set,
   ) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context);
     final storage = ref.read(photoStorageProvider);
 
     // Read the bytes rather than passing paths: a photo can go missing if the
@@ -122,7 +129,7 @@ class ProductViewerPage extends ConsumerWidget {
 
     if (files.isEmpty) {
       messenger.showSnackBar(
-        const SnackBar(content: Text('No photos to export yet.')),
+        SnackBar(content: Text(l10n.noPhotosToExport)),
       );
       return;
     }
@@ -131,13 +138,17 @@ class ProductViewerPage extends ConsumerWidget {
       await SharePlus.instance.share(
         ShareParams(
           files: files,
-          text: '${set.productName} — ${files.length} photos, '
-              'shot with The Artisanal Lens',
+          text: l10n.exportShareText(
+            set.productName,
+            files.length,
+          ),
         ),
       );
     } catch (error) {
       messenger.showSnackBar(
-        SnackBar(content: Text('Could not export: $error')),
+        SnackBar(
+          content: Text(l10n.couldNotExport('$error')),
+        ),
       );
     }
   }
@@ -165,7 +176,10 @@ class _TypeSection extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(shotType.label, style: AppTypography.displayMedium),
+            Text(
+              AppCopy.shotTypeLabel(AppLocalizations.of(context), shotType),
+              style: AppTypography.displayMedium,
+            ),
             Text(
               '$done/${shotType.requiredCount}',
               style: AppTypography.labelSmall,
@@ -208,7 +222,9 @@ class _SlotTile extends StatelessWidget {
     if (!slot.isFilled) {
       return GestureDetector(
         onTap: onTapEmpty,
-        child: DottedPlaceholder(label: slot.label),
+        child: DottedPlaceholder(
+          label: AppCopy.shotSlotLabel(AppLocalizations.of(context), slot),
+        ),
       );
     }
 
@@ -223,7 +239,7 @@ class _SlotTile extends StatelessWidget {
           left: AppDimens.space8,
           bottom: AppDimens.space8,
           child: AppPill(
-            label: slot.label,
+            label: AppCopy.shotSlotLabel(AppLocalizations.of(context), slot),
             background: AppColors.white.withValues(alpha: 0.92),
             foreground: AppColors.textPrimary,
           ),

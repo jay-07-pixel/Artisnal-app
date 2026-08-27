@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'support/test_l10n.dart';
+
 class _SeededShotSets extends ShotSetsController {
   _SeededShotSets(this._sets);
 
@@ -52,7 +54,7 @@ Widget _harness(List<ShotSet> sets) {
     overrides: [
       shotSetsProvider.overrideWith(() => _SeededShotSets(sets)),
     ],
-    child: const MaterialApp(home: Scaffold(body: HomePage())),
+    child: l10nApp(home: const Scaffold(body: HomePage())),
   );
 }
 

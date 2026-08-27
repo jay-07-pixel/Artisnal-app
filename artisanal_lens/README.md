@@ -198,7 +198,7 @@ replace one.
   embroidery quality and correct folding need a model that is not on the
   device. Each preset lists these in `undetectableConditions` rather than
   guessing at them.
-- **Localisation** — the language choice is real: it persists across launches
-  (`LocaleController`) and drives `MaterialApp.locale`. App copy is still
-  English. Translation is left for a native Assamese speaker rather than
-  machine-filled.
+- **Localisation polish** — Settings switches the UI between Assamese, Hindi
+  and English (`lib/l10n/`, `LocaleController`). Catalog transcript lines and
+  a few long setup sentences are still English; a native speaker should
+  review the translations.

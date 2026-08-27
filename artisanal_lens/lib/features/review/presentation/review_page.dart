@@ -7,6 +7,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_set.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/camera_controller.dart';
 import '../../capture/capture_session_controller.dart';
@@ -41,9 +42,12 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       // Nothing to review — most likely a back-navigation into a stale route.
       return Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(title: Text(set?.productName ?? 'Review')),
+        appBar: AppBar(title: Text(set?.productName ?? AppLocalizations.of(context).review)),
         body: Center(
-          child: Text('No photo to review.', style: AppTypography.bodyMedium),
+          child: Text(
+            AppLocalizations.of(context).noPhotoToReview,
+            style: AppTypography.bodyMedium,
+          ),
         ),
       );
     }
@@ -55,7 +59,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: _retake,
         ),
-        title: Text(set?.productName ?? 'Review'),
+        title: Text(set?.productName ?? AppLocalizations.of(context).review),
       ),
       body: Column(
         children: [
@@ -72,7 +76,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                   top: AppDimens.space16,
                   right: AppDimens.space16,
                   child: AppPill(
-                    label: _qualityLabel,
+                    label: _qualityLabel(AppLocalizations.of(context)),
                     icon: Icons.check_circle,
                     background: AppColors.white,
                     foreground: AppColors.primary,
@@ -108,12 +112,15 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'REFERENCE PRESET',
+                                AppLocalizations.of(context).referencePreset,
                                 style: AppTypography.overline,
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                preset.name,
+                                AppCopy.presetName(
+                                  AppLocalizations.of(context),
+                                  preset.id,
+                                ),
                                 style: AppTypography.displaySmall
                                     .copyWith(fontSize: 20),
                               ),
@@ -139,7 +146,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                       child: OutlinedButton.icon(
                         onPressed: _isSaving ? null : _retake,
                         icon: const Icon(Icons.refresh, size: 18),
-                        label: const Text('Retake'),
+                        label: Text(AppLocalizations.of(context).retake),
                       ),
                     ),
                     const SizedBox(width: AppDimens.space12),
@@ -156,7 +163,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                                 ),
                               )
                             : const Icon(Icons.check, size: 18),
-                        label: const Text('Use Photo'),
+                        label: Text(AppLocalizations.of(context).usePhoto),
                       ),
                     ),
                   ],
@@ -170,9 +177,9 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   }
 
   /// Feedback carried over from the moment of capture.
-  String get _qualityLabel {
+  String _qualityLabel(AppLocalizations l10n) {
     final feedback = ref.read(guidedCameraProvider).feedback;
-    return feedback.isReadyToShoot ? 'Great framing' : 'Check framing';
+    return feedback.isReadyToShoot ? l10n.greatFraming : l10n.checkFraming;
   }
 
   Future<void> _retake() async {
@@ -221,7 +228,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       if (!mounted) return;
       setState(() => _isSaving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not save the photo: $error')),
+        SnackBar(content: Text(AppLocalizations.of(context).couldNotSavePhoto('$error'))),
       );
     }
   }

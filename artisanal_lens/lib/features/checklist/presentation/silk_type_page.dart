@@ -6,6 +6,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fabric_material.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/choice_image_grid.dart';
 import '../../../shared/widgets/common.dart';
 
@@ -27,13 +28,14 @@ class _SilkTypePageState extends State<SilkTypePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final namedTypes = _material.asksSilkType;
     final choices = namedTypes
         ? [
             for (final variety in SilkVariety.all)
               ImageChoice(
                 id: variety.id,
-                name: variety.name,
+                name: AppCopy.silkVarietyName(l10n, variety.id),
                 thumbnailAsset: variety.thumbnailAsset,
               ),
           ]
@@ -53,7 +55,7 @@ class _SilkTypePageState extends State<SilkTypePage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('New Product'),
+        title: Text(l10n.newProduct),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -64,7 +66,9 @@ class _SilkTypePageState extends State<SilkTypePage> {
         ),
         children: [
           Text(
-            'What type of ${_material.name.toLowerCase()}\nare you using?',
+            l10n.materialTypeHeadline(
+              AppCopy.materialNameForHeadline(l10n, _material.id),
+            ),
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space20),
@@ -79,7 +83,7 @@ class _SilkTypePageState extends State<SilkTypePage> {
         child: FilledButton.icon(
           onPressed: namedTypes && _selectedId == null ? null : _continue,
           icon: const Icon(Icons.arrow_forward, size: 20),
-          label: const Text('Continue'),
+          label: Text(l10n.continueAction),
         ),
       ),
     );

@@ -42,6 +42,7 @@ abstract final class AppTheme {
         iconTheme: IconThemeData(color: AppColors.primary),
         titleTextStyle: TextStyle(
           fontFamily: AppTypography.serif,
+          fontFamilyFallback: AppTypography.scriptFallback,
           fontWeight: FontWeight.w600,
           fontSize: 24,
           height: 32 / 24,

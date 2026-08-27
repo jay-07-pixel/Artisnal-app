@@ -11,13 +11,14 @@ import 'frame_analyzer.dart';
 /// from field testing without hunting through conditionals.
 class CaptureThresholds {
   const CaptureThresholds({
-    this.tooDarkBelow = 0.18,
-    this.tooBrightAbove = 0.86,
-    this.clippedHighlightsAbove = 0.18,
+    this.tooDarkBelow = 0.24,
+    this.lowLightBelow = 0.40,
+    this.tooBrightAbove = 0.82,
+    this.clippedHighlightsAbove = 0.14,
     this.backlightRatioAbove = 1.6,
-    this.minSubjectFill = 0.35,
-    this.overflowRatioAbove = 0.8,
-    this.maxCentringOffset = 0.12,
+    this.minSubjectFill = 0.32,
+    this.overflowRatioAbove = 0.80,
+    this.maxCentringOffset = 0.10,
     this.minCentreDetail = 0.012,
     this.minSubjectCoverage = 0.012,
     this.minSubjectInsideRatio = 0.45,
@@ -29,6 +30,10 @@ class CaptureThresholds {
 
   /// Mean luminance below which the frame counts as too dark.
   final double tooDarkBelow;
+
+  /// Mean luminance below which the frame is usable but dim — artisans
+  /// should still be told to move toward a window.
+  final double lowLightBelow;
 
   /// Mean luminance above which the frame counts as blown out.
   final double tooBrightAbove;
@@ -133,6 +138,8 @@ class CaptureGuidanceService {
       meanLuminance: metrics.meanLuminance,
       pitchDegrees: pitchDegrees,
       subjectFillRatio: metrics.subjectFillRatio,
+      distanceQuality: _distanceQuality(metrics, checks, active),
+      centreQuality: _centreQuality(metrics, checks, active),
       productNoun: checks.productNoun,
     );
   }
@@ -141,6 +148,7 @@ class CaptureGuidanceService {
   CaptureThresholds _thresholdsFor(CameraGuidanceProfile checks) {
     return CaptureThresholds(
       tooDarkBelow: thresholds.tooDarkBelow,
+      lowLightBelow: thresholds.lowLightBelow,
       tooBrightAbove: thresholds.tooBrightAbove,
       clippedHighlightsAbove: thresholds.clippedHighlightsAbove,
       backlightRatioAbove: thresholds.backlightRatioAbove,
@@ -165,7 +173,51 @@ class CaptureGuidanceService {
         metrics.clippedHighlights > active.clippedHighlightsAbove) {
       return LightQuality.tooBright;
     }
+    if (metrics.meanLuminance < active.lowLightBelow) {
+      return LightQuality.low;
+    }
     return LightQuality.good;
+  }
+
+  DistanceQuality _distanceQuality(
+    FrameMetrics metrics,
+    CameraGuidanceProfile checks,
+    CaptureThresholds thresholds,
+  ) {
+    if (metrics.subjectCoverage < thresholds.minSubjectCoverage) {
+      return DistanceQuality.unknown;
+    }
+    if (_isOverflowing(metrics, checks, thresholds)) {
+      return DistanceQuality.tooClose;
+    }
+    if (checks.detectsSubjectFill && _isUnderFilled(metrics, checks)) {
+      return DistanceQuality.tooFar;
+    }
+    return DistanceQuality.ok;
+  }
+
+  CentreQuality _centreQuality(
+    FrameMetrics metrics,
+    CameraGuidanceProfile checks,
+    CaptureThresholds thresholds,
+  ) {
+    if (metrics.subjectCoverage < thresholds.minSubjectCoverage) {
+      return CentreQuality.unknown;
+    }
+    if (_centringOffset(metrics, checks) > thresholds.maxCentringOffset) {
+      return CentreQuality.off;
+    }
+    return CentreQuality.ok;
+  }
+
+  /// Full-product shots follow the cloth's box. Close-ups follow the weave
+  /// in the middle of the ghost, which is the thing those grids ask for.
+  double _centringOffset(FrameMetrics metrics, CameraGuidanceProfile checks) {
+    if (checks.composition == CompositionRule.centerFocus ||
+        checks.composition == CompositionRule.detailFrame) {
+      return metrics.centringOffset;
+    }
+    return metrics.boxCentringOffset;
   }
 
   AngleQuality _angleQuality(CameraAngle angle, double pitchDegrees) {
@@ -202,20 +254,22 @@ class CaptureGuidanceService {
         metrics.targetCoverage < checks.minTargetCoverage) {
       return CapturePrompt.moveIntoFrame;
     }
-    if (metrics.subjectEdgeContact > thresholds.maxEdgeContact) {
+    // Floor tiles reaching the picture edge are not the product running
+    // off it. Only clip when the measured box itself leaves the ghost.
+    if (metrics.subjectEdgeContact > thresholds.maxEdgeContact &&
+        !metrics.boxFitsInsideGhost) {
       return _wordClipping(checks);
     }
 
     // 3. Size. Overflow first: a subject spilling past the guide makes the
     //    margin as textured as the middle, which drags the fill measure down
-    //    to the same low value an empty guide produces.
-    if (checks.detectsOverflow &&
-        metrics.overflowRatio > thresholds.overflowRatioAbove) {
+    //    to the same low value an empty guide produces. A small distant
+    //    product can look the same on the ratio alone, so overflow only
+    //    speaks when the guide itself is actually filled.
+    if (_isOverflowing(metrics, checks, thresholds)) {
       return _wordOverflow(checks);
     }
-    if (checks.detectsSubjectFill &&
-        (metrics.targetCoverage < checks.minTargetCoverage ||
-            metrics.subjectFillRatio < thresholds.minSubjectFill)) {
+    if (checks.detectsSubjectFill && _isUnderFilled(metrics, checks)) {
       return CapturePrompt.moveCloser;
     }
 
@@ -242,6 +296,9 @@ class CaptureGuidanceService {
         metrics.backlightRatio > thresholds.backlightRatioAbove) {
       return CapturePrompt.backlightDetected;
     }
+    if (checks.detectsLight && lightQuality == LightQuality.low) {
+      return CapturePrompt.lowLight;
+    }
 
     // 6. Blur, judged only where there is structure to lose.
     if (metrics.canJudgeFocus &&
@@ -255,11 +312,34 @@ class CaptureGuidanceService {
       return CapturePrompt.tiltPhone;
     }
     if (checks.detectsCentring &&
-        metrics.centringOffset > thresholds.maxCentringOffset) {
+        _centringOffset(metrics, checks) > thresholds.maxCentringOffset) {
       return _wordCentring(checks);
     }
 
     return CapturePrompt.ready;
+  }
+
+  /// True when the cloth has filled the guide and is spilling past it.
+  ///
+  /// The ratio alone is not enough: an empty ghost frame with a tiny product
+  /// in the middle also has more texture in the margin than in the guide,
+  /// and that must stay "move closer", never "move further".
+  bool _isOverflowing(
+    FrameMetrics metrics,
+    CameraGuidanceProfile checks,
+    CaptureThresholds thresholds,
+  ) {
+    if (!checks.detectsOverflow) return false;
+    return metrics.boxOverflowsGhost;
+  }
+
+  /// True when both occupancy and the product's box say the ghost is empty.
+  ///
+  /// Texture contrast alone is not enough: a tiled floor is as busy as a
+  /// cushion cover, which used to look like "move closer" on a well-filled
+  /// dashed box.
+  bool _isUnderFilled(FrameMetrics metrics, CameraGuidanceProfile checks) {
+    return metrics.boxFillOfGhost < checks.minTargetCoverage;
   }
 
   /// The product is running out of the picture entirely.

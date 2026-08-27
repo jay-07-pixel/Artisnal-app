@@ -92,10 +92,19 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
   final LiveGuidanceStabiliser _stabiliser = LiveGuidanceStabiliser();
   bool _isAnalysing = false;
   DateTime _lastAnalysis = DateTime.fromMillisecondsSinceEpoch(0);
+  DateTime? _openedAt;
+  int _unexposedSkips = 0;
 
   /// Frames are analysed at most this often — enough to feel live without
   /// pinning the CPU on the low-end handsets this app targets.
-  static const Duration _analysisInterval = Duration(milliseconds: 250);
+  static const Duration _analysisInterval = Duration(milliseconds: 200);
+
+  /// Auto-exposure is still hunting. Showing those black frames as "too dark"
+  /// or "move in" is what made opening the camera look broken.
+  static const Duration _warmup = Duration(milliseconds: 700);
+
+  /// Extra black frames to ignore after warmup, while the sensor catches up.
+  static const int _maxUnexposedSkips = 6;
 
   @override
   GuidedCameraState build() {
@@ -178,6 +187,16 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
     if (isGuidanceSupported) {
       await controller.startImageStream(_onFrame);
     }
+    _markOpened();
+  }
+
+  /// Fresh lens: wait for auto-exposure before trusting a verdict.
+  void _markOpened() {
+    _openedAt = DateTime.now();
+    _unexposedSkips = 0;
+    _lastAnalysis = DateTime.fromMillisecondsSinceEpoch(0);
+    _stabiliser.reset();
+    state = state.copyWith(feedback: _stabiliser.current);
   }
 
   /// Whether this platform can deliver preview frames for analysis.
@@ -252,6 +271,9 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
   void _onFrame(CameraImage image) {
     // Throttle, and never queue a second analysis behind the first.
     final now = DateTime.now();
+    if (_openedAt != null && now.difference(_openedAt!) < _warmup) {
+      return;
+    }
     if (_isAnalysing || now.difference(_lastAnalysis) < _analysisInterval) {
       return;
     }
@@ -275,6 +297,14 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
             insetX: guidance.technique.grid.ghostInsetX,
             insetY: guidance.technique.grid.ghostInsetY,
           );
+
+      // The first frames after the shutter opens are often black. Feeding
+      // them to the evaluator locked the chips on Too dark / Move in.
+      if (_unexposedSkips < _maxUnexposedSkips &&
+          _metrics.isUnexposedPreview) {
+        _unexposedSkips++;
+        return;
+      }
 
       final measured = ref.read(captureGuidanceServiceProvider).evaluate(
             metrics: _metrics,

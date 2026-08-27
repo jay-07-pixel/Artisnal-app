@@ -7,10 +7,13 @@ import 'package:artisanal_lens/features/capture/capture_session_controller.dart'
 import 'package:artisanal_lens/features/home/shot_sets_controller.dart';
 import 'package:artisanal_lens/features/instruction/presentation/lighting_setup_page.dart';
 import 'package:artisanal_lens/features/shot_type/presentation/shot_and_style_page.dart';
+import 'package:artisanal_lens/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+
+import 'support/test_l10n.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -46,7 +49,7 @@ Widget _harness({
         return _set(id: id, categoryId: categoryId, productName: productName);
       }),
     ],
-    child: MaterialApp(home: child),
+    child: l10nApp(home: child),
   );
 }
 
@@ -325,7 +328,12 @@ void main() {
             );
           }),
         ],
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
       ),
     );
     await tester.pumpAndSettle();

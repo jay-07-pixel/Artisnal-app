@@ -10,6 +10,7 @@ import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/capture_feedback.dart';
 import '../../../domain/entities/preset_capture_guidance.dart';
 import '../../../domain/entities/shot_type.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 import '../camera_controller.dart';
@@ -55,12 +56,27 @@ class _CapturePageState extends ConsumerState<CapturePage> {
     final set = ref.watch(shotSetProvider(widget.setId));
 
     final technique = captureGuidance.technique;
+    final l10n = AppLocalizations.of(context);
     final slotLabel = session.shotType == null
         ? ''
         : (session.slotIndex != null &&
                 session.slotIndex! < session.shotType!.slotLabels.length
-            ? session.shotType!.slotLabels[session.slotIndex!]
-            : session.shotType!.label);
+            ? AppCopy.slotLabel(
+                l10n,
+                session.shotType!,
+                session.slotIndex!,
+              )
+            : AppCopy.shotTypeLabel(l10n, session.shotType!));
+    final overlayCaption = camera.feedback.hasVisiblePrompt
+        ? ''
+        : (AppCopy.overlayCaptionForTemplate(l10n, guidance.templateName) ??
+            (slotLabel.isEmpty
+                ? ''
+                : l10n.fillFrameWith(
+                    l10n.localeName == 'en'
+                        ? slotLabel.toLowerCase()
+                        : slotLabel,
+                  )));
 
     return Scaffold(
       backgroundColor: AppColors.textPrimary,
@@ -71,19 +87,27 @@ class _CapturePageState extends ConsumerState<CapturePage> {
           if (camera.isReady)
             GuideOverlay(
               grid: technique.grid,
-              caption: guidance.overlayCaption ??
-                  'Fill the frame with the ${slotLabel.toLowerCase()}',
+              // Live analysis already names the one thing to change. The
+              // catalog caption is a static setup line and fights it.
+              caption: overlayCaption,
             ),
           _TopBar(
             productName: set?.productName ?? '',
-            shotTypeLabel: session.shotType?.label.toUpperCase() ?? '',
+            shotTypeLabel: session.shotType == null
+                ? ''
+                : AppCopy.shotTypeLabel(l10n, session.shotType!).toUpperCase(),
             progress: '${(set?.completedCount ?? 0) + 1}'
                 '/${set?.requiredCount ?? ShotType.totalRequired}',
+          ),
+          _StatusChips(
+            feedback: camera.feedback,
+            analysisAvailable: GuidedCameraController.isGuidanceSupported,
           ),
           _LiveGuidancePill(
             feedback: camera.feedback,
             guidance: captureGuidance,
             analysisAvailable: GuidedCameraController.isGuidanceSupported,
+            categoryId: set?.categoryId,
           ),
           _ShutterBar(
             camera: camera,
@@ -227,6 +251,121 @@ class _TopBar extends StatelessWidget {
   }
 }
 
+/// Always-on Light / Distance / Centre readouts.
+///
+/// The pill below still names the one action to take. These chips stay
+/// visible so a dim room is not hidden behind "Center the saree".
+class _StatusChips extends StatelessWidget {
+  const _StatusChips({
+    required this.feedback,
+    required this.analysisAvailable,
+  });
+
+  final CaptureFeedback feedback;
+  final bool analysisAvailable;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!analysisAvailable) return const SizedBox.shrink();
+
+    final l10n = AppLocalizations.of(context);
+    final top = MediaQuery.paddingOf(context).top + AppDimens.appBarHeight + 8;
+    final measured = feedback.hasVisiblePrompt;
+
+    return Positioned(
+      top: top,
+      left: AppDimens.pagePadding,
+      right: AppDimens.pagePadding,
+      child: Row(
+        children: [
+          _StatusChip(
+            label: l10n.chipLight,
+            value: measured
+                ? AppCopy.lightChip(l10n, feedback.lightQuality)
+                : l10n.chipEmDash,
+            ok: measured && feedback.lightQuality.isAcceptable,
+          ),
+          const SizedBox(width: AppDimens.space8),
+          _StatusChip(
+            label: l10n.chipDistance,
+            value: measured
+                ? AppCopy.distanceChip(l10n, feedback.distanceQuality)
+                : l10n.chipEmDash,
+            ok: measured && feedback.distanceQuality.isAcceptable,
+          ),
+          const SizedBox(width: AppDimens.space8),
+          _StatusChip(
+            label: l10n.chipCentre,
+            value: measured
+                ? AppCopy.centreChip(l10n, feedback.centreQuality)
+                : l10n.chipEmDash,
+            ok: measured && feedback.centreQuality.isAcceptable,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({
+    required this.label,
+    required this.value,
+    required this.ok,
+  });
+
+  final String label;
+  final String value;
+  final bool ok;
+
+  @override
+  Widget build(BuildContext context) {
+    final waiting = value == '—';
+    final color = waiting
+        ? AppColors.white.withValues(alpha: 0.55)
+        : ok
+            ? AppColors.success
+            : AppColors.warning;
+
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColors.cameraScrim,
+          borderRadius: BorderRadius.circular(AppDimens.radiusPill),
+          border: Border.all(color: color.withValues(alpha: 0.85), width: ok || waiting ? 1 : 1.5),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: AppTypography.navLabel.copyWith(
+                color: AppColors.white.withValues(alpha: 0.75),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                value,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: AppTypography.labelSmall.copyWith(
+                  color: waiting ? AppColors.white.withValues(alpha: 0.8) : color,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// The single live suggestion, floated over the preview.
 ///
 /// Small on purpose: the product is what the artisan needs to see, so this
@@ -239,6 +378,7 @@ class _LiveGuidancePill extends StatelessWidget {
     required this.feedback,
     required this.guidance,
     required this.analysisAvailable,
+    this.categoryId,
   });
 
   final CaptureFeedback feedback;
@@ -248,17 +388,20 @@ class _LiveGuidancePill extends StatelessWidget {
   /// measured there, so the pill falls back to the preset's own rule and
   /// never claims the shot is ready.
   final bool analysisAvailable;
+  final String? categoryId;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final ready = analysisAvailable && feedback.isReadyToShoot;
     final measured = analysisAvailable && feedback.hasVisiblePrompt;
+    final noun = AppCopy.productNoun(l10n, categoryId);
 
     final text = measured
-        ? feedback.message
+        ? AppCopy.capturePrompt(l10n, feedback.prompt, noun)
         : analysisAvailable
-            ? 'Reading the frame…'
-            : guidance.technique.composition.hint;
+            ? l10n.readingTheFrame
+            : AppCopy.compositionHint(l10n, guidance.technique.composition);
 
     // Nothing in view is the one moment where the preset's own placement
     // line helps more than a measurement can.
@@ -342,6 +485,7 @@ class _LiveGuidancePill extends StatelessWidget {
     if (!measured) return Icons.hourglass_empty;
     return switch (feedback.prompt) {
       CapturePrompt.tooDark ||
+      CapturePrompt.lowLight ||
       CapturePrompt.tooBright ||
       CapturePrompt.backlightDetected =>
         Icons.wb_sunny_outlined,

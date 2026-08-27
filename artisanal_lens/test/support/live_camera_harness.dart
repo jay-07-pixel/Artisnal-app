@@ -7,6 +7,8 @@ import 'package:artisanal_lens/features/home/shot_sets_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'test_l10n.dart';
+
 /// A session frozen at the state under test.
 class SeededSession extends CaptureSessionController {
   SeededSession(this._seed);
@@ -80,6 +82,6 @@ Widget cameraHarness({
         ),
       ),
     ],
-    child: MaterialApp(home: child),
+    child: l10nApp(home: child),
   );
 }

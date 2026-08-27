@@ -8,6 +8,7 @@ import 'package:artisanal_lens/domain/entities/technique_preset.dart';
 import 'package:artisanal_lens/features/capture/capture_session_controller.dart';
 import 'package:artisanal_lens/features/capture/presentation/capture_page.dart';
 import 'package:artisanal_lens/features/instruction/presentation/lighting_setup_page.dart';
+import 'package:artisanal_lens/shared/widgets/asset_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -218,6 +219,11 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Lighting and setup'), findsOneWidget);
+    expect(find.text('Setup illustration to be added'), findsNothing);
+    expect(
+      tester.widget<CatalogImage>(find.byType(CatalogImage)).assetPath,
+      'assets/images/presets/cushion_flat_lay.png',
+    );
     expect(
       find.text('Place the cover flat on a plain, uncluttered surface.',
           skipOffstage: false),

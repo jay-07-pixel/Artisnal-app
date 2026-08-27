@@ -10,6 +10,7 @@ import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fold_preset.dart';
 import '../../../domain/entities/photography_template.dart';
 import '../../../domain/entities/shot_type.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
@@ -42,6 +43,7 @@ class ShotAndStylePage extends ConsumerWidget {
     final needsStyle = shotType != null && !shotType.skipsStyleStep;
     final canContinue = session.canOpenCamera &&
         (!needsStyle || presets.isEmpty || session.presetId != null);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -50,7 +52,7 @@ class ShotAndStylePage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(set?.productName ?? 'Product'),
+        title: Text(set?.productName ?? l10n.product),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -60,22 +62,23 @@ class ShotAndStylePage extends ConsumerWidget {
           AppDimens.space32,
         ),
         children: [
-          const AppPill(label: 'Choose a style'),
+          AppPill(label: l10n.chooseAStyle),
           const SizedBox(height: AppDimens.space16),
-          Text('How should it look?', style: AppTypography.displayLarge),
+          Text(l10n.howShouldItLook, style: AppTypography.displayLarge),
           const SizedBox(height: AppDimens.space8),
           Text(
             _styleSubtitle(
+              l10n: l10n,
               shotType: shotType,
               slotIndex: session.slotIndex,
-              categoryName: category?.name,
+              categoryId: category?.id,
             ),
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space20),
           if (presets.isEmpty)
             Text(
-              'No style is needed for this photo.',
+              l10n.styleNoNeeded,
               style: AppTypography.bodyMedium,
             )
           else
@@ -100,29 +103,34 @@ class ShotAndStylePage extends ConsumerWidget {
                     pathParameters: {'setId': setId},
                   )
               : null,
-          child: const Text('Continue'),
+          child: Text(l10n.continueAction),
         ),
       ),
     );
   }
 
   static String _styleSubtitle({
+    required AppLocalizations l10n,
     required ShotType? shotType,
     required int? slotIndex,
-    required String? categoryName,
+    required String? categoryId,
   }) {
-    if (shotType == null) return 'Pick a photo from the list first.';
+    if (shotType == null) return l10n.stylePickFirst;
     if (shotType == ShotType.sareePhotography) {
-      final templateName =
-          SareePhotographyTemplates.byIndex(slotIndex ?? -1)?.name;
-      if (templateName != null) {
-        return 'Choose the arrangement for this ${templateName.toLowerCase()} photo.';
+      final template = SareePhotographyTemplates.byIndex(slotIndex ?? -1);
+      if (template != null) {
+        return l10n.styleSubtitleSaree(
+          AppCopy.templateNameLower(l10n, template.id),
+        );
       }
     }
-    if (categoryName == null) {
-      return 'Choose the arrangement for this ${shotType.label.toLowerCase()} photo.';
+    if (categoryId == null) {
+      return l10n.styleSubtitleShot(AppCopy.shotTypeLabelLower(l10n, shotType));
     }
-    return 'Choose the arrangement for this ${categoryName.toLowerCase()} ${shotType.label.toLowerCase()} photo.';
+    return l10n.styleSubtitleCategory(
+      AppCopy.categoryNameLower(l10n, categoryId),
+      AppCopy.shotTypeLabelLower(l10n, shotType),
+    );
   }
 }
 
@@ -140,6 +148,7 @@ class _StyleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Material(
       color: isSelected ? AppColors.surfaceSelected : AppColors.surface,
       borderRadius: BorderRadius.circular(AppDimens.radiusLg),
@@ -168,45 +177,52 @@ class _StyleRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      preset.name,
+                      AppCopy.presetName(l10n, preset.id),
                       style: AppTypography.labelLargeBold.copyWith(
                         color: AppColors.textPrimary,
                       ),
                     ),
                     if (preset.purpose.isNotEmpty) ...[
                       const SizedBox(height: 2),
-                      Text(preset.purpose, style: AppTypography.labelSmall),
+                      Text(
+                        AppCopy.presetPurpose(l10n, preset),
+                        style: AppTypography.labelSmall,
+                      ),
                     ],
                     if (preset.contentLabel.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       _LabeledValue(
-                        label: 'Content',
-                        value: preset.contentLabel,
+                        label: l10n.labelContent,
+                        value: AppCopy.presetContent(l10n, preset),
                       ),
                     ],
                     if (preset.needsLabel != null) ...[
                       const SizedBox(height: AppDimens.space4),
                       _LabeledValue(
-                        label: 'Needs',
-                        value: preset.needsLabel!,
+                        label: l10n.labelNeeds,
+                        value: AppCopy.presetNeeds(l10n, preset) ??
+                            preset.needsLabel!,
                       ),
                     ],
                     if (preset.setupSteps.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       _LabeledValue(
-                        label: 'Placement',
+                        label: l10n.labelPlacement,
                         value: preset.setupSteps.first.instruction,
                       ),
                     ],
                     const SizedBox(height: 2),
                     _LabeledValue(
-                      label: 'Lighting',
-                      value: preset.technique.lighting.label,
+                      label: l10n.labelLighting,
+                      value: AppCopy.lightingLabel(l10n, preset.technique.lighting),
                     ),
                     const SizedBox(height: 2),
                     _LabeledValue(
-                      label: 'Grid',
-                      value: preset.technique.composition.label,
+                      label: l10n.labelGrid,
+                      value: AppCopy.compositionLabel(
+                        l10n,
+                        preset.technique.composition,
+                      ),
                     ),
                   ],
                 ),

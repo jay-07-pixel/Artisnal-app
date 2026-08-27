@@ -32,6 +32,8 @@ class FrameMetrics extends Equatable {
     required this.edgeAngleDegrees,
     required this.edgeCoherence,
     required this.targetArea,
+    this.ghostInsetX = 0.2,
+    this.ghostInsetY = 0.2,
   });
 
   const FrameMetrics.empty()
@@ -55,7 +57,9 @@ class FrameMetrics extends Equatable {
         subjectBottom = 1,
         edgeAngleDegrees = 0,
         edgeCoherence = 0,
-        targetArea = 0.36;
+        targetArea = 0.36,
+        ghostInsetX = 0.2,
+        ghostInsetY = 0.2;
 
   /// Average brightness across the whole frame, 0..1.
   final double meanLuminance;
@@ -135,11 +139,75 @@ class FrameMetrics extends Equatable {
   /// [targetCoverage] and [subjectCoverage].
   final double targetArea;
 
-  /// How far the subject sits from the middle of the frame, 0..~0.7.
+  /// Ghost-frame inset from the left/right, matching the overlay the artisan
+  /// sees. Distance is judged against this rectangle, not against leftover
+  /// floor texture.
+  final double ghostInsetX;
+
+  /// Ghost-frame inset from the top/bottom.
+  final double ghostInsetY;
+
+  /// How far the weave's centre of mass sits from the middle of the frame.
+  ///
+  /// Useful for close-up texture shots. A busy bedspread can pull this
+  /// toward the middle even when the product itself is at the edge, so
+  /// full-product centring uses [boxCentringOffset] instead.
   double get centringOffset {
     final dx = detailCentroidX - 0.5;
     final dy = detailCentroidY - 0.5;
     return math.sqrt(dx * dx + dy * dy);
+  }
+
+  /// How far the product's bounding box sits from the middle of the frame.
+  double get boxCentringOffset {
+    final dx = (subjectLeft + subjectRight) / 2 - 0.5;
+    final dy = (subjectTop + subjectBottom) / 2 - 0.5;
+    return math.sqrt(dx * dx + dy * dy);
+  }
+
+  /// Share of the dashed ghost that the product's box actually covers, 0..1.
+  double get boxFillOfGhost {
+    final ghostLeft = ghostInsetX;
+    final ghostTop = ghostInsetY;
+    final ghostRight = 1 - ghostInsetX;
+    final ghostBottom = 1 - ghostInsetY;
+    final left = math.max(subjectLeft, ghostLeft);
+    final top = math.max(subjectTop, ghostTop);
+    final right = math.min(subjectRight, ghostRight);
+    final bottom = math.min(subjectBottom, ghostBottom);
+    if (right <= left || bottom <= top) return 0;
+    final ghostArea =
+        math.max(ghostRight - ghostLeft, 0.001) * math.max(ghostBottom - ghostTop, 0.001);
+    return ((right - left) * (bottom - top) / ghostArea).clamp(0.0, 1.0);
+  }
+
+  /// True when the measured product box sits inside the dashed ghost.
+  ///
+  /// Used to silence "keep inside the frame" when the cloth is already in
+  /// the guide and only the floor texture reaches the picture edge.
+  bool get boxFitsInsideGhost {
+    const slack = 0.04;
+    return subjectLeft >= ghostInsetX - slack &&
+        subjectTop >= ghostInsetY - slack &&
+        subjectRight <= 1 - ghostInsetX + slack &&
+        subjectBottom <= 1 - ghostInsetY + slack;
+  }
+
+  /// True when the product's box spills past the dashed ghost on at least
+  /// two sides. One side is a placement problem, not distance.
+  ///
+  /// A box that reaches the picture rim is occupancy swallowing the floor,
+  /// not a close-up — that used to stick Distance on "Move back".
+  bool get boxOverflowsGhost {
+    if (subjectEdgeContact > 0.34) return false;
+
+    const slack = 0.14;
+    var sides = 0;
+    if (subjectLeft < ghostInsetX - slack) sides++;
+    if (subjectTop < ghostInsetY - slack) sides++;
+    if (subjectRight > 1 - ghostInsetX + slack) sides++;
+    if (subjectBottom > 1 - ghostInsetY + slack) sides++;
+    return sides >= 2;
   }
 
   /// How much textured content spills outside the ghost frame relative to
@@ -180,6 +248,15 @@ class FrameMetrics extends Equatable {
   /// anything. A blank wall is not "blurred", it is simply empty.
   bool get canJudgeFocus => centreDetail > 0.02 || borderDetail > 0.02;
 
+  /// True when the lens has not yet exposed — a black opening frame.
+  ///
+  /// Auto-exposure on many phones starts this way. Those frames must not be
+  /// read as "too dark" or "move in".
+  bool get isUnexposedPreview =>
+      meanLuminance < 0.12 &&
+      centreDetail < 0.008 &&
+      subjectCoverage < 0.02;
+
   @override
   List<Object?> get props => [
         meanLuminance,
@@ -203,6 +280,8 @@ class FrameMetrics extends Equatable {
         edgeAngleDegrees,
         edgeCoherence,
         targetArea,
+        ghostInsetX,
+        ghostInsetY,
       ];
 }
 
@@ -224,7 +303,7 @@ class FrameAnalyzer {
 
   /// A cell counts as subject when its texture clears this share of the
   /// strongest cell in the frame.
-  static const double _relativeSubjectThreshold = 0.30;
+  static const double _relativeSubjectThreshold = 0.32;
 
   /// ...and this absolute floor, which keeps sensor noise on a blank wall
   /// from being read as a product.
@@ -433,6 +512,8 @@ class FrameAnalyzer {
       edgeAngleDegrees: _edgeAngle(jxx, jyy, jxy),
       edgeCoherence: _coherence(jxx, jyy, jxy),
       targetArea: (1 - 2 * insetX) * (1 - 2 * insetY),
+      ghostInsetX: insetX,
+      ghostInsetY: insetY,
     );
   }
 
@@ -448,6 +529,11 @@ class FrameAnalyzer {
   /// "typical" brightness and the table around it would be mistaken for the
   /// product. When the cloth reaches the edge too, the ring is the cloth, the
   /// brightness test simply finds nothing, and the texture test carries it.
+  ///
+  /// Distance then follows a compact blob that does not swallow the floor.
+  /// Tiled grout is as textured as weave, so the product is the region that
+  /// differs in brightness from the picture rim — the cloth sitting on that
+  /// floor — not the largest textured area.
   _Occupancy _measureOccupancy({
     required List<double> cellDetail,
     required List<int> cellCount,
@@ -456,19 +542,29 @@ class FrameAnalyzer {
     required double insetX,
     required double insetY,
   }) {
-    var strongest = 0.0;
+    var strongestTexture = 0.0;
+    var strongestTextureIndex = 0;
     final ringLumas = <double>[];
+    final textureMean = List<double>.filled(_cells * _cells, 0);
+    final lumaMean = List<double>.filled(_cells * _cells, 0);
+
     for (var cy = 0; cy < _cells; cy++) {
       for (var cx = 0; cx < _cells; cx++) {
         final i = cy * _cells + cx;
         if (cellCount[i] > 0) {
-          final mean = cellDetail[i] / cellCount[i];
-          if (mean > strongest) strongest = mean;
+          textureMean[i] = cellDetail[i] / cellCount[i];
+          if (textureMean[i] > strongestTexture) {
+            strongestTexture = textureMean[i];
+            strongestTextureIndex = i;
+          }
+        }
+        if (cellLumaCount[i] > 0) {
+          lumaMean[i] = cellLuma[i] / cellLumaCount[i];
         }
         final onRing =
             cx == 0 || cy == 0 || cx == _cells - 1 || cy == _cells - 1;
         if (onRing && cellLumaCount[i] > 0) {
-          ringLumas.add(cellLuma[i] / cellLumaCount[i]);
+          ringLumas.add(lumaMean[i]);
         }
       }
     }
@@ -477,9 +573,13 @@ class FrameAnalyzer {
     ringLumas.sort();
     final surroundLuma = ringLumas[ringLumas.length ~/ 2];
 
-    final threshold = math.max(
+    final textureThreshold = math.max(
       _absoluteSubjectThreshold,
-      strongest * _relativeSubjectThreshold,
+      strongestTexture * _relativeSubjectThreshold,
+    );
+    final textureCoreThreshold = math.max(
+      _absoluteSubjectThreshold,
+      strongestTexture * 0.40,
     );
 
     final firstTargetX = (insetX * _cells).floor();
@@ -487,12 +587,27 @@ class FrameAnalyzer {
     final firstTargetY = (insetY * _cells).floor();
     final lastTargetY = (_cells - insetY * _cells).ceil() - 1;
 
-    var subjectCells = 0;
+    var strongestLumaDev = 0.0;
+    var strongestLumaIndex = 0;
+    final lumaDev = List<double>.filled(_cells * _cells, 0);
+    for (var i = 0; i < _cells * _cells; i++) {
+      lumaDev[i] = (lumaMean[i] - surroundLuma).abs();
+      if (lumaDev[i] > strongestLumaDev) {
+        strongestLumaDev = lumaDev[i];
+        strongestLumaIndex = i;
+      }
+    }
+
+    final lumaThreshold = math.max(
+      _lumaDeviationThreshold,
+      strongestLumaDev * 0.50,
+    );
+
     var targetCells = 0;
-    var targetSubjectCells = 0;
     var ringCells = 0;
-    var ringSubjectCells = 0;
-    var minX = _cells, minY = _cells, maxX = -1, maxY = -1;
+    final isSubject = List<bool>.filled(_cells * _cells, false);
+    final lumaMask = List<bool>.filled(_cells * _cells, false);
+    final textureMask = List<bool>.filled(_cells * _cells, false);
 
     for (var cy = 0; cy < _cells; cy++) {
       for (var cx = 0; cx < _cells; cx++) {
@@ -507,28 +622,50 @@ class FrameAnalyzer {
         if (onRing) ringCells++;
 
         if (cellCount[i] == 0 && cellLumaCount[i] == 0) continue;
-        final texture = cellCount[i] == 0 ? 0.0 : cellDetail[i] / cellCount[i];
-        final lumaDeviation = cellLumaCount[i] == 0
-            ? 0.0
-            : (cellLuma[i] / cellLumaCount[i] - surroundLuma).abs();
-        final isSubject = texture >= threshold ||
-            lumaDeviation >= _lumaDeviationThreshold;
-        if (!isSubject) continue;
-
-        subjectCells++;
-        if (inTarget) targetSubjectCells++;
-        if (onRing) ringSubjectCells++;
-        if (cx < minX) minX = cx;
-        if (cy < minY) minY = cy;
-        if (cx > maxX) maxX = cx;
-        if (cy > maxY) maxY = cy;
+        lumaMask[i] = lumaDev[i] >= lumaThreshold;
+        textureMask[i] = textureMean[i] >= textureCoreThreshold;
+        isSubject[i] = textureMask[i] ||
+            textureMean[i] >= textureThreshold ||
+            lumaDev[i] >= _lumaDeviationThreshold;
       }
     }
 
-    if (subjectCells == 0) return const _Occupancy.empty();
+    final blob = _pickProductBlob(
+      lumaMask: lumaMask,
+      textureMask: textureMask,
+      isSubject: isSubject,
+      strongestLumaIndex: strongestLumaIndex,
+      strongestTextureIndex: strongestTextureIndex,
+      firstTargetX: firstTargetX,
+      lastTargetX: lastTargetX,
+      firstTargetY: firstTargetY,
+      lastTargetY: lastTargetY,
+    );
+    if (blob.isEmpty) return const _Occupancy.empty();
+
+    var ringSubjectCells = 0;
+    var targetSubjectCells = 0;
+    var minX = _cells, minY = _cells, maxX = -1, maxY = -1;
+    for (final i in blob) {
+      final cx = i % _cells;
+      final cy = i ~/ _cells;
+      if (cx >= firstTargetX &&
+          cx <= lastTargetX &&
+          cy >= firstTargetY &&
+          cy <= lastTargetY) {
+        targetSubjectCells++;
+      }
+      if (cx == 0 || cy == 0 || cx == _cells - 1 || cy == _cells - 1) {
+        ringSubjectCells++;
+      }
+      if (cx < minX) minX = cx;
+      if (cy < minY) minY = cy;
+      if (cx > maxX) maxX = cx;
+      if (cy > maxY) maxY = cy;
+    }
 
     return _Occupancy(
-      coverage: subjectCells / (_cells * _cells),
+      coverage: blob.length / (_cells * _cells),
       targetCoverage: targetCells == 0 ? 0 : targetSubjectCells / targetCells,
       edgeContact: ringCells == 0 ? 0 : ringSubjectCells / ringCells,
       left: minX / _cells,
@@ -536,6 +673,177 @@ class FrameAnalyzer {
       right: (maxX + 1) / _cells,
       bottom: (maxY + 1) / _cells,
     );
+  }
+
+  /// Prefers a compact cloth on the floor over the floor itself.
+  ///
+  /// Tiles reach the picture rim and match its brightness. The product
+  /// usually does neither: it sits inside the frame at a different
+  /// brightness. A smeared but well-placed cloth still has that brightness
+  /// step even after the weave is gone, so blur can be judged instead of
+  /// "move into the frame".
+  List<int> _pickProductBlob({
+    required List<bool> lumaMask,
+    required List<bool> textureMask,
+    required List<bool> isSubject,
+    required int strongestLumaIndex,
+    required int strongestTextureIndex,
+    required int firstTargetX,
+    required int lastTargetX,
+    required int firstTargetY,
+    required int lastTargetY,
+  }) {
+    List<int> bestOf(List<List<int>> blobs) => _bestBlob(
+          blobs,
+          firstTargetX: firstTargetX,
+          lastTargetX: lastTargetX,
+          firstTargetY: firstTargetY,
+          lastTargetY: lastTargetY,
+        );
+
+    final lumaBlobs = _allBlobs(lumaMask);
+    final lumaPick = _pickFromBlobs(
+      lumaBlobs,
+      seedIndex: strongestLumaIndex,
+      bestOf: bestOf,
+    );
+    if (lumaPick.isNotEmpty) return lumaPick;
+
+    final textureBlobs = _allBlobs(textureMask);
+    final texturePick = _pickFromBlobs(
+      textureBlobs,
+      seedIndex: strongestTextureIndex,
+      bestOf: bestOf,
+    );
+    if (texturePick.isNotEmpty) return texturePick;
+
+    final subjectBlobs = _allBlobs(isSubject);
+    return _pickFromBlobs(
+      subjectBlobs,
+      seedIndex: strongestLumaIndex,
+      bestOf: bestOf,
+    );
+  }
+
+  /// A weave can punch holes in the brightness mask, so one cloth becomes
+  /// many tiny blobs. Ignore fragments, or merge them, rather than treating
+  /// a 2-cell speck as the product.
+  List<int> _pickFromBlobs(
+    List<List<int>> blobs, {
+    required int seedIndex,
+    required List<int> Function(List<List<int>>) bestOf,
+  }) {
+    if (blobs.isEmpty) return const [];
+
+    final interior = blobs.where(_isInteriorBlob).toList();
+    // Holey weave is many interior specks of one cloth — merge them so
+    // the box is the product, not the brightest patch.
+    if (_totalCells(interior) >= 8) return _mergeBlobs(interior);
+
+    final usable = blobs.where(_isUsableBlob).toList();
+    if (usable.isNotEmpty) {
+      return _blobContaining(usable, seedIndex) ?? bestOf(usable);
+    }
+    if (_totalCells(blobs) >= 4) return _mergeBlobs(blobs);
+    return const [];
+  }
+
+  bool _isUsableBlob(List<int> blob) => blob.length >= 8;
+
+  int _totalCells(List<List<int>> blobs) {
+    var n = 0;
+    for (final blob in blobs) {
+      n += blob.length;
+    }
+    return n;
+  }
+
+  List<int> _mergeBlobs(List<List<int>> blobs) {
+    final merged = <int>[];
+    for (final blob in blobs) {
+      merged.addAll(blob);
+    }
+    return merged;
+  }
+
+  bool _isInteriorBlob(List<int> blob) {
+    for (final i in blob) {
+      final cx = i % _cells;
+      final cy = i ~/ _cells;
+      if (cx == 0 || cy == 0 || cx == _cells - 1 || cy == _cells - 1) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  List<int>? _blobContaining(List<List<int>> blobs, int index) {
+    for (final blob in blobs) {
+      if (blob.contains(index)) return blob;
+    }
+    return null;
+  }
+
+  List<int> _bestBlob(
+    List<List<int>> blobs, {
+    required int firstTargetX,
+    required int lastTargetX,
+    required int firstTargetY,
+    required int lastTargetY,
+  }) {
+    var best = blobs.first;
+    var bestScore = -1.0;
+    for (final blob in blobs) {
+      var inGhost = 0;
+      for (final i in blob) {
+        final cx = i % _cells;
+        final cy = i ~/ _cells;
+        if (cx >= firstTargetX &&
+            cx <= lastTargetX &&
+            cy >= firstTargetY &&
+            cy <= lastTargetY) {
+          inGhost++;
+        }
+      }
+      final score = inGhost * 4.0 + blob.length;
+      if (score > bestScore) {
+        bestScore = score;
+        best = blob;
+      }
+    }
+    return best;
+  }
+
+  List<List<int>> _allBlobs(List<bool> mask) {
+    final seen = List<bool>.filled(_cells * _cells, false);
+    final blobs = <List<int>>[];
+    for (var start = 0; start < mask.length; start++) {
+      if (!mask[start] || seen[start]) continue;
+      blobs.add(_flood(start, mask, seen));
+    }
+    return blobs;
+  }
+
+  List<int> _flood(int start, List<bool> mask, List<bool> seen) {
+    final blob = <int>[];
+    final stack = <int>[start];
+    seen[start] = true;
+    while (stack.isNotEmpty) {
+      final i = stack.removeLast();
+      blob.add(i);
+      final cx = i % _cells;
+      const neighbours = [1, -1, _cells, -_cells];
+      for (final delta in neighbours) {
+        if (delta == 1 && cx == _cells - 1) continue;
+        if (delta == -1 && cx == 0) continue;
+        final next = i + delta;
+        if (next < 0 || next >= mask.length) continue;
+        if (!mask[next] || seen[next]) continue;
+        seen[next] = true;
+        stack.add(next);
+      }
+    }
+    return blob;
   }
 
   /// Fine detail as a share of coarse detail, clamped to a readable 0..1.

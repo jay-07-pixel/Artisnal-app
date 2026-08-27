@@ -32,6 +32,7 @@ class SyntheticFrame {
     this.stripePeriod = 10,
     this.noise = 4,
     this.defocused = false,
+    this.tiledFloor = false,
   });
 
   final int width;
@@ -57,6 +58,10 @@ class SyntheticFrame {
   /// motion-blurred frame.
   final bool defocused;
 
+  /// Speckled tiles behind the cloth, like a real floor. The analyser must
+  /// still find the product instead of treating the grout as the subject.
+  final bool tiledFloor;
+
   /// Renders the cloth as a rectangle in normalised coordinates.
   Uint8List build({
     double left = 0.2,
@@ -74,7 +79,7 @@ class SyntheticFrame {
     for (var y = 0; y < height; y++) {
       for (var x = 0; x < width; x++) {
         final inProduct = x >= x0 && x < x1 && y >= y0 && y < y1;
-        var value = inProduct ? _weave(x, y, random) : background;
+        var value = inProduct ? _weave(x, y, random) : _floorAt(x, y, random);
         if (noise > 0) {
           value += random.nextInt(noise * 2 + 1) - noise;
         }
@@ -82,6 +87,17 @@ class SyntheticFrame {
       }
     }
     return luma;
+  }
+
+  int _floorAt(int x, int y, math.Random random) {
+    if (!tiledFloor) return background;
+    const tile = 48;
+    final grout = x % tile < 3 || y % tile < 3;
+    if (grout) return (background - 28).clamp(0, 255);
+    final checker = ((x ~/ tile) + (y ~/ tile)) % 2;
+    var value = background + (checker == 0 ? 8 : -8);
+    value += random.nextInt(18) - 9;
+    return value.clamp(0, 255);
   }
 
   int _weave(int x, int y, math.Random random) {

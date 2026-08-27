@@ -5,6 +5,7 @@ import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_dimens.dart';
 import '../../app/theme/app_typography.dart';
+import '../../l10n/app_localizations.dart';
 
 /// The bottom navigation shell.
 ///
@@ -36,6 +37,7 @@ class _BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.backgroundAlt,
@@ -50,25 +52,25 @@ class _BottomNav extends StatelessWidget {
             children: [
               _NavItem(
                 icon: Icons.home_outlined,
-                label: 'Home',
+                label: l10n.navHome,
                 isActive: location == '/home',
                 onTap: () => context.goNamed(AppRoute.home),
               ),
               _NavItem(
                 icon: Icons.photo_library_outlined,
-                label: 'Gallery',
+                label: l10n.navGallery,
                 isActive: location == '/gallery',
                 onTap: () => context.goNamed(AppRoute.gallery),
               ),
               _NavItem(
                 icon: Icons.add_a_photo_outlined,
-                label: 'New Product',
+                label: l10n.navNewProduct,
                 isActive: false,
                 onTap: () => context.pushNamed(AppRoute.material),
               ),
               _NavItem(
                 icon: Icons.settings_outlined,
-                label: 'Settings',
+                label: l10n.navSettings,
                 isActive: location == '/settings',
                 onTap: () => context.goNamed(AppRoute.settings),
               ),

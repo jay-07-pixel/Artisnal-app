@@ -229,9 +229,10 @@ Saree photography templates live in
   them.
 - **Tutorial videos and step illustrations.** The catalog points at those
   files; most are still missing, so the screens fail safe with placeholders.
-- **Localisation.** Language choice persists and drives `MaterialApp.locale`.
-  App strings are still English. Translation is left for a native Assamese
-  speaker rather than machine-filled.
+- **Localisation polish.** Settings switches the UI between Assamese, Hindi
+  and English (`lib/l10n/`). Catalog transcript lines and a few long setup
+  sentences are still English; a native speaker should review the Assamese
+  and Hindi copy.
 
 ---
 

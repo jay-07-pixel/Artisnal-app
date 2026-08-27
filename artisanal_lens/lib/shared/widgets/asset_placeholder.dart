@@ -55,7 +55,7 @@ class CatalogImage extends StatelessWidget {
   const CatalogImage({
     required this.assetPath,
     required this.placeholderLabel,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.contain,
     this.borderRadius,
     this.height,
     super.key,
@@ -76,17 +76,30 @@ class CatalogImage extends StatelessWidget {
       return AssetPlaceholder(label: placeholderLabel, height: height);
     }
 
-    return ClipRRect(
-      borderRadius: radius,
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-        child: Image.asset(
-          path,
-          fit: fit,
-          errorBuilder: (_, _, _) => AssetPlaceholder(
-            label: placeholderLabel,
-            height: height,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: radius,
+        border: Border.all(color: AppColors.border),
+      ),
+      child: ClipRRect(
+        borderRadius: radius,
+        child: SizedBox(
+          height: height,
+          width: double.infinity,
+          child: Padding(
+            padding: fit == BoxFit.contain
+                ? const EdgeInsets.all(AppDimens.space12)
+                : EdgeInsets.zero,
+            child: Image.asset(
+              path,
+              fit: fit,
+              alignment: Alignment.center,
+              errorBuilder: (_, _, _) => AssetPlaceholder(
+                label: placeholderLabel,
+                height: height,
+              ),
+            ),
           ),
         ),
       ),

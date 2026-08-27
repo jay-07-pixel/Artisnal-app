@@ -7,6 +7,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_set.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../shot_sets_controller.dart';
 
@@ -22,6 +23,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final setsAsync = ref.watch(shotSetsProvider);
     final continuable = ref.watch(continuableSetProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       children: [
@@ -39,14 +41,14 @@ class HomePage extends ConsumerWidget {
               ),
               children: [
                 Text(
-                  'What are you\nphotographing today?',
+                  l10n.whatPhotographing,
                   style: AppTypography.displayLarge,
                 ),
                 const SizedBox(height: AppDimens.space24),
                 const _NewProductCard(),
                 if (continuable != null) ...[
                   const SizedBox(height: AppDimens.space32),
-                  const SectionHeader('Continue photography'),
+                  SectionHeader(l10n.continuePhotography),
                   const SizedBox(height: AppDimens.space12),
                   _ContinueCard(set: continuable),
                 ],
@@ -97,7 +99,7 @@ class _HomeAppBar extends StatelessWidget {
                   color: AppColors.textPrimary,
                   size: 28,
                 ),
-                tooltip: 'Settings',
+                tooltip: AppLocalizations.of(context).settings,
                 splashRadius: 24,
               ),
             ],
@@ -135,7 +137,7 @@ class _NewProductCard extends StatelessWidget {
               ),
               const SizedBox(height: AppDimens.space12),
               Text(
-                'New Product',
+                AppLocalizations.of(context).newProduct,
                 style: AppTypography.displayMedium.copyWith(
                   color: AppColors.textOnPrimary,
                 ),
@@ -187,7 +189,10 @@ class _ContinueCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.space4),
                 Text(
-                  '${set.completedCount} of ${set.requiredCount} photos completed',
+                  AppLocalizations.of(context).photosCompleted(
+                    set.completedCount,
+                    set.requiredCount,
+                  ),
                   style: AppTypography.labelSmall,
                 ),
                 const SizedBox(height: AppDimens.space8),
@@ -198,7 +203,7 @@ class _ContinueCard extends StatelessWidget {
                     AppRoute.photoList,
                     pathParameters: {'setId': set.id},
                   ),
-                  child: const Text('Continue'),
+                  child: Text(AppLocalizations.of(context).continueAction),
                 ),
               ],
             ),
@@ -224,12 +229,13 @@ class _PreviousSetsSectionState extends State<_PreviousSetsSection> {
   @override
   Widget build(BuildContext context) {
     final visible = _filter.apply(widget.sets);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Previous sets.',
+          l10n.previousSets,
           style: AppTypography.displayMedium.copyWith(
             fontFamily: AppTypography.sans,
             fontWeight: FontWeight.w700,
@@ -240,20 +246,20 @@ class _PreviousSetsSectionState extends State<_PreviousSetsSection> {
         Row(
           children: [
             _ProgressChip(
-              label: 'All',
+              label: l10n.filterAll,
               selected: _filter == PreviousSetsFilter.all,
               onTap: () => setState(() => _filter = PreviousSetsFilter.all),
             ),
             const SizedBox(width: AppDimens.space8),
             _ProgressChip(
-              label: 'Finished',
+              label: l10n.filterFinished,
               selected: _filter == PreviousSetsFilter.finished,
               onTap: () =>
                   setState(() => _filter = PreviousSetsFilter.finished),
             ),
             const SizedBox(width: AppDimens.space8),
             _ProgressChip(
-              label: 'Pending',
+              label: l10n.filterPending,
               selected: _filter == PreviousSetsFilter.pending,
               onTap: () => setState(() => _filter = PreviousSetsFilter.pending),
             ),
@@ -264,7 +270,7 @@ class _PreviousSetsSectionState extends State<_PreviousSetsSection> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: AppDimens.space12),
             child: Text(
-              _emptyMessage,
+              _emptyMessage(l10n),
               style: AppTypography.bodyMedium,
             ),
           )
@@ -279,10 +285,10 @@ class _PreviousSetsSectionState extends State<_PreviousSetsSection> {
     );
   }
 
-  String get _emptyMessage => switch (_filter) {
-        PreviousSetsFilter.all => 'No previous sets yet.',
-        PreviousSetsFilter.finished => 'No finished sets yet.',
-        PreviousSetsFilter.pending => 'No pending sets.',
+  String _emptyMessage(AppLocalizations l10n) => switch (_filter) {
+        PreviousSetsFilter.all => l10n.emptyAll,
+        PreviousSetsFilter.finished => l10n.emptyFinished,
+        PreviousSetsFilter.pending => l10n.emptyPending,
       };
 }
 

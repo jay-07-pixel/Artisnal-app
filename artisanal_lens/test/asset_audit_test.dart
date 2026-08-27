@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'support/test_l10n.dart';
+
 /// Step 4: bundled assets that exist must load; missing catalog paths must
 /// fail safely. Does not create files.
 void main() {
@@ -149,8 +151,8 @@ void main() {
 
   testWidgets('missing illustration fails safely', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: CatalogImage(
+      l10nApp(
+        home: const CatalogImage(
           assetPath: 'assets/images/steps/saree_pallu_drape_1.png',
           placeholderLabel: 'Setup illustration to be added',
           height: 80,
@@ -163,8 +165,8 @@ void main() {
 
   testWidgets('missing tutorial video fails safely', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: CatalogVideo(assetPath: 'assets/videos/saree_pallu_drape.mp4'),
+      l10nApp(
+        home: const CatalogVideo(assetPath: 'assets/videos/saree_pallu_drape.mp4'),
       ),
     );
     await tester.pumpAndSettle();

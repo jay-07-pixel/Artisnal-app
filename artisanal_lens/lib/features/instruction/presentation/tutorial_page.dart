@@ -7,6 +7,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fold_preset.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/catalog_video.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
@@ -50,6 +51,7 @@ class TutorialPage extends ConsumerWidget {
     final guidance = ref.watch(sessionGuidanceProvider);
     final videoAsset = preset?.tutorialVideoAsset;
     final transcript = spokenTranscriptFor(preset);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -58,7 +60,7 @@ class TutorialPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: Text(set?.productName ?? 'Tutorial'),
+        title: Text(set?.productName ?? l10n.tutorial),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -68,22 +70,26 @@ class TutorialPage extends ConsumerWidget {
           AppDimens.space32,
         ),
         children: [
-          const AppPill(label: 'Step 2 of 2'),
+          AppPill(label: l10n.step2of2),
           const SizedBox(height: AppDimens.space16),
-          Text('Watch how to set up', style: AppTypography.displayLarge),
+          Text(l10n.watchHowToSetUp, style: AppTypography.displayLarge),
           const SizedBox(height: AppDimens.space8),
           Text(
-            _subtitle(preset: preset, templateName: guidance.templateName),
+            _subtitle(
+              l10n: l10n,
+              preset: preset,
+              templateName: guidance.templateName,
+            ),
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space20),
           CatalogVideo(assetPath: videoAsset),
           const SizedBox(height: AppDimens.space24),
-          Text('TRANSCRIPT', style: AppTypography.sectionHeader),
+          Text(l10n.transcript, style: AppTypography.sectionHeader),
           const SizedBox(height: AppDimens.space12),
           if (transcript.isEmpty)
             Text(
-              'The spoken transcript will appear here once the tutorial video is added.',
+              l10n.transcriptPlaceholder,
               style: AppTypography.bodyMedium,
             )
           else
@@ -100,23 +106,26 @@ class TutorialPage extends ConsumerWidget {
             AppRoute.capture,
             pathParameters: {'setId': setId},
           ),
-          child: const Text('Open Camera'),
+          child: Text(l10n.openCamera),
         ),
       ),
     );
   }
 
   static String _subtitle({
+    required AppLocalizations l10n,
     required FoldPreset? preset,
     required String? templateName,
   }) {
     if (preset != null) {
-      return 'Watch how to set up ${preset.name.toLowerCase()}.';
+      return l10n.tutorialSubtitlePreset(AppCopy.presetNameLower(l10n, preset.id));
     }
-    if (templateName != null) {
-      return 'Watch how to set up ${templateName.toLowerCase()}.';
+    final localizedTemplate =
+        AppCopy.templateNameLowerByEnglish(l10n, templateName);
+    if (localizedTemplate != null) {
+      return l10n.tutorialSubtitleTemplate(localizedTemplate);
     }
-    return 'A short video will show this setup when it is added.';
+    return l10n.tutorialSubtitleFallback;
   }
 }
 

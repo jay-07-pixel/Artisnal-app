@@ -4,6 +4,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_dimens.dart';
+import '../../l10n/app_localizations.dart';
 import 'asset_placeholder.dart';
 
 /// Plays a catalog tutorial video when the bundled file exists.
@@ -63,7 +64,7 @@ class _CatalogVideoState extends State<CatalogVideo> {
           );
         }
         return AssetPlaceholder(
-          label: 'Tutorial video to be added',
+          label: AppLocalizations.of(context).tutorialVideoPlaceholder,
           icon: Icons.play_circle_outline,
           height: widget.height,
         );
@@ -143,7 +144,7 @@ class _BundledPlayerState extends State<_BundledPlayer> {
     final controller = _controller;
     if (_error != null || controller == null || !controller.value.isInitialized) {
       return AssetPlaceholder(
-        label: 'Tutorial video to be added',
+        label: AppLocalizations.of(context).tutorialVideoPlaceholder,
         icon: Icons.play_circle_outline,
         height: widget.height,
       );

@@ -7,6 +7,7 @@ import '../../../app/router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// The opening sequence: a saree is dropped, allowed to settle, framed by the
 /// capture guide, photographed, and the photograph becomes the app.
@@ -552,7 +553,7 @@ class _Wordmark extends StatelessWidget {
               ),
               const SizedBox(height: AppDimens.space8),
               Text(
-                'Guided photography for handcrafted products',
+                AppLocalizations.of(context).openingTagline,
                 textAlign: TextAlign.center,
                 style: AppTypography.labelSmall.copyWith(
                   color: AppColors.textMuted,
@@ -573,14 +574,14 @@ class _StatusChips extends StatelessWidget {
 
   final double t;
 
-  static const List<({String label, double at})> _chips = [
-    (label: 'Light: Good', at: 0.60),
-    (label: 'Angle: Good', at: 0.66),
-    (label: 'Frame: Ready', at: 0.72),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final chips = [
+      (label: l10n.openingChipLight, at: 0.60),
+      (label: l10n.openingChipAngle, at: 0.66),
+      (label: l10n.openingChipFrame, at: 0.72),
+    ];
     final leaving = _seg(t, _Scene.handoffStart, 0.94, Curves.easeIn);
     if (leaving >= 1) return const SizedBox.shrink();
 
@@ -595,7 +596,7 @@ class _StatusChips extends StatelessWidget {
           spacing: AppDimens.space8,
           runSpacing: AppDimens.space8,
           children: [
-            for (final chip in _chips)
+            for (final chip in chips)
               _Chip(label: chip.label, progress: _seg(t, chip.at, chip.at + 0.07, Curves.easeOutBack)),
           ],
         ),

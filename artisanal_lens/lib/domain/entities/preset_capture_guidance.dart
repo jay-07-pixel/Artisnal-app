@@ -115,7 +115,7 @@ class CameraGuidanceProfile {
       placementInstruction: placementInstruction,
       orientationTarget: technique.grid.orientationTarget,
       minTargetCoverage: closeUp ? 0.55 : 0.35,
-      maxCentringOffset: closeUp ? 0.10 : 0.14,
+      maxCentringOffset: closeUp ? 0.08 : 0.10,
       detectsLight: true,
       detectsBacklight: !technique.lighting.expectsBacklight,
       detectsAngle: true,

@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/live_camera_harness.dart';
+import 'support/test_l10n.dart';
 
 class _SeededSession extends CaptureSessionController {
   _SeededSession(this._seed);
@@ -59,7 +60,7 @@ Widget _harness({
         ),
       ),
     ],
-    child: MaterialApp(home: child),
+    child: l10nApp(home: child),
   );
 }
 
@@ -259,7 +260,7 @@ void main() {
 
   testWidgets('Roll display thumbnail loads', (tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
+      l10nApp(
         home: CatalogImage(
           assetPath: 'assets/images/presets/saree_roll_display.png',
           placeholderLabel: 'Preset image to be added',

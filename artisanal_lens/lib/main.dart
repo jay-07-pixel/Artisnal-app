@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/locale_controller.dart';
@@ -10,6 +9,7 @@ import 'app/theme/app_colors.dart';
 import 'app/theme/app_dimens.dart';
 import 'app/theme/app_theme.dart';
 import 'data/datasources/app_database.dart';
+import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,10 +48,8 @@ class _ArtisanalLensAppState extends ConsumerState<ArtisanalLensApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       locale: language.locale,
-      supportedLocales: [
-        for (final language in AppLanguage.values) language.locale,
-      ],
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       routerConfig: _router,
       builder: (context, child) => _PhoneFrame(child: child),
     );

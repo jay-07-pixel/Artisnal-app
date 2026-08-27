@@ -103,6 +103,8 @@ void main() {
       expect(feedback.isReadyToShoot, isTrue);
       expect(feedback.lightQuality, LightQuality.good);
       expect(feedback.angleQuality, AngleQuality.ok);
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+      expect(feedback.centreQuality, CentreQuality.ok);
     });
 
     test('initial camera state is not ready', () {
@@ -113,14 +115,28 @@ void main() {
     });
 
     test('an empty frame is reported before anything else', () {
-      // Nothing in view and the light is poor: there is no point discussing
-      // the exposure of a picture with no product in it.
       final feedback = evaluate(
         metrics(subjectCoverage: 0, targetCoverage: 0, centreDetail: 0.001),
       );
 
       expect(feedback.prompt, CapturePrompt.noProduct);
       expect(feedback.message, 'Place the saree in view');
+      expect(feedback.distanceQuality, DistanceQuality.unknown);
+      expect(feedback.centreQuality, CentreQuality.unknown);
+    });
+
+    test('an empty dim frame still reports low light on the chip', () {
+      final feedback = evaluate(
+        metrics(
+          subjectCoverage: 0,
+          targetCoverage: 0,
+          centreDetail: 0.001,
+          meanLuminance: 0.32,
+        ),
+      );
+
+      expect(feedback.prompt, CapturePrompt.noProduct);
+      expect(feedback.lightQuality, LightQuality.low);
     });
 
     test('a product outside the guide outranks a lighting problem', () {
@@ -141,11 +157,37 @@ void main() {
 
     test('a product running off the edge outranks size and light', () {
       final feedback = evaluate(
-        metrics(subjectEdgeContact: 0.6, meanLuminance: 0.05),
+        metrics(
+          subjectEdgeContact: 0.6,
+          meanLuminance: 0.05,
+          subjectLeft: 0,
+          subjectTop: 0.15,
+          subjectRight: 1,
+          subjectBottom: 0.85,
+        ),
       );
 
       expect(feedback.prompt, CapturePrompt.keepInsideFrame);
       expect(feedback.message, 'Keep the saree inside the frame');
+      expect(feedback.centreQuality, CentreQuality.ok);
+      expect(feedback.distanceQuality, isNot(DistanceQuality.tooClose));
+    });
+
+    test('floor reaching the picture edge does not mean the product left the frame',
+        () {
+      final feedback = evaluate(
+        metrics(
+          subjectEdgeContact: 0.8,
+          subjectLeft: 0.38,
+          subjectTop: 0.40,
+          subjectRight: 0.62,
+          subjectBottom: 0.60,
+        ),
+      );
+
+      expect(feedback.prompt, isNot(CapturePrompt.keepInsideFrame));
+      expect(feedback.prompt, CapturePrompt.moveCloser);
+      expect(feedback.distanceQuality, DistanceQuality.tooFar);
     });
 
     test('size outranks light', () {
@@ -155,6 +197,10 @@ void main() {
           subjectCoverage: 0.03,
           targetCoverage: 0.08,
           meanLuminance: 0.1,
+          subjectLeft: 0.42,
+          subjectTop: 0.44,
+          subjectRight: 0.58,
+          subjectBottom: 0.56,
         ),
       );
 
@@ -184,10 +230,66 @@ void main() {
     });
 
     test('centring is the last thing left to say', () {
-      final feedback = evaluate(metrics(detailCentroidX: 0.78));
+      final feedback = evaluate(
+        metrics(
+          detailCentroidX: 0.78,
+          subjectLeft: 0.40,
+          subjectTop: 0.25,
+          subjectRight: 0.82,
+          subjectBottom: 0.75,
+        ),
+      );
 
       expect(feedback.prompt, CapturePrompt.centerSubject);
       expect(feedback.message, 'Center the saree');
+      expect(feedback.centreQuality, CentreQuality.off);
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+    });
+
+    test('centre follows the product box, not leftover texture in the middle',
+        () {
+      final feedback = evaluate(
+        metrics(
+          detailCentroidX: 0.5,
+          detailCentroidY: 0.5,
+          subjectLeft: 0.22,
+          subjectTop: 0.52,
+          subjectRight: 0.78,
+          subjectBottom: 0.78,
+        ),
+      );
+
+      expect(feedback.centreQuality, CentreQuality.off);
+      expect(feedback.prompt, CapturePrompt.centerSubject);
+    });
+
+    test('a dim room is called out before ready, not treated as good light',
+        () {
+      final feedback = evaluate(metrics(meanLuminance: 0.32));
+
+      expect(feedback.lightQuality, LightQuality.low);
+      expect(feedback.prompt, CapturePrompt.lowLight);
+      expect(feedback.message, 'Light is low — move nearer a window');
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+      expect(feedback.centreQuality, CentreQuality.ok);
+    });
+
+    test('distance stays visible when the headline is light', () {
+      final feedback = evaluate(
+        metrics(
+          meanLuminance: 0.08,
+          subjectCoverage: 0.03,
+          targetCoverage: 0.08,
+          subjectLeft: 0.42,
+          subjectTop: 0.44,
+          subjectRight: 0.58,
+          subjectBottom: 0.56,
+        ),
+      );
+
+      expect(feedback.prompt, CapturePrompt.moveCloser);
+      expect(feedback.lightQuality, LightQuality.tooDark);
+      expect(feedback.distanceQuality, DistanceQuality.tooFar);
     });
 
     test('clipped highlights count as overexposure', () {
@@ -226,17 +328,110 @@ void main() {
             targetCoverage: 0.1,
             centreDetail: 0.02,
             borderDetail: 0.004,
+            subjectLeft: 0.42,
+            subjectTop: 0.44,
+            subjectRight: 0.58,
+            subjectBottom: 0.56,
           ),
         ).prompt,
         CapturePrompt.moveCloser,
       );
     });
 
+    test('a small product is never called overflowing', () {
+      final feedback = evaluate(
+        metrics(
+          subjectCoverage: 0.03,
+          targetCoverage: 0.10,
+          centreDetail: 0.02,
+          borderDetail: 0.04,
+          subjectLeft: 0.42,
+          subjectTop: 0.44,
+          subjectRight: 0.58,
+          subjectBottom: 0.56,
+        ),
+      );
+
+      expect(feedback.prompt, CapturePrompt.moveCloser);
+      expect(feedback.distanceQuality, DistanceQuality.tooFar);
+    });
+
     test('asks the artisan to back off when the subject overflows', () {
       expect(
-        evaluate(metrics(centreDetail: 0.09, borderDetail: 0.085)).prompt,
+        evaluate(
+          metrics(
+            subjectLeft: 0.02,
+            subjectTop: 0.02,
+            subjectRight: 0.98,
+            subjectBottom: 0.98,
+          ),
+        ).prompt,
         CapturePrompt.moveFurther,
       );
+    });
+
+    test('a small product in a busy-looking ghost is still too far', () {
+      final feedback = evaluate(
+        metrics(
+          targetCoverage: 0.8,
+          subjectLeft: 0.38,
+          subjectTop: 0.40,
+          subjectRight: 0.62,
+          subjectBottom: 0.60,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooFar);
+      expect(feedback.prompt, CapturePrompt.moveCloser);
+    });
+
+    test('a filled guide on a busy floor is not told to move closer', () {
+      final feedback = evaluate(
+        metrics(
+          centreDetail: 0.06,
+          borderDetail: 0.06,
+          targetCoverage: 0.82,
+          subjectLeft: 0.22,
+          subjectTop: 0.24,
+          subjectRight: 0.78,
+          subjectBottom: 0.76,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+      expect(feedback.prompt, isNot(CapturePrompt.moveCloser));
+    });
+
+    test('a product spilling past the dashed box is told to move back', () {
+      final feedback = evaluate(
+        metrics(
+          targetCoverage: 0.9,
+          subjectLeft: 0.05,
+          subjectTop: 0.05,
+          subjectRight: 0.95,
+          subjectBottom: 0.95,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooClose);
+      expect(feedback.prompt, CapturePrompt.moveFurther);
+    });
+
+    test('a busy floor that reaches the picture edge is not called too close',
+        () {
+      final feedback = evaluate(
+        metrics(
+          targetCoverage: 0.85,
+          subjectCoverage: 0.7,
+          subjectEdgeContact: 0.8,
+          subjectLeft: 0,
+          subjectTop: 0,
+          subjectRight: 1,
+          subjectBottom: 1,
+        ),
+      );
+
+      expect(feedback.distanceQuality, isNot(DistanceQuality.tooClose));
     });
 
     test('centre-focus presets keep the texture in the centre', () {
@@ -264,7 +459,12 @@ void main() {
 
       expect(
         evaluate(
-          metrics(centreDetail: 0.09, borderDetail: 0.085),
+          metrics(
+            subjectLeft: 0.02,
+            subjectTop: 0.02,
+            subjectRight: 0.98,
+            subjectBottom: 0.98,
+          ),
           technique: border,
           pitch: 45,
         ).prompt,
@@ -281,9 +481,15 @@ void main() {
       );
 
       expect(
-        evaluate(metrics(centreDetail: 0.09, borderDetail: 0.085),
-                technique: stack)
-            .prompt,
+        evaluate(
+          metrics(
+            subjectLeft: 0.02,
+            subjectTop: 0.02,
+            subjectRight: 0.98,
+            subjectBottom: 0.98,
+          ),
+          technique: stack,
+        ).prompt,
         CapturePrompt.keepFoldsVisible,
       );
     });
@@ -451,6 +657,18 @@ void main() {
       expect(measured, const FrameMetrics.empty());
     });
 
+    test('flags a black unopened sensor so live guidance can ignore it', () {
+      expect(
+        metrics(
+          meanLuminance: 0.04,
+          centreDetail: 0,
+          subjectCoverage: 0,
+        ).isUnexposedPreview,
+        isTrue,
+      );
+      expect(metrics().isUnexposedPreview, isFalse);
+    });
+
     test('finds the product and its bounding box', () {
       const frame = SyntheticFrame();
       final measured = analyse(
@@ -463,6 +681,30 @@ void main() {
       expect(measured.subjectTop, closeTo(0.3, 0.08));
       expect(measured.subjectBottom, closeTo(0.7, 0.08));
       expect(measured.subjectEdgeContact, 0);
+    });
+
+    test('finds a small product on a tiled floor instead of the grout', () {
+      const frame = SyntheticFrame(
+        tiledFloor: true,
+        background: 175,
+        productMid: 80,
+        contrast: 40,
+      );
+      final measured = analyzer.analyseLumaPlane(
+        luma: frame.build(left: 0.38, top: 0.40, right: 0.62, bottom: 0.60),
+        width: frame.width,
+        height: frame.height,
+        bytesPerRow: frame.width,
+        insetX: 0.10,
+        insetY: 0.16,
+      );
+
+      expect(measured.subjectLeft, greaterThan(0.25));
+      expect(measured.subjectRight, lessThan(0.75));
+      expect(measured.subjectTop, greaterThan(0.25));
+      expect(measured.subjectBottom, lessThan(0.75));
+      expect(measured.subjectEdgeContact, lessThan(0.2));
+      expect(measured.boxFillOfGhost, lessThan(0.35));
     });
 
     test('sees a product that runs off the edge of the picture', () {

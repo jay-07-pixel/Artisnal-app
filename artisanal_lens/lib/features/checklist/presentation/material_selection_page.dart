@@ -6,6 +6,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fabric_material.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/choice_image_grid.dart';
 import '../../../shared/widgets/common.dart';
 
@@ -23,6 +24,7 @@ class _MaterialSelectionPageState extends State<MaterialSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final selected = FabricMaterial.byId(_selectedId ?? '');
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -31,7 +33,7 @@ class _MaterialSelectionPageState extends State<MaterialSelectionPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('New Product'),
+        title: Text(l10n.newProduct),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -42,7 +44,7 @@ class _MaterialSelectionPageState extends State<MaterialSelectionPage> {
         ),
         children: [
           Text(
-            'What material are\nyou working with?',
+            l10n.materialHeadline,
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space20),
@@ -51,7 +53,7 @@ class _MaterialSelectionPageState extends State<MaterialSelectionPage> {
               for (final material in FabricMaterial.all)
                 ImageChoice(
                   id: material.id,
-                  name: material.name,
+                  name: AppCopy.materialName(l10n, material.id),
                   thumbnailAsset: material.thumbnailAsset,
                 ),
             ],
@@ -64,7 +66,7 @@ class _MaterialSelectionPageState extends State<MaterialSelectionPage> {
         child: FilledButton.icon(
           onPressed: selected == null ? null : () => _continue(selected),
           icon: const Icon(Icons.arrow_forward, size: 20),
-          label: const Text('Continue'),
+          label: Text(l10n.continueAction),
         ),
       ),
     );

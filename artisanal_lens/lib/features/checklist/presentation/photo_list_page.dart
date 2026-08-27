@@ -9,6 +9,7 @@ import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/shot_guidance.dart';
 import '../../../domain/entities/shot_set.dart';
 import '../../../domain/entities/shot_type.dart';
+import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/common.dart';
 import '../../home/shot_sets_controller.dart';
 import '../../instruction/instruction_flow.dart';
@@ -30,10 +31,10 @@ class PhotoListPage extends ConsumerWidget {
     if (set == null) {
       return Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(title: const Text('Photos')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context).photos)),
         body: Center(
           child: Text(
-            'This product is no longer available.',
+            AppLocalizations.of(context).productUnavailable,
             style: AppTypography.bodyMedium,
           ),
         ),
@@ -43,6 +44,7 @@ class PhotoListPage extends ConsumerWidget {
     final slots = _orderedSlots(set);
     final next = set.nextSlot;
     final isSaree = set.usesSareePhotographyTemplates;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -62,14 +64,16 @@ class PhotoListPage extends ConsumerWidget {
         ),
         children: [
           Text(
-            isSaree ? 'Saree photography templates' : 'Photos to capture',
+            isSaree
+                ? l10n.sareePhotographyTemplatesTitle
+                : l10n.photosToCapture,
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space8),
           Text(
             isSaree
-                ? 'These are the five photographs to take.'
-                : 'These are the photos you need to take.',
+                ? l10n.sareePhotographyTemplatesBody
+                : l10n.photosToCaptureBody,
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space16),
@@ -114,7 +118,7 @@ class PhotoListPage extends ConsumerWidget {
                   pathParameters: {'setId': setId},
                 ),
                 icon: const Icon(Icons.check, size: 20),
-                label: const Text('View completed set'),
+                label: Text(l10n.viewCompletedSet),
               )
             : FilledButton.icon(
                 onPressed: next == null
@@ -128,8 +132,10 @@ class PhotoListPage extends ConsumerWidget {
                 icon: const Icon(Icons.photo_camera_outlined, size: 20),
                 label: Text(
                   next == null
-                      ? 'All photos captured'
-                      : 'Take next — ${next.label}',
+                      ? l10n.allPhotosCaptured
+                      : l10n.takeNext(
+                          AppCopy.shotSlotLabel(l10n, next),
+                        ),
                 ),
               ),
       ),
@@ -168,6 +174,7 @@ class _PhotoSlotCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final filled = slot.isFilled;
     final template = slot.template;
+    final l10n = AppLocalizations.of(context);
     final guidance = template != null
         ? ShotGuidance.fromTemplate(template)
         : slot.shotType.skipsStyleStep
@@ -221,13 +228,14 @@ class _PhotoSlotCard extends StatelessWidget {
                   children: [
                     Text(
                       template != null
-                          ? 'TEMPLATE'
-                          : slot.shotType.label.toUpperCase(),
+                          ? l10n.templateOverline
+                          : AppCopy.shotTypeLabel(l10n, slot.shotType)
+                              .toUpperCase(),
                       style: AppTypography.overline,
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      slot.label,
+                      AppCopy.shotSlotLabel(l10n, slot),
                       style: AppTypography.bodyLarge.copyWith(
                         color: AppColors.textPrimary,
                       ),
@@ -235,13 +243,26 @@ class _PhotoSlotCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     if (guidance != null && guidance.hasContent) ...[
                       Text(
-                        'Content: ${guidance.content}',
+                        l10n.contentPrefixed(
+                          AppCopy.displayedContent(
+                            l10n,
+                            templateName: guidance.templateName,
+                            fallback: guidance.content,
+                          ),
+                        ),
                         style: AppTypography.labelSmall,
                       ),
                       if (guidance.hasNeeds) ...[
                         const SizedBox(height: 2),
                         Text(
-                          'Needs: ${guidance.needs}',
+                          l10n.needsPrefixed(
+                            AppCopy.displayedNeeds(
+                                  l10n,
+                                  templateName: guidance.templateName,
+                                  fallback: guidance.needs,
+                                ) ??
+                                guidance.needs!,
+                          ),
                           style: AppTypography.labelSmall.copyWith(
                             color: AppColors.primary,
                           ),
@@ -249,13 +270,13 @@ class _PhotoSlotCard extends StatelessWidget {
                       ],
                     ] else
                       Text(
-                        slot.shotType.checklistDescription,
+                        AppCopy.shotTypeChecklist(l10n, slot.shotType),
                         style: AppTypography.labelSmall,
                       ),
                     if (isNext) ...[
                       const SizedBox(height: AppDimens.space8),
-                      const AppPill(
-                        label: 'NEXT',
+                      AppPill(
+                        label: l10n.nextPill,
                         background: AppColors.primary,
                         foreground: AppColors.textOnPrimary,
                       ),

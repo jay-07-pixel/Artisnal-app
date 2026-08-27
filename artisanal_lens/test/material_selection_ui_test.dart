@@ -2,10 +2,13 @@ import 'package:artisanal_lens/app/router.dart';
 import 'package:artisanal_lens/features/checklist/presentation/material_selection_page.dart';
 import 'package:artisanal_lens/features/checklist/presentation/product_setup_page.dart';
 import 'package:artisanal_lens/features/checklist/presentation/silk_type_page.dart';
+import 'package:artisanal_lens/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+
+import 'support/test_l10n.dart';
 
 FilledButton _continue(WidgetTester tester) {
   return tester.widget<FilledButton>(
@@ -18,8 +21,8 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(400, 1200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(home: MaterialSelectionPage()),
+      ProviderScope(
+        child: l10nApp(home: MaterialSelectionPage()),
       ),
     );
     await tester.pumpAndSettle();
@@ -36,8 +39,8 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(400, 1200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(home: SilkTypePage(materialId: 'silk')),
+      ProviderScope(
+        child: l10nApp(home: SilkTypePage(materialId: 'silk')),
       ),
     );
     await tester.pumpAndSettle();
@@ -60,7 +63,7 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await tester.pumpWidget(
         ProviderScope(
-          child: MaterialApp(home: SilkTypePage(materialId: material)),
+          child: l10nApp(home: SilkTypePage(materialId: material)),
         ),
       );
       await tester.pumpAndSettle();
@@ -108,7 +111,14 @@ void main() {
     );
 
     await tester.pumpWidget(
-      ProviderScope(child: MaterialApp.router(routerConfig: router)),
+      ProviderScope(
+        child: MaterialApp.router(
+          routerConfig: router,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 

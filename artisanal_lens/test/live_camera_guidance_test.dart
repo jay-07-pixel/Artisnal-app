@@ -256,6 +256,19 @@ void main() {
       expect(centred.prompt, CapturePrompt.ready);
       expect(shifted.isReadyToShoot, isFalse);
     });
+
+    test('a product sitting low in the frame is not called centred', () {
+      final feedback = inspect(
+        cloth,
+        guidance,
+        left: frame.left,
+        top: 0.62,
+        right: frame.right,
+        bottom: 0.95,
+      );
+
+      expect(feedback.centreQuality, CentreQuality.off);
+    });
   });
 
   group('light and focus are read from the frame', () {
@@ -277,6 +290,22 @@ void main() {
 
       expect(feedback.lightQuality, LightQuality.tooDark);
       expect(feedback.prompt, CapturePrompt.tooDark);
+    });
+
+    test('a well-framed shot that is merely dim is low light, not ready', () {
+      final feedback = inspect(
+        const SyntheticFrame(background: 70, productMid: 90, contrast: 35),
+        guidance,
+        left: frame.left,
+        top: frame.top,
+        right: frame.right,
+        bottom: frame.bottom,
+      );
+
+      expect(feedback.lightQuality, LightQuality.low);
+      expect(feedback.prompt, CapturePrompt.lowLight);
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+      expect(feedback.centreQuality, CentreQuality.ok);
     });
 
     test('a blown-out frame is called out', () {
@@ -304,6 +333,46 @@ void main() {
       );
 
       expect(feedback.prompt, CapturePrompt.holdSteady);
+    });
+
+    test('a small product on a tiled floor is told to move closer', () {
+      final feedback = inspect(
+        const SyntheticFrame(
+          tiledFloor: true,
+          background: 175,
+          productMid: 80,
+          contrast: 40,
+        ),
+        guidance,
+        left: 0.38,
+        top: 0.40,
+        right: 0.62,
+        bottom: 0.60,
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooFar);
+      expect(feedback.prompt, CapturePrompt.moveCloser);
+      expect(feedback.prompt, isNot(CapturePrompt.keepInsideFrame));
+    });
+
+    test('filling the dashed box on a tiled floor is not told to move back', () {
+      final feedback = inspect(
+        const SyntheticFrame(
+          tiledFloor: true,
+          background: 175,
+          productMid: 80,
+          contrast: 40,
+        ),
+        guidance,
+        left: frame.left,
+        top: frame.top,
+        right: frame.right,
+        bottom: frame.bottom,
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.ok);
+      expect(feedback.prompt, isNot(CapturePrompt.moveFurther));
+      expect(feedback.prompt, isNot(CapturePrompt.keepInsideFrame));
     });
 
     test('a sharp bold weave is not mistaken for a shaky one', () {
