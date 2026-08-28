@@ -122,7 +122,17 @@ void main() {
     }
   });
 
-  test('every catalog tutorial video is still a missing source asset', () async {
+  test('bundled catalog tutorial videos load', () async {
+    const bundled = <String>{
+      'assets/videos/cushion_propped.mp4',
+    };
+    for (final path in bundled) {
+      expect(await isBundled(path), isTrue, reason: path);
+    }
+  });
+
+  test('every other catalog tutorial video is still a missing source asset',
+      () async {
     final paths = <String>{};
     for (final category in catalog.categories()) {
       for (final preset in catalog.presetsForCategory(category.id)) {
@@ -131,7 +141,9 @@ void main() {
       }
     }
     expect(paths.length, 15);
+    const bundled = {'assets/videos/cushion_propped.mp4'};
     for (final path in paths) {
+      if (bundled.contains(path)) continue;
       expect(await isBundled(path), isFalse, reason: path);
     }
     expect(
