@@ -14,7 +14,6 @@ import '../../../shared/widgets/catalog_video.dart';
 import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
-import 'tutorial_step_gallery.dart';
 
 List<String> spokenTranscriptFor(
   FoldPreset? preset, {
@@ -43,7 +42,6 @@ class TutorialPage extends ConsumerWidget {
     final preset = ref.watch(selectedPresetProvider);
     final guidance = ref.watch(sessionGuidanceProvider);
     final catalogAsync = ref.watch(tutorialCatalogEntryProvider(preset?.id));
-    final catalogService = ref.watch(tutorialCatalogServiceProvider);
     final catalogEntry = catalogAsync.valueOrNull;
     final videoKey =
         catalogEntry?.videoStorageKey ?? preset?.tutorialVideoAsset;
@@ -82,13 +80,6 @@ class TutorialPage extends ConsumerWidget {
           ),
           const SizedBox(height: AppDimens.space20),
           CatalogVideo(videoKey: videoKey),
-          if (catalogEntry != null && catalogEntry.hasStepImages) ...[
-            const SizedBox(height: AppDimens.space24),
-            TutorialStepGallery(
-              steps: catalogEntry.stepImages,
-              catalogService: catalogService,
-            ),
-          ],
           const SizedBox(height: AppDimens.space24),
           Text(l10n.transcript, style: AppTypography.sectionHeader),
           const SizedBox(height: AppDimens.space12),
