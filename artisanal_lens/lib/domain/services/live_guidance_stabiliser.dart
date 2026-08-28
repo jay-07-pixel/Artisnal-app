@@ -18,9 +18,9 @@ import '../entities/capture_feedback.dart';
 /// This only ever delays a real measurement — it never invents one.
 class LiveGuidanceStabiliser {
   LiveGuidanceStabiliser({
-    this.framesToChange = 2,
-    this.framesToBecomeReady = 3,
-    this.framesToChangeChip = 2,
+    this.framesToChange = 3,
+    this.framesToBecomeReady = 4,
+    this.framesToChangeChip = 4,
   });
 
   /// Consecutive frames a new prompt must persist before it is shown.

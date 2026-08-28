@@ -8,6 +8,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/capture_feedback.dart';
+import '../../../domain/entities/photography_template.dart';
 import '../../../domain/entities/preset_capture_guidance.dart';
 import '../../../domain/entities/shot_type.dart';
 import '../../../l10n/app_copy.dart';
@@ -57,19 +58,28 @@ class _CapturePageState extends ConsumerState<CapturePage> {
 
     final technique = captureGuidance.technique;
     final l10n = AppLocalizations.of(context);
+    final template = (session.shotType != null &&
+            session.shotType!.isPhotography &&
+            session.slotIndex != null)
+        ? PhotographyTemplates.byIndex(
+            set?.categoryId ?? '',
+            session.slotIndex!,
+          )
+        : null;
     final slotLabel = session.shotType == null
         ? ''
-        : (session.slotIndex != null &&
-                session.slotIndex! < session.shotType!.slotLabels.length
-            ? AppCopy.slotLabel(
-                l10n,
-                session.shotType!,
-                session.slotIndex!,
-              )
-            : AppCopy.shotTypeLabel(l10n, session.shotType!));
+        : AppCopy.slotLabel(
+            l10n,
+            session.shotType!,
+            session.slotIndex ?? 0,
+            template: template,
+          );
     final overlayCaption = camera.feedback.hasVisiblePrompt
         ? ''
-        : (AppCopy.overlayCaptionForTemplate(l10n, guidance.templateName) ??
+        : (AppCopy.overlayCaptionForTemplate(
+              l10n,
+              guidance.templateId ?? guidance.templateName,
+            ) ??
             (slotLabel.isEmpty
                 ? ''
                 : l10n.fillFrameWith(

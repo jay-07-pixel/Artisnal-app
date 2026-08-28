@@ -10,20 +10,25 @@ import '../capture/capture_session_controller.dart';
 ///
 /// Photo list (and empty slots on the product viewer) call this so the
 /// session always carries the chosen set, shot type and slot. Style is
-/// inserted when the shot type needs a fold (Product, Lifestyle, Saree).
-/// Detail and Process skip it and go Lighting → Camera, where the setup
-/// instructions play over the live preview.
+/// inserted when the photograph needs a fold. Close-ups skip it and go
+/// Lighting → Camera.
 void beginCaptureForSlot(
   BuildContext context,
   WidgetRef ref, {
   required String setId,
   required ShotSlot slot,
 }) {
+  final skipsStyle =
+      slot.template?.skipsStyleStep ?? slot.shotType.skipsStyleStep;
   ref.read(captureSessionProvider.notifier)
     ..startFor(setId)
-    ..chooseShotType(slot.shotType, slotIndex: slot.index);
+    ..chooseShotType(
+      slot.shotType,
+      slotIndex: slot.index,
+      skipsStyle: skipsStyle,
+    );
 
-  if (slot.shotType.skipsStyleStep) {
+  if (skipsStyle) {
     context.pushNamed(
       AppRoute.lightingSetup,
       pathParameters: {'setId': setId},

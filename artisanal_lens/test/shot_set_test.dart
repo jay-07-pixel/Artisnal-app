@@ -45,35 +45,35 @@ void main() {
       final set = emptySet();
 
       expect(set.completedCount, 0);
-      expect(set.requiredCount, 7);
+      expect(set.requiredCount, 5);
       expect(set.completionRatio, 0);
       expect(set.isFinished, isFalse);
-      expect(set.slots.length, 7);
+      expect(set.slots.length, 5);
       expect(set.slots.every((slot) => !slot.isFilled), isTrue);
     });
 
     test('counts only the photographs actually taken', () {
       final set = emptySet().copyWith(
-        shots: [shot(ShotType.detail, 0), shot(ShotType.detail, 2)],
+        shots: [
+          shot(ShotType.photography, 0),
+          shot(ShotType.photography, 2),
+        ],
       );
 
       expect(set.completedCount, 2);
-      expect(set.completedCountFor(ShotType.detail), 2);
+      expect(set.completedCountFor(ShotType.photography), 2);
       expect(set.completedCountFor(ShotType.process), 0);
-      expect(set.completionRatio, closeTo(2 / 7, 0.001));
+      expect(set.completionRatio, closeTo(2 / 5, 0.001));
       expect(set.isFinished, isFalse);
     });
 
-    test('is finished only when all seven slots are filled', () {
-      final all = <CapturedShot>[];
-      for (final type in ShotType.figmaChecklistTypes) {
-        for (var i = 0; i < type.requiredCount; i++) {
-          all.add(shot(type, i));
-        }
-      }
+    test('is finished only when all five template slots are filled', () {
+      final all = <CapturedShot>[
+        for (var i = 0; i < 5; i++) shot(ShotType.photography, i),
+      ];
       final set = emptySet().copyWith(shots: all);
 
-      expect(set.completedCount, 7);
+      expect(set.completedCount, 5);
       expect(set.isFinished, isTrue);
       expect(set.completionRatio, 1);
       expect(set.nextSlot, isNull);
@@ -82,35 +82,33 @@ void main() {
   });
 
   group('next slot suggestion', () {
-    test('a fresh set is steered to the Product hero shot first', () {
-      // The setup screen marks PRODUCT as "RECOMMENDED NEXT" on a new set.
+    test('a fresh set is steered to the first photography template', () {
       final next = emptySet().nextSlot;
 
       expect(next, isNotNull);
-      expect(next!.shotType, ShotType.product);
+      expect(next!.shotType, ShotType.photography);
       expect(next.index, 0);
-      expect(next.label, 'Hero shot');
+      expect(next.label, 'Full Cover Display');
     });
 
-    test('moves to Detail once the product shot is taken', () {
-      final set = emptySet().copyWith(shots: [shot(ShotType.product, 0)]);
+    test('moves to the next template once the first is taken', () {
+      final set = emptySet().copyWith(shots: [shot(ShotType.photography, 0)]);
 
-      expect(set.nextSlot!.shotType, ShotType.detail);
-      expect(set.nextSlot!.label, 'Border');
+      expect(set.nextSlot!.shotType, ShotType.photography);
+      expect(set.nextSlot!.label, 'Texture & Weave');
     });
 
     test('skips slots already filled within a type', () {
       final set = emptySet().copyWith(
         shots: [
-          shot(ShotType.product, 0),
-          shot(ShotType.detail, 0),
-          shot(ShotType.detail, 1),
+          shot(ShotType.photography, 0),
+          shot(ShotType.photography, 1),
         ],
       );
 
-      expect(set.nextSlot!.shotType, ShotType.detail);
+      expect(set.nextSlot!.shotType, ShotType.photography);
       expect(set.nextSlot!.index, 2);
-      expect(set.nextSlot!.label, 'Motif');
+      expect(set.nextSlot!.label, 'Stacked Pair / Thickness');
     });
 
     test('nextSlotFor targets a specific type regardless of order', () {
@@ -133,13 +131,14 @@ void main() {
     test('is the most recently captured photograph', () {
       final set = emptySet().copyWith(
         shots: [
-          shot(ShotType.product, 0, minute: 5),
-          shot(ShotType.detail, 0, minute: 30),
-          shot(ShotType.process, 0, minute: 12),
+          shot(ShotType.photography, 0, minute: 5),
+          shot(ShotType.photography, 1, minute: 30),
+          shot(ShotType.photography, 2, minute: 12),
         ],
       );
 
-      expect(set.coverShot!.shotType, ShotType.detail);
+      expect(set.coverShot!.shotType, ShotType.photography);
+      expect(set.coverShot!.slotIndex, 1);
     });
 
     test('is null for an empty set', () {
@@ -217,12 +216,9 @@ void main() {
 
   group('previous sets progress filter', () {
     ShotSet finishedSet() {
-      final all = <CapturedShot>[];
-      for (final type in ShotType.figmaChecklistTypes) {
-        for (var i = 0; i < type.requiredCount; i++) {
-          all.add(shot(type, i));
-        }
-      }
+      final all = <CapturedShot>[
+        for (var i = 0; i < 5; i++) shot(ShotType.photography, i),
+      ];
       return emptySet().copyWith(shots: all);
     }
 

@@ -119,11 +119,25 @@ class CaptureGuidanceService {
     required TechniquePreset technique,
     required double pitchDegrees,
     CameraGuidanceProfile? profile,
+    DistanceQuality previousDistance = DistanceQuality.unknown,
+    CentreQuality previousCentre = CentreQuality.unknown,
   }) {
     final checks = profile ?? CameraGuidanceProfile.fromTechnique(technique);
     final active = _thresholdsFor(checks);
     final lightQuality = _lightQuality(metrics, active);
     final angleQuality = _angleQuality(technique.angle, pitchDegrees);
+    final distanceQuality = _distanceQuality(
+      metrics,
+      checks,
+      active,
+      previousDistance,
+    );
+    final centreQuality = _centreQuality(
+      metrics,
+      checks,
+      active,
+      previousCentre,
+    );
 
     return CaptureFeedback(
       lightQuality: lightQuality,
@@ -134,12 +148,14 @@ class CaptureGuidanceService {
         thresholds: active,
         lightQuality: lightQuality,
         angleQuality: angleQuality,
+        previousDistance: previousDistance,
+        previousCentre: previousCentre,
       ),
       meanLuminance: metrics.meanLuminance,
       pitchDegrees: pitchDegrees,
       subjectFillRatio: metrics.subjectFillRatio,
-      distanceQuality: _distanceQuality(metrics, checks, active),
-      centreQuality: _centreQuality(metrics, checks, active),
+      distanceQuality: distanceQuality,
+      centreQuality: centreQuality,
       productNoun: checks.productNoun,
     );
   }
@@ -183,31 +199,91 @@ class CaptureGuidanceService {
     FrameMetrics metrics,
     CameraGuidanceProfile checks,
     CaptureThresholds thresholds,
+    DistanceQuality previous,
   ) {
     if (metrics.subjectCoverage < thresholds.minSubjectCoverage) {
       return DistanceQuality.unknown;
     }
+    // Full-product shot with cloth covering the whole picture — too close.
+    // (Close-ups are allowed to fill the frame; empty tiled floors lack the
+    // matching border texture and fall through to the floor swallow below.)
+    if (_isWallToWallProduct(metrics, checks)) {
+      return DistanceQuality.tooClose;
+    }
+    // A blob that is the whole picture without wall-to-wall fabric texture
+    // is usually the floor, not a measured close-up.
+    if (_isWholePictureBlob(metrics)) {
+      return DistanceQuality.ok;
+    }
+    // Product spilling past the dashed guide is too close — check before
+    // silencing Distance for edge placement, or a cropped cushion stays OK.
     if (_isOverflowing(metrics, checks, thresholds)) {
       return DistanceQuality.tooClose;
     }
-    if (checks.detectsSubjectFill && _isUnderFilled(metrics, checks)) {
+    // Off the picture edge is a placement problem — the Distance chip
+    // stays quiet so it does not fight "keep inside the frame".
+    if (metrics.subjectEdgeContact > thresholds.maxEdgeContact &&
+        !metrics.boxFitsInsideGhost) {
+      return DistanceQuality.ok;
+    }
+    if (checks.detectsSubjectFill &&
+        _isUnderFilled(metrics, checks, previous)) {
       return DistanceQuality.tooFar;
     }
     return DistanceQuality.ok;
+  }
+
+  bool _isWholePictureBlob(FrameMetrics metrics) {
+    return metrics.subjectLeft <= 0.005 &&
+        metrics.subjectTop <= 0.005 &&
+        metrics.subjectRight >= 0.995 &&
+        metrics.subjectBottom >= 0.995;
+  }
+
+  /// Cloth fills the picture edge-to-edge — the artisan is too close for a
+  /// full-product shot.
+  ///
+  /// Needs matching texture in the margin so a busy floor that occupancy
+  /// swallowed (high coverage, quiet border detail) is not told to move back.
+  bool _isWallToWallProduct(
+    FrameMetrics metrics,
+    CameraGuidanceProfile checks,
+  ) {
+    if (checks.isCloseUp || !checks.detectsOverflow) return false;
+    if (metrics.centreDetail < 0.03) return false;
+    final borderShare = metrics.borderDetail / metrics.centreDetail;
+    if (borderShare < 0.45) return false;
+    if (_isWholePictureBlob(metrics)) return true;
+    // Cropped on opposite picture edges while filling the guide.
+    if (metrics.touchesOppositePictureEdges &&
+        metrics.boxFillOfGhost > 0.55) {
+      return true;
+    }
+    // Nearly full frame with fabric continuing past the ghost.
+    return metrics.subjectEdgeContact > 0.40 &&
+        metrics.boxFillOfGhost > 0.70 &&
+        metrics.boxOverflowsGhost;
   }
 
   CentreQuality _centreQuality(
     FrameMetrics metrics,
     CameraGuidanceProfile checks,
     CaptureThresholds thresholds,
+    CentreQuality previous,
   ) {
     if (metrics.subjectCoverage < thresholds.minSubjectCoverage) {
       return CentreQuality.unknown;
     }
-    if (_centringOffset(metrics, checks) > thresholds.maxCentringOffset) {
-      return CentreQuality.off;
+    final offset = _centringOffset(metrics, checks);
+    final max = thresholds.maxCentringOffset;
+    // Hysteresis: a 1–2 cm wobble must not flip Centre every tick.
+    if (previous == CentreQuality.off) {
+      return offset > max - 0.04 ? CentreQuality.off : CentreQuality.ok;
     }
-    return CentreQuality.ok;
+    if (previous == CentreQuality.ok) {
+      return offset > max + 0.04 ? CentreQuality.off : CentreQuality.ok;
+    }
+    return offset > max ? CentreQuality.off : CentreQuality.ok;
   }
 
   /// Full-product shots follow the cloth's box. Close-ups follow the weave
@@ -233,6 +309,8 @@ class CaptureGuidanceService {
     required CaptureThresholds thresholds,
     required LightQuality lightQuality,
     required AngleQuality angleQuality,
+    DistanceQuality previousDistance = DistanceQuality.unknown,
+    CentreQuality previousCentre = CentreQuality.unknown,
   }) {
     // 1. Is anything there? A frame this dark cannot be judged for content,
     //    so darkness is the honest answer rather than "place the saree".
@@ -254,6 +332,11 @@ class CaptureGuidanceService {
         metrics.targetCoverage < checks.minTargetCoverage) {
       return CapturePrompt.moveIntoFrame;
     }
+    // Wall-to-wall cloth outranks "keep inside the frame" — the artisan
+    // must back up before placement tips make sense.
+    if (_isWallToWallProduct(metrics, checks)) {
+      return _wordOverflow(checks);
+    }
     // Floor tiles reaching the picture edge are not the product running
     // off it. Only clip when the measured box itself leaves the ghost.
     if (metrics.subjectEdgeContact > thresholds.maxEdgeContact &&
@@ -266,10 +349,12 @@ class CaptureGuidanceService {
     //    to the same low value an empty guide produces. A small distant
     //    product can look the same on the ratio alone, so overflow only
     //    speaks when the guide itself is actually filled.
-    if (_isOverflowing(metrics, checks, thresholds)) {
+    if (!_isWholePictureBlob(metrics) &&
+        _isOverflowing(metrics, checks, thresholds)) {
       return _wordOverflow(checks);
     }
-    if (checks.detectsSubjectFill && _isUnderFilled(metrics, checks)) {
+    if (checks.detectsSubjectFill &&
+        _isUnderFilled(metrics, checks, previousDistance)) {
       return CapturePrompt.moveCloser;
     }
 
@@ -312,7 +397,8 @@ class CaptureGuidanceService {
       return CapturePrompt.tiltPhone;
     }
     if (checks.detectsCentring &&
-        _centringOffset(metrics, checks) > thresholds.maxCentringOffset) {
+        _centreQuality(metrics, checks, thresholds, previousCentre) ==
+            CentreQuality.off) {
       return _wordCentring(checks);
     }
 
@@ -330,16 +416,37 @@ class CaptureGuidanceService {
     CaptureThresholds thresholds,
   ) {
     if (!checks.detectsOverflow) return false;
+    // Texture close-ups may fill past the guide on purpose.
+    if (checks.isCloseUp &&
+        checks.composition == CompositionRule.centerFocus) {
+      return false;
+    }
+    // Whole-picture floor swallow is handled separately — do not call it
+    // "move further" without wall-to-wall fabric texture.
+    if (_isWholePictureBlob(metrics)) return false;
     return metrics.boxOverflowsGhost;
   }
 
-  /// True when both occupancy and the product's box say the ghost is empty.
+  /// True when the product's box says the ghost is under-filled.
   ///
   /// Texture contrast alone is not enough: a tiled floor is as busy as a
   /// cushion cover, which used to look like "move closer" on a well-filled
-  /// dashed box.
-  bool _isUnderFilled(FrameMetrics metrics, CameraGuidanceProfile checks) {
-    return metrics.boxFillOfGhost < checks.minTargetCoverage;
+  /// dashed box. Hysteresis keeps a tiny fill wobble from flipping Distance.
+  bool _isUnderFilled(
+    FrameMetrics metrics,
+    CameraGuidanceProfile checks,
+    DistanceQuality previous,
+  ) {
+    final fill = metrics.boxFillOfGhost;
+    final min = checks.minTargetCoverage;
+    if (previous == DistanceQuality.tooFar) {
+      return fill < min + 0.08;
+    }
+    if (previous == DistanceQuality.ok ||
+        previous == DistanceQuality.tooClose) {
+      return fill < min - 0.06;
+    }
+    return fill < min;
   }
 
   /// The product is running out of the picture entirely.

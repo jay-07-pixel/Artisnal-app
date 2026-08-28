@@ -34,12 +34,9 @@ ShotSet _pending() => ShotSet(
     );
 
 ShotSet _finished() {
-  final shots = <CapturedShot>[];
-  for (final type in ShotType.figmaChecklistTypes) {
-    for (var i = 0; i < type.requiredCount; i++) {
-      shots.add(_shot(type, i));
-    }
-  }
+  final shots = <CapturedShot>[
+    for (var i = 0; i < 5; i++) _shot(ShotType.photography, i),
+  ];
   return ShotSet(
     id: 'finished',
     productName: 'Finished Saree',

@@ -15,14 +15,11 @@ import '../../../shared/widgets/common.dart';
 import '../../capture/capture_session_controller.dart';
 import '../../home/shot_sets_controller.dart';
 
-/// Style selection for Product, Lifestyle and Saree photography.
+/// Style selection for photographs that need a fold.
 ///
-/// Shot type (or Saree template) is already chosen on the photo list. This
-/// screen is only the fold/style decision, then it hands off to Lighting &
-/// Setup. Process and Detail never land here — they skip straight to lighting.
-///
-/// All four documented folds for the chosen category are listed. They are
-/// not filtered by shot type: that mapping was not in the Solution Deck.
+/// Shot type (or photography template) is already chosen on the photo list.
+/// Close-ups never land here. Only the presets paired with that photograph
+/// are listed.
 class ShotAndStylePage extends ConsumerWidget {
   const ShotAndStylePage({required this.setId, super.key});
 
@@ -35,12 +32,25 @@ class ShotAndStylePage extends ConsumerWidget {
     final shotType = session.shotType;
     final catalog = ref.watch(catalogRepositoryProvider);
     final category = catalog.categoryById(set?.categoryId ?? '');
+    final template = (shotType != null && shotType.isPhotography)
+        ? PhotographyTemplates.byIndex(
+            set?.categoryId ?? '',
+            session.slotIndex ?? -1,
+          )
+        : null;
 
-    final presets = shotType == null
+    final allPresets = shotType == null
         ? const <FoldPreset>[]
         : catalog.presets(categoryId: set?.categoryId ?? '');
+    final presets = template == null
+        ? allPresets
+        : allPresets
+            .where((preset) => template.allowedPresetIds.contains(preset.id))
+            .toList();
 
-    final needsStyle = shotType != null && !shotType.skipsStyleStep;
+    final needsStyle = template != null
+        ? template.needsStyleStep
+        : shotType != null && !shotType.skipsStyleStep;
     final canContinue = session.canOpenCamera &&
         (!needsStyle || presets.isEmpty || session.presetId != null);
     final l10n = AppLocalizations.of(context);
@@ -72,6 +82,7 @@ class ShotAndStylePage extends ConsumerWidget {
               shotType: shotType,
               slotIndex: session.slotIndex,
               categoryId: category?.id,
+              template: template,
             ),
             style: AppTypography.bodyMedium,
           ),
@@ -114,13 +125,19 @@ class ShotAndStylePage extends ConsumerWidget {
     required ShotType? shotType,
     required int? slotIndex,
     required String? categoryId,
+    PhotographyTemplate? template,
   }) {
     if (shotType == null) return l10n.stylePickFirst;
+    if (template != null) {
+      return l10n.styleSubtitleSaree(
+        AppCopy.templateNameLower(l10n, template.id),
+      );
+    }
     if (shotType == ShotType.sareePhotography) {
-      final template = SareePhotographyTemplates.byIndex(slotIndex ?? -1);
-      if (template != null) {
+      final saree = SareePhotographyTemplates.byIndex(slotIndex ?? -1);
+      if (saree != null) {
         return l10n.styleSubtitleSaree(
-          AppCopy.templateNameLower(l10n, template.id),
+          AppCopy.templateNameLower(l10n, saree.id),
         );
       }
     }

@@ -17,6 +17,7 @@ class ShotGuidance {
     this.needs,
     this.placement,
     this.overlayCaption,
+    this.templateId,
     this.templateName,
   });
 
@@ -33,7 +34,8 @@ class ShotGuidance {
   final TechniquePreset technique;
   final String? overlayCaption;
 
-  /// Photography-template name when this slot uses one. Never a fold name.
+  /// Photography-template id and name when this slot uses one. Never a fold.
+  final String? templateId;
   final String? templateName;
 
   bool get hasContent => content.trim().isNotEmpty;
@@ -68,18 +70,17 @@ class ShotGuidance {
 
   /// Resolves guidance for the photograph about to be taken.
   ///
-  /// Product and Lifestyle use the chosen fold's technique. Saree keeps the
-  /// photography-template technique even after a fold is chosen, so the five
-  /// BTP grids stay on Lighting, Alignment and Camera. The fold is still used
-  /// for How should it look, placement and the tutorial transcript. Detail
-  /// and Process skip the style step and load slot guidance instead.
+  /// Photography templates win over the chosen fold for grid and camera
+  /// copy. The fold is still used for How should it look, placement and
+  /// the tutorial transcript. Detail and Process skip the style step and
+  /// load slot guidance instead.
   factory ShotGuidance.resolve({
     required ShotType shotType,
     required int slotIndex,
     FoldPreset? preset,
     String? categoryId,
   }) {
-    if (shotType == ShotType.sareePhotography) {
+    if (shotType.isPhotography) {
       return ShotGuidance.forSlot(
         shotType,
         slotIndex,
@@ -109,11 +110,8 @@ class ShotGuidance {
     );
   }
 
-  /// Slot-level guidance used when there is no fold preset (Detail, Process).
-  ///
-  /// BTP §7.3 Texture & Weave and Embroidery & Border apply only when
-  /// [categoryId] is Saree. Other categories keep the existing Detail
-  /// fallback. No Cushion/Shawl/Stole photography templates are invented.
+  /// Slot-level guidance used when there is no fold preset (Detail, Process)
+  /// or when a photography template owns the slot.
   factory ShotGuidance.forSlot(
     ShotType shotType,
     int slotIndex, {
@@ -121,14 +119,20 @@ class ShotGuidance {
   }) {
     switch (shotType) {
       case ShotType.sareePhotography:
-        final template = SareePhotographyTemplates.byIndex(slotIndex);
+      case ShotType.photography:
+        final template = PhotographyTemplates.byIndex(
+              categoryId ?? sareeCategoryId,
+              slotIndex,
+            ) ??
+            (shotType == ShotType.sareePhotography
+                ? SareePhotographyTemplates.byIndex(slotIndex)
+                : null);
         if (template == null) {
           return ShotGuidance(
             content: '',
-            technique: ShotType.sareePhotography.fallbackTechnique,
+            technique: shotType.fallbackTechnique,
             guidance: const [],
-            overlayCaption:
-                ShotType.sareePhotography.fallbackTechnique.composition.hint,
+            overlayCaption: shotType.fallbackTechnique.composition.hint,
           );
         }
         return ShotGuidance.fromTemplate(template);
@@ -219,6 +223,7 @@ class ShotGuidance {
       guidance: template.guidance,
       technique: template.technique,
       overlayCaption: template.overlayCaption ?? template.composition.hint,
+      templateId: template.id,
       templateName: template.name,
     );
   }

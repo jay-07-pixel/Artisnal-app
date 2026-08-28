@@ -1,4 +1,5 @@
 import 'fold_preset.dart';
+import 'photography_template.dart';
 import 'shot_guidance.dart';
 import 'technique_preset.dart';
 
@@ -49,6 +50,7 @@ class CameraGuidanceProfile {
     this.orientationTarget = EdgeOrientationTarget.none,
     this.minTargetCoverage = 0.35,
     this.maxCentringOffset = 0.12,
+    this.isCloseUp = false,
   });
 
   final GridOverlayType grid;
@@ -70,6 +72,10 @@ class CameraGuidanceProfile {
 
   /// How far off-centre the subject may sit before it is called out.
   final double maxCentringOffset;
+
+  /// Texture / border close-ups may fill the whole picture. Full-product
+  /// shots must not — that means the artisan is too close.
+  final bool isCloseUp;
 
   /// Whether the fabric-direction check can run for this preset.
   bool get detectsOrientation => orientationTarget != EdgeOrientationTarget.none;
@@ -114,8 +120,9 @@ class CameraGuidanceProfile {
       productNoun: productNoun,
       placementInstruction: placementInstruction,
       orientationTarget: technique.grid.orientationTarget,
-      minTargetCoverage: closeUp ? 0.55 : 0.35,
-      maxCentringOffset: closeUp ? 0.08 : 0.10,
+      minTargetCoverage: closeUp ? 0.55 : 0.32,
+      maxCentringOffset: closeUp ? 0.10 : 0.14,
+      isCloseUp: closeUp,
       detectsLight: true,
       detectsBacklight: !technique.lighting.expectsBacklight,
       detectsAngle: true,
@@ -339,7 +346,8 @@ class PresetCaptureGuidance {
       );
     }
 
-    final templateId = _templateIdFor(shotGuidance.templateName);
+    final templateId = shotGuidance.templateId ??
+        PhotographyTemplates.byName(shotGuidance.templateName)?.id;
 
     return PresetCaptureGuidance(
       presetId: presetId,
@@ -366,22 +374,5 @@ class PresetCaptureGuidance {
       return 'Alignment illustration to be added';
     }
     return 'Setup illustration to be added';
-  }
-
-  static String? _templateIdFor(String? name) {
-    switch (name) {
-      case 'Full Saree Display':
-        return 'saree_full_display';
-      case 'Texture & Weave':
-        return 'saree_texture_weave';
-      case 'Draped Look':
-        return 'saree_draped_look';
-      case 'Embroidery & Border Details':
-        return 'saree_embroidery_border';
-      case 'Folded Stack / Saree Stack':
-        return 'saree_folded_stack';
-      default:
-        return null;
-    }
   }
 }

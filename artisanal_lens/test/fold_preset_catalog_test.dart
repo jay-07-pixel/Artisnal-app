@@ -182,6 +182,53 @@ void main() {
     expect(find.text('Neck wrap (worn)'), findsNothing);
   });
 
+  testWidgets('Saree Full Display offers only worn and roll folds',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 2400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _harness(
+        session: const CaptureSession(
+          setId: 'saree_1',
+          shotType: ShotType.sareePhotography,
+          slotIndex: 0,
+        ),
+        categoryId: BundledCatalogDataSource.saree,
+        productName: 'Test Saree',
+        child: const ShotAndStylePage(setId: 'saree_1'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Worn drape (model)', skipOffstage: false), findsOneWidget);
+    expect(find.text('Roll display', skipOffstage: false), findsOneWidget);
+    expect(find.text('Pallu drape (hanger)'), findsNothing);
+    expect(find.text('Box / flat fold'), findsNothing);
+  });
+
+  testWidgets('Cushion Full Cover Display offers only Flat lay', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 2400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _harness(
+        session: const CaptureSession(
+          setId: 'cushion_1',
+          shotType: ShotType.photography,
+          slotIndex: 0,
+        ),
+        categoryId: BundledCatalogDataSource.cushionCover,
+        productName: 'Test Cushion',
+        child: const ShotAndStylePage(setId: 'cushion_1'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Flat lay', skipOffstage: false), findsOneWidget);
+    expect(find.text('Stacked pair'), findsNothing);
+    expect(find.text('Propped on seating'), findsNothing);
+    expect(find.text('Corner tuck close-up'), findsNothing);
+  });
+
   testWidgets('Cushion style list shows all four Cushion folds on Product',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2400));

@@ -43,7 +43,7 @@ class PhotoListPage extends ConsumerWidget {
 
     final slots = _orderedSlots(set);
     final next = set.nextSlot;
-    final isSaree = set.usesSareePhotographyTemplates;
+    final usesTemplates = set.usesPhotographyTemplates;
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
@@ -64,15 +64,19 @@ class PhotoListPage extends ConsumerWidget {
         ),
         children: [
           Text(
-            isSaree
-                ? l10n.sareePhotographyTemplatesTitle
+            usesTemplates
+                ? (set.usesSareePhotographyTemplates
+                    ? l10n.sareePhotographyTemplatesTitle
+                    : l10n.photographyTemplatesTitle)
                 : l10n.photosToCapture,
             style: AppTypography.displayLarge,
           ),
           const SizedBox(height: AppDimens.space8),
           Text(
-            isSaree
-                ? l10n.sareePhotographyTemplatesBody
+            usesTemplates
+                ? (set.usesSareePhotographyTemplates
+                    ? l10n.sareePhotographyTemplatesBody
+                    : l10n.photographyTemplatesBody)
                 : l10n.photosToCaptureBody,
             style: AppTypography.bodyMedium,
           ),
@@ -97,7 +101,7 @@ class PhotoListPage extends ConsumerWidget {
               isNext: next != null &&
                   next.shotType == slots[i].shotType &&
                   next.index == slots[i].index,
-              onTap: (!slots[i].isFilled || isSaree)
+              onTap: (!slots[i].isFilled || usesTemplates)
                   ? () => beginCaptureForSlot(
                         context,
                         ref,
@@ -146,7 +150,7 @@ class PhotoListPage extends ConsumerWidget {
 /// Checklist order follows the recommended shooting order, not enum order,
 /// so the next photograph sits where the artisan expects it.
 List<ShotSlot> _orderedSlots(ShotSet set) {
-  if (set.usesSareePhotographyTemplates) return set.slots;
+  if (set.usesPhotographyTemplates) return set.slots;
   final lookup = {
     for (final slot in set.slots) '${slot.shotType.id}-${slot.index}': slot,
   };
@@ -246,6 +250,7 @@ class _PhotoSlotCard extends StatelessWidget {
                         l10n.contentPrefixed(
                           AppCopy.displayedContent(
                             l10n,
+                            templateId: template?.id,
                             templateName: guidance.templateName,
                             fallback: guidance.content,
                           ),
@@ -258,6 +263,7 @@ class _PhotoSlotCard extends StatelessWidget {
                           l10n.needsPrefixed(
                             AppCopy.displayedNeeds(
                                   l10n,
+                                  templateId: template?.id,
                                   templateName: guidance.templateName,
                                   fallback: guidance.needs,
                                 ) ??

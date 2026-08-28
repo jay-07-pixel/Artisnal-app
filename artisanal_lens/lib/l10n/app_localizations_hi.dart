@@ -124,6 +124,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sareePhotographyTemplatesBody => 'ये पाँच फोटो लेनी हैं।';
 
   @override
+  String get photographyTemplatesTitle => 'फोटोग्राफी टेम्पलेट';
+
+  @override
+  String get photographyTemplatesBody => 'ये पाँच फोटो लेनी हैं।';
+
+  @override
   String get viewCompletedSet => 'पूरा सेट देखें';
 
   @override
@@ -741,6 +747,294 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get templateTextureWeaveLighting => 'नरम रोशनी रखें। तेज चमक से बचें।';
+
+  @override
+  String get templateCushionFullCover => 'पूरे कवर का प्रदर्शन';
+
+  @override
+  String get templateCushionTextureWeave => 'बनावट और बुनाई';
+
+  @override
+  String get templateCushionStackedPair => 'जोड़ी की ढेर / मोटाई';
+
+  @override
+  String get templateCushionCornerStitching => 'कोना और सिलाई';
+
+  @override
+  String get templateCushionInUse => 'सीट पर उपयोग में';
+
+  @override
+  String get templateCushionFullCoverLower => 'पूरे कवर का प्रदर्शन';
+
+  @override
+  String get templateCushionTextureWeaveLower => 'बनावट और बुनाई';
+
+  @override
+  String get templateCushionStackedPairLower => 'जोड़ी की ढेर / मोटाई';
+
+  @override
+  String get templateCushionCornerStitchingLower => 'कोना और सिलाई';
+
+  @override
+  String get templateCushionInUseLower => 'सीट पर उपयोग में';
+
+  @override
+  String get templateCushionFullCoverContent => 'रंग, पैटर्न, सामग्री';
+
+  @override
+  String get templateCushionTextureWeaveContent => 'बनावट, मोटाई, सामग्री';
+
+  @override
+  String get templateCushionStackedPairContent => 'मोटाई, सामग्री, बनावट';
+
+  @override
+  String get templateCushionCornerStitchingContent => 'गुणवत्ता, बनावट, कढ़ाई';
+
+  @override
+  String get templateCushionInUseContent => 'रंग, पैटर्न, गुणवत्ता';
+
+  @override
+  String get templateCushionFullCoverNeeds =>
+      'प्राकृतिक दिन की रोशनी; सादा सतह';
+
+  @override
+  String get templateCushionTextureWeaveNeeds => 'जितना हो सके प्राकृतिक रोशनी';
+
+  @override
+  String get templateCushionStackedPairNeeds => 'बगल की रोशनी; एक जोड़ी कवर';
+
+  @override
+  String get templateCushionCornerStitchingNeeds => 'बगल की रोशनी';
+
+  @override
+  String get templateCushionInUseNeeds => 'कुर्सी, सोफा या बिस्तर';
+
+  @override
+  String get templateCushionFullCoverPlacement =>
+      'कवर को सादी सतह पर समतल रखें';
+
+  @override
+  String get templateCushionTextureWeavePlacement => 'कवर का अच्छा रोशन हिस्सा';
+
+  @override
+  String get templateCushionStackedPairPlacement =>
+      'दो कवर ऐसे ढेर करें कि किनारे कैमरे की ओर हों';
+
+  @override
+  String get templateCushionCornerStitchingPlacement =>
+      'सिलाई वाले कोने का क्लोज-अप';
+
+  @override
+  String get templateCushionInUsePlacement =>
+      'कवर को सीट पर टिकाएँ, कैमरे की ओर';
+
+  @override
+  String get templateCushionFullCoverOverlay =>
+      'किनारों को ग्रिड के साथ सीधा रखें';
+
+  @override
+  String get templateCushionTextureWeaveOverlay => 'बनावट को केंद्र में रखें';
+
+  @override
+  String get templateCushionStackedPairOverlay =>
+      'मोड़ों को आड़ी रेखाओं के समांतर रखें';
+
+  @override
+  String get templateCushionCornerStitchingOverlay =>
+      'सिलाई को फ्रेम के अंदर रखें';
+
+  @override
+  String get templateCushionInUseOverlay => 'कवर को फ्रेम में रखें';
+
+  @override
+  String get templateShawlFullDesign => 'पूरे डिज़ाइन का प्रदर्शन';
+
+  @override
+  String get templateShawlTextureWeave => 'बनावट और बुनाई';
+
+  @override
+  String get templateShawlDrapedLook => 'ड्रेप लुक';
+
+  @override
+  String get templateShawlBorderCorner => 'बॉर्डर और कोना';
+
+  @override
+  String get templateShawlFoldedStack => 'मुड़ी हुई ढेर';
+
+  @override
+  String get templateShawlFullDesignLower => 'पूरे डिज़ाइन का प्रदर्शन';
+
+  @override
+  String get templateShawlTextureWeaveLower => 'बनावट और बुनाई';
+
+  @override
+  String get templateShawlDrapedLookLower => 'ड्रेप लुक';
+
+  @override
+  String get templateShawlBorderCornerLower => 'बॉर्डर और कोना';
+
+  @override
+  String get templateShawlFoldedStackLower => 'मुड़ी हुई ढेर';
+
+  @override
+  String get templateShawlFullDesignContent => 'पैटर्न, रंग, पारदर्शिता';
+
+  @override
+  String get templateShawlTextureWeaveContent => 'बनावट, मोटाई, सामग्री';
+
+  @override
+  String get templateShawlDrapedLookContent => 'हलकापन, सामग्री, पैटर्न';
+
+  @override
+  String get templateShawlBorderCornerContent => 'बनावट, गुणवत्ता, कढ़ाई';
+
+  @override
+  String get templateShawlFoldedStackContent => 'मोटाई, सामग्री';
+
+  @override
+  String get templateShawlFullDesignNeeds =>
+      'रस्सी, बाँस या दीवार जिस पर पिन करें';
+
+  @override
+  String get templateShawlTextureWeaveNeeds => 'जितना हो सके प्राकृतिक रोशनी';
+
+  @override
+  String get templateShawlDrapedLookNeeds => 'शॉल पहनने वाला कोई व्यक्ति';
+
+  @override
+  String get templateShawlBorderCornerNeeds => 'बगल की रोशनी';
+
+  @override
+  String get templateShawlFoldedStackNeeds => 'बगल की रोशनी';
+
+  @override
+  String get templateShawlFullDesignPlacement =>
+      'शॉल बिना झुके समतल लटकाएँ या पिन करें';
+
+  @override
+  String get templateShawlTextureWeavePlacement => 'शॉल का अच्छा रोशन हिस्सा';
+
+  @override
+  String get templateShawlDrapedLookPlacement =>
+      'शॉल एक कंधे पर, प्राकृतिक रूप से गिरता हुआ';
+
+  @override
+  String get templateShawlBorderCornerPlacement => 'कोने और बॉर्डर का क्लोज-अप';
+
+  @override
+  String get templateShawlFoldedStackPlacement =>
+      'साफ-सुथरी ढेर, मोड़ दिखते हुए';
+
+  @override
+  String get templateShawlFullDesignOverlay =>
+      'बॉर्डर को ग्रिड के ऊपरी तिहाई से मिलाएँ';
+
+  @override
+  String get templateShawlTextureWeaveOverlay => 'बनावट को केंद्र में रखें';
+
+  @override
+  String get templateShawlDrapedLookOverlay =>
+      'मोड़ों को तिरछी रेखाओं के साथ बहने दें';
+
+  @override
+  String get templateShawlBorderCornerOverlay => 'बॉर्डर को फ्रेम के अंदर रखें';
+
+  @override
+  String get templateShawlFoldedStackOverlay =>
+      'मोड़ों को आड़ी रेखाओं के समांतर रखें';
+
+  @override
+  String get templateStoleFullLength => 'पूरी लंबाई का प्रदर्शन';
+
+  @override
+  String get templateStoleTextureWeave => 'बनावट और बुनाई';
+
+  @override
+  String get templateStoleNeckWrap => 'पहना हुआ गर्दन रैप';
+
+  @override
+  String get templateStoleSoftnessKnot => 'नरमपन / गाँठ';
+
+  @override
+  String get templateStoleEdgeThickness => 'किनारा और मोटाई';
+
+  @override
+  String get templateStoleFullLengthLower => 'पूरी लंबाई का प्रदर्शन';
+
+  @override
+  String get templateStoleTextureWeaveLower => 'बनावट और बुनाई';
+
+  @override
+  String get templateStoleNeckWrapLower => 'पहना हुआ गर्दन रैप';
+
+  @override
+  String get templateStoleSoftnessKnotLower => 'नरमपन / गाँठ';
+
+  @override
+  String get templateStoleEdgeThicknessLower => 'किनारा और मोटाई';
+
+  @override
+  String get templateStoleFullLengthContent => 'पैटर्न, रंग, सामग्री';
+
+  @override
+  String get templateStoleTextureWeaveContent => 'बनावट, मोटाई, सामग्री';
+
+  @override
+  String get templateStoleNeckWrapContent => 'हलकापन, रंग, पैटर्न';
+
+  @override
+  String get templateStoleSoftnessKnotContent => 'हलकापन, बनावट, सामग्री';
+
+  @override
+  String get templateStoleEdgeThicknessContent => 'मोटाई, बनावट, सामग्री';
+
+  @override
+  String get templateStoleFullLengthNeeds => 'प्राकृतिक दिन की रोशनी; सादा सतह';
+
+  @override
+  String get templateStoleTextureWeaveNeeds => 'जितना हो सके प्राकृतिक रोशनी';
+
+  @override
+  String get templateStoleNeckWrapNeeds => 'स्टोल पहनने वाला कोई व्यक्ति';
+
+  @override
+  String get templateStoleSoftnessKnotNeeds => 'नरम बगल की रोशनी';
+
+  @override
+  String get templateStoleEdgeThicknessNeeds => 'नरम बगल की रोशनी';
+
+  @override
+  String get templateStoleFullLengthPlacement =>
+      'स्टोल को पूरी लंबाई दिखने तक फैलाएँ';
+
+  @override
+  String get templateStoleTextureWeavePlacement => 'स्टोल का अच्छा रोशन हिस्सा';
+
+  @override
+  String get templateStoleNeckWrapPlacement =>
+      'गर्दन पर एक बार लपेटें, दोनों सिरे दिखें';
+
+  @override
+  String get templateStoleSoftnessKnotPlacement => 'बीच में एक ढीली गाँठ';
+
+  @override
+  String get templateStoleEdgeThicknessPlacement =>
+      'स्टोल को ढीला कुंडली में लपेटें';
+
+  @override
+  String get templateStoleFullLengthOverlay => 'स्टोल को ग्रिड के साथ रखें';
+
+  @override
+  String get templateStoleTextureWeaveOverlay => 'बनावट को केंद्र में रखें';
+
+  @override
+  String get templateStoleNeckWrapOverlay => 'रैप को फ्रेम में रखें';
+
+  @override
+  String get templateStoleSoftnessKnotOverlay => 'गाँठ को केंद्र में रखें';
+
+  @override
+  String get templateStoleEdgeThicknessOverlay => 'कुंडली को केंद्र में रखें';
 
   @override
   String get presetSareePalluDrapeName => 'पल्लू ड्रेप (हैंगर)';

@@ -1,59 +1,39 @@
 import 'package:artisanal_lens/data/datasources/preset_catalog.dart';
+import 'package:artisanal_lens/domain/entities/photography_template.dart';
 import 'package:artisanal_lens/domain/entities/shot_type.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Guards the property that actually broke: a shot type the artisan can pick
-/// but cannot get past.
+/// Guards that every photography template can reach the camera.
 ///
-/// The capture flow gates "Open Camera" on
-/// `shotType.skipsStyleStep || presetId != null`. So for every category and
-/// every shot type, either the type skips the style step or the catalogue has
-/// at least one preset to choose. Process failed this in all four categories —
-/// it demanded a style and no category defined one, so two of the seven
-/// required photographs were unreachable everywhere.
+/// Styled templates must name at least one real fold. Close-ups skip style.
 void main() {
   const catalog = BundledCatalogDataSource();
 
-  group('every category can reach the camera for every shot type', () {
+  group('every category can reach the camera for every photography template', () {
     for (final category in catalog.categories()) {
-      for (final shotType in ShotType.checklistTypesFor(category.id)) {
-        test('${category.name} / ${shotType.label}', () {
-          final presets = catalog
-              .presetsForCategory(category.id)
-              .where((preset) => preset.supportedShotTypes.contains(shotType))
-              .toList();
-
+      for (final template in PhotographyTemplates.forCategory(category.id)) {
+        test('${category.name} / ${template.name}', () {
           expect(
-            shotType.skipsStyleStep || presets.isNotEmpty,
+            template.skipsStyleStep || template.allowedPresetIds.isNotEmpty,
             isTrue,
-            reason: '${category.name} offers ${shotType.label} but has no '
-                'preset for it, and the type does not skip the style step, so '
-                '"Open Camera" can never enable.',
+            reason: '${category.name} / ${template.name} has no fold and '
+                'does not skip style, so the camera cannot open.',
           );
+          for (final presetId in template.allowedPresetIds) {
+            expect(catalog.presetById(presetId), isNotNull);
+          }
         });
       }
     }
   });
 
-  group('style-bearing types have presets in every category', () {
-    // Product and Lifestyle always show the style step, so an empty list there
-    // means the artisan sees "Choose a style" with nothing under it.
+  group('style-bearing templates have presets in every category', () {
     for (final category in catalog.categories()) {
-      final styleTypes = [
-        ShotType.product,
-        ShotType.lifestyle,
-        if (category.id == BundledCatalogDataSource.saree)
-          ShotType.sareePhotography,
-      ];
-      for (final shotType in styleTypes) {
-        test('${category.name} / ${shotType.label} has at least one style', () {
-          final presets = catalog
-              .presetsForCategory(category.id)
-              .where((preset) => preset.supportedShotTypes.contains(shotType))
-              .toList();
-          expect(presets, isNotEmpty);
-        });
-      }
+      test('${category.name} has at least one styled photograph', () {
+        final styled = PhotographyTemplates.forCategory(category.id)
+            .where((template) => template.needsStyleStep);
+        expect(styled, isNotEmpty);
+      });
     }
   });
 

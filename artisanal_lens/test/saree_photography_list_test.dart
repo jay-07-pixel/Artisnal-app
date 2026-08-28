@@ -199,7 +199,7 @@ void main() {
     expect(pallu.name, isNot(SareePhotographyTemplates.drapedLook.name));
   });
 
-  test('Cushion Cover, Shawl and Stole keep the seven-shot list', () {
+  test('Cushion Cover, Shawl and Stole use five photography templates', () {
     for (final categoryId in [
       BundledCatalogDataSource.cushionCover,
       BundledCatalogDataSource.shawl,
@@ -207,15 +207,16 @@ void main() {
     ]) {
       final set = _otherSet(categoryId);
       expect(set.usesSareePhotographyTemplates, isFalse);
-      expect(set.requiredCount, 7);
-      expect(set.slots.length, 7);
-      expect(
-        set.slots.map((slot) => slot.label),
-        containsAll(['Hero shot', 'Loom setup', 'Border', 'Weave', 'Motif']),
-      );
+      expect(set.usesPhotographyTemplates, isTrue);
+      expect(set.requiredCount, 5);
+      expect(set.slots.length, 5);
       expect(
         set.slots.map((slot) => slot.label),
         isNot(contains('Full Saree Display')),
+      );
+      expect(
+        set.slots.map((slot) => slot.label),
+        isNot(contains('Hero shot')),
       );
     }
   });
@@ -247,7 +248,7 @@ void main() {
     expect(find.text('Weave'), findsNothing);
   });
 
-  testWidgets('Saree How should it look lists the four fold presets', (tester) async {
+  testWidgets('Saree Full Display offers only worn and roll folds', (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2400));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
@@ -267,15 +268,13 @@ void main() {
       find.text('Choose the arrangement for this full saree display photo.'),
       findsOneWidget,
     );
-    expect(find.text('Pallu drape (hanger)', skipOffstage: false), findsOneWidget);
-    expect(find.text('Box / flat fold', skipOffstage: false), findsOneWidget);
     expect(find.text('Worn drape (model)', skipOffstage: false), findsOneWidget);
     expect(find.text('Roll display', skipOffstage: false), findsOneWidget);
-    expect(find.text('Shows flimsiness, sheen, flow and weight.'), findsOneWidget);
-    expect(find.text('Content: Flimsiness, Sheen, Flow, Weight'), findsWidgets);
+    expect(find.text('Pallu drape (hanger)'), findsNothing);
+    expect(find.text('Box / flat fold'), findsNothing);
   });
 
-  testWidgets('Cushion Cover photo list is still the seven Figma slots',
+  testWidgets('Cushion Cover photo list shows five photography templates',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -284,9 +283,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Photos to capture'), findsOneWidget);
-    expect(find.text('0 / 7'), findsOneWidget);
-    expect(find.text('Hero shot', skipOffstage: false), findsOneWidget);
+    expect(find.text('Photography templates'), findsOneWidget);
+    expect(find.text('0 / 5'), findsOneWidget);
+    expect(find.text('Full Cover Display', skipOffstage: false), findsOneWidget);
+    expect(find.text('Hero shot'), findsNothing);
     expect(find.text('Full Saree Display'), findsNothing);
     expect(find.text('Draped Look'), findsNothing);
   });

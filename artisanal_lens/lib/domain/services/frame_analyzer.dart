@@ -196,18 +196,37 @@ class FrameMetrics extends Equatable {
   /// True when the product's box spills past the dashed ghost on at least
   /// two sides. One side is a placement problem, not distance.
   ///
-  /// A box that reaches the picture rim is occupancy swallowing the floor,
-  /// not a close-up — that used to stick Distance on "Move back".
+  /// Opposite sides (left+right or top+bottom) also count — a cushion cut
+  /// off on both sides is too close even when top and bottom still fit.
+  ///
+  /// Margin matches one occupancy cell so a product that fills the ghost
+  /// exactly is not called overflowing from grid quantization. A larger
+  /// slack used to exceed the rule-of-thirds inset (0.10), so left/right
+  /// spill never counted and a close cushion was told to "Move closer".
   bool get boxOverflowsGhost {
-    if (subjectEdgeContact > 0.34) return false;
-
-    const slack = 0.14;
+    const margin = 1 / 16;
+    final pastLeft = subjectLeft < ghostInsetX - margin;
+    final pastTop = subjectTop < ghostInsetY - margin;
+    final pastRight = subjectRight > 1 - ghostInsetX + margin;
+    final pastBottom = subjectBottom > 1 - ghostInsetY + margin;
+    if ((pastLeft && pastRight) || (pastTop && pastBottom)) return true;
     var sides = 0;
-    if (subjectLeft < ghostInsetX - slack) sides++;
-    if (subjectTop < ghostInsetY - slack) sides++;
-    if (subjectRight > 1 - ghostInsetX + slack) sides++;
-    if (subjectBottom > 1 - ghostInsetY + slack) sides++;
+    if (pastLeft) sides++;
+    if (pastTop) sides++;
+    if (pastRight) sides++;
+    if (pastBottom) sides++;
     return sides >= 2;
+  }
+
+  /// Product reaches both left and right (or top and bottom) picture edges.
+  ///
+  /// Full-product shots that do this are cropped — the artisan must move
+  /// further, not shoot.
+  bool get touchesOppositePictureEdges {
+    const rim = 0.02;
+    final leftRight = subjectLeft <= rim && subjectRight >= 1 - rim;
+    final topBottom = subjectTop <= rim && subjectBottom >= 1 - rim;
+    return leftRight || topBottom;
   }
 
   /// How much textured content spills outside the ghost frame relative to
@@ -709,6 +728,17 @@ class FrameAnalyzer {
     );
     if (lumaPick.isNotEmpty) return lumaPick;
 
+    // When the cloth fills the picture, the rim is the cloth too — luma
+    // finds nothing. Texture is everywhere; take that whole region so a
+    // leaf cluster is not mistaken for a tiny distant product.
+    final textureCells = <int>[];
+    for (var i = 0; i < textureMask.length; i++) {
+      if (textureMask[i]) textureCells.add(i);
+    }
+    if (textureCells.length >= (_cells * _cells * 0.35).round()) {
+      return textureCells;
+    }
+
     final textureBlobs = _allBlobs(textureMask);
     final texturePick = _pickFromBlobs(
       textureBlobs,
@@ -728,6 +758,10 @@ class FrameAnalyzer {
   /// A weave can punch holes in the brightness mask, so one cloth becomes
   /// many tiny blobs. Ignore fragments, or merge them, rather than treating
   /// a 2-cell speck as the product.
+  ///
+  /// When the cloth reaches the picture rim, do not shrink to interior-only
+  /// patches — that hid left/right crops and left Distance on OK / Ready
+  /// while the cushion was clearly cut off.
   List<int> _pickFromBlobs(
     List<List<int>> blobs, {
     required int seedIndex,
@@ -735,12 +769,20 @@ class FrameAnalyzer {
   }) {
     if (blobs.isEmpty) return const [];
 
+    final usable = blobs.where(_isUsableBlob).toList();
     final interior = blobs.where(_isInteriorBlob).toList();
+    final rimTouching =
+        usable.where((blob) => !_isInteriorBlob(blob)).toList();
+
+    // Cloth that reaches the picture edge is the product — keep those cells.
+    if (_totalCells(rimTouching) >= 8) {
+      return _mergeBlobs(usable.isNotEmpty ? usable : rimTouching);
+    }
+
     // Holey weave is many interior specks of one cloth — merge them so
     // the box is the product, not the brightest patch.
     if (_totalCells(interior) >= 8) return _mergeBlobs(interior);
 
-    final usable = blobs.where(_isUsableBlob).toList();
     if (usable.isNotEmpty) {
       return _blobContaining(usable, seedIndex) ?? bestOf(usable);
     }

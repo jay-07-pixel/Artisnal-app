@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 
 import '../domain/entities/capture_feedback.dart';
-import '../domain/entities/fabric_material.dart';
 import '../domain/entities/fabric_property.dart';
 import '../domain/entities/fold_preset.dart';
 import '../domain/entities/lighting_advisory.dart';
@@ -89,7 +88,8 @@ abstract final class AppCopy {
         ShotType.product => l10n.shotProduct,
         ShotType.detail => l10n.shotDetail,
         ShotType.lifestyle => l10n.shotLifestyle,
-        ShotType.sareePhotography => l10n.shotPhotography,
+        ShotType.sareePhotography || ShotType.photography =>
+          l10n.shotPhotography,
       };
 
   static String shotTypeLabelLower(AppLocalizations l10n, ShotType type) =>
@@ -98,7 +98,8 @@ abstract final class AppCopy {
         ShotType.product => l10n.shotProductLower,
         ShotType.detail => l10n.shotDetailLower,
         ShotType.lifestyle => l10n.shotLifestyleLower,
-        ShotType.sareePhotography => l10n.shotPhotographyLower,
+        ShotType.sareePhotography || ShotType.photography =>
+          l10n.shotPhotographyLower,
       };
 
   static String shotTypeChecklist(AppLocalizations l10n, ShotType type) =>
@@ -107,7 +108,8 @@ abstract final class AppCopy {
         ShotType.product => l10n.shotProductChecklist,
         ShotType.detail => l10n.shotDetailChecklist,
         ShotType.lifestyle => l10n.shotLifestyleChecklist,
-        ShotType.sareePhotography => l10n.shotPhotographyChecklist,
+        ShotType.sareePhotography || ShotType.photography =>
+          l10n.shotPhotographyChecklist,
       };
 
   static String slotLabel(
@@ -145,6 +147,21 @@ abstract final class AppCopy {
         'saree_draped_look' => l10n.templateDrapedLook,
         'saree_embroidery_border' => l10n.templateEmbroideryBorder,
         'saree_folded_stack' => l10n.templateFoldedStack,
+        'cushion_full_cover' => l10n.templateCushionFullCover,
+        'cushion_texture_weave' => l10n.templateCushionTextureWeave,
+        'cushion_stacked_thickness' => l10n.templateCushionStackedPair,
+        'cushion_corner_stitching' => l10n.templateCushionCornerStitching,
+        'cushion_in_use' => l10n.templateCushionInUse,
+        'shawl_full_design' => l10n.templateShawlFullDesign,
+        'shawl_texture_weave' => l10n.templateShawlTextureWeave,
+        'shawl_draped_look' => l10n.templateShawlDrapedLook,
+        'shawl_border_corner' => l10n.templateShawlBorderCorner,
+        'shawl_stack_display' => l10n.templateShawlFoldedStack,
+        'stole_full_length' => l10n.templateStoleFullLength,
+        'stole_texture_weave' => l10n.templateStoleTextureWeave,
+        'stole_worn_neck_wrap' => l10n.templateStoleNeckWrap,
+        'stole_softness_knot' => l10n.templateStoleSoftnessKnot,
+        'stole_edge_thickness' => l10n.templateStoleEdgeThickness,
         _ => id,
       };
 
@@ -155,6 +172,21 @@ abstract final class AppCopy {
         'saree_draped_look' => l10n.templateDrapedLookLower,
         'saree_embroidery_border' => l10n.templateEmbroideryBorderLower,
         'saree_folded_stack' => l10n.templateFoldedStackLower,
+        'cushion_full_cover' => l10n.templateCushionFullCoverLower,
+        'cushion_texture_weave' => l10n.templateCushionTextureWeaveLower,
+        'cushion_stacked_thickness' => l10n.templateCushionStackedPairLower,
+        'cushion_corner_stitching' => l10n.templateCushionCornerStitchingLower,
+        'cushion_in_use' => l10n.templateCushionInUseLower,
+        'shawl_full_design' => l10n.templateShawlFullDesignLower,
+        'shawl_texture_weave' => l10n.templateShawlTextureWeaveLower,
+        'shawl_draped_look' => l10n.templateShawlDrapedLookLower,
+        'shawl_border_corner' => l10n.templateShawlBorderCornerLower,
+        'shawl_stack_display' => l10n.templateShawlFoldedStackLower,
+        'stole_full_length' => l10n.templateStoleFullLengthLower,
+        'stole_texture_weave' => l10n.templateStoleTextureWeaveLower,
+        'stole_worn_neck_wrap' => l10n.templateStoleNeckWrapLower,
+        'stole_softness_knot' => l10n.templateStoleSoftnessKnotLower,
+        'stole_edge_thickness' => l10n.templateStoleEdgeThicknessLower,
         _ => id,
       };
 
@@ -163,7 +195,7 @@ abstract final class AppCopy {
     String? englishName,
   ) {
     if (englishName == null) return null;
-    for (final template in SareePhotographyTemplates.all) {
+    for (final template in PhotographyTemplates.all) {
       if (template.name == englishName) {
         return templateNameLower(l10n, template.id);
       }
@@ -178,6 +210,21 @@ abstract final class AppCopy {
         'saree_draped_look' => l10n.templateDrapedLookContent,
         'saree_embroidery_border' => l10n.templateEmbroideryBorderContent,
         'saree_folded_stack' => l10n.templateFoldedStackContent,
+        'cushion_full_cover' => l10n.templateCushionFullCoverContent,
+        'cushion_texture_weave' => l10n.templateCushionTextureWeaveContent,
+        'cushion_stacked_thickness' => l10n.templateCushionStackedPairContent,
+        'cushion_corner_stitching' => l10n.templateCushionCornerStitchingContent,
+        'cushion_in_use' => l10n.templateCushionInUseContent,
+        'shawl_full_design' => l10n.templateShawlFullDesignContent,
+        'shawl_texture_weave' => l10n.templateShawlTextureWeaveContent,
+        'shawl_draped_look' => l10n.templateShawlDrapedLookContent,
+        'shawl_border_corner' => l10n.templateShawlBorderCornerContent,
+        'shawl_stack_display' => l10n.templateShawlFoldedStackContent,
+        'stole_full_length' => l10n.templateStoleFullLengthContent,
+        'stole_texture_weave' => l10n.templateStoleTextureWeaveContent,
+        'stole_worn_neck_wrap' => l10n.templateStoleNeckWrapContent,
+        'stole_softness_knot' => l10n.templateStoleSoftnessKnotContent,
+        'stole_edge_thickness' => l10n.templateStoleEdgeThicknessContent,
         _ => '',
       };
 
@@ -188,6 +235,21 @@ abstract final class AppCopy {
         'saree_draped_look' => l10n.templateDrapedLookNeeds,
         'saree_embroidery_border' => l10n.templateEmbroideryBorderNeeds,
         'saree_folded_stack' => l10n.templateFoldedStackNeeds,
+        'cushion_full_cover' => l10n.templateCushionFullCoverNeeds,
+        'cushion_texture_weave' => l10n.templateCushionTextureWeaveNeeds,
+        'cushion_stacked_thickness' => l10n.templateCushionStackedPairNeeds,
+        'cushion_corner_stitching' => l10n.templateCushionCornerStitchingNeeds,
+        'cushion_in_use' => l10n.templateCushionInUseNeeds,
+        'shawl_full_design' => l10n.templateShawlFullDesignNeeds,
+        'shawl_texture_weave' => l10n.templateShawlTextureWeaveNeeds,
+        'shawl_draped_look' => l10n.templateShawlDrapedLookNeeds,
+        'shawl_border_corner' => l10n.templateShawlBorderCornerNeeds,
+        'shawl_stack_display' => l10n.templateShawlFoldedStackNeeds,
+        'stole_full_length' => l10n.templateStoleFullLengthNeeds,
+        'stole_texture_weave' => l10n.templateStoleTextureWeaveNeeds,
+        'stole_worn_neck_wrap' => l10n.templateStoleNeckWrapNeeds,
+        'stole_softness_knot' => l10n.templateStoleSoftnessKnotNeeds,
+        'stole_edge_thickness' => l10n.templateStoleEdgeThicknessNeeds,
         _ => null,
       };
 
@@ -198,38 +260,72 @@ abstract final class AppCopy {
         'saree_draped_look' => l10n.templateDrapedLookPlacement,
         'saree_embroidery_border' => l10n.templateEmbroideryBorderPlacement,
         'saree_folded_stack' => l10n.templateFoldedStackPlacement,
+        'cushion_full_cover' => l10n.templateCushionFullCoverPlacement,
+        'cushion_texture_weave' => l10n.templateCushionTextureWeavePlacement,
+        'cushion_stacked_thickness' => l10n.templateCushionStackedPairPlacement,
+        'cushion_corner_stitching' =>
+          l10n.templateCushionCornerStitchingPlacement,
+        'cushion_in_use' => l10n.templateCushionInUsePlacement,
+        'shawl_full_design' => l10n.templateShawlFullDesignPlacement,
+        'shawl_texture_weave' => l10n.templateShawlTextureWeavePlacement,
+        'shawl_draped_look' => l10n.templateShawlDrapedLookPlacement,
+        'shawl_border_corner' => l10n.templateShawlBorderCornerPlacement,
+        'shawl_stack_display' => l10n.templateShawlFoldedStackPlacement,
+        'stole_full_length' => l10n.templateStoleFullLengthPlacement,
+        'stole_texture_weave' => l10n.templateStoleTextureWeavePlacement,
+        'stole_worn_neck_wrap' => l10n.templateStoleNeckWrapPlacement,
+        'stole_softness_knot' => l10n.templateStoleSoftnessKnotPlacement,
+        'stole_edge_thickness' => l10n.templateStoleEdgeThicknessPlacement,
         _ => null,
       };
 
   static String? overlayCaptionForTemplate(
     AppLocalizations l10n,
-    String? englishName,
+    String? idOrName,
   ) {
-    if (englishName == null) return null;
-    for (final template in SareePhotographyTemplates.all) {
-      if (template.name == englishName) {
-        return switch (template.id) {
-          'saree_full_display' => l10n.templateFullDisplayOverlay,
-          'saree_texture_weave' => l10n.templateTextureWeaveOverlay,
-          'saree_draped_look' => l10n.templateDrapedLookOverlay,
-          'saree_embroidery_border' => l10n.templateEmbroideryBorderOverlay,
-          'saree_folded_stack' => l10n.templateFoldedStackOverlay,
-          _ => template.overlayCaption,
-        };
-      }
-    }
-    return null;
+    final template = _templateByIdOrName(idOrName);
+    if (template == null) return null;
+    return switch (template.id) {
+      'saree_full_display' => l10n.templateFullDisplayOverlay,
+      'saree_texture_weave' => l10n.templateTextureWeaveOverlay,
+      'saree_draped_look' => l10n.templateDrapedLookOverlay,
+      'saree_embroidery_border' => l10n.templateEmbroideryBorderOverlay,
+      'saree_folded_stack' => l10n.templateFoldedStackOverlay,
+      'cushion_full_cover' => l10n.templateCushionFullCoverOverlay,
+      'cushion_texture_weave' => l10n.templateCushionTextureWeaveOverlay,
+      'cushion_stacked_thickness' => l10n.templateCushionStackedPairOverlay,
+      'cushion_corner_stitching' => l10n.templateCushionCornerStitchingOverlay,
+      'cushion_in_use' => l10n.templateCushionInUseOverlay,
+      'shawl_full_design' => l10n.templateShawlFullDesignOverlay,
+      'shawl_texture_weave' => l10n.templateShawlTextureWeaveOverlay,
+      'shawl_draped_look' => l10n.templateShawlDrapedLookOverlay,
+      'shawl_border_corner' => l10n.templateShawlBorderCornerOverlay,
+      'shawl_stack_display' => l10n.templateShawlFoldedStackOverlay,
+      'stole_full_length' => l10n.templateStoleFullLengthOverlay,
+      'stole_texture_weave' => l10n.templateStoleTextureWeaveOverlay,
+      'stole_worn_neck_wrap' => l10n.templateStoleNeckWrapOverlay,
+      'stole_softness_knot' => l10n.templateStoleSoftnessKnotOverlay,
+      'stole_edge_thickness' => l10n.templateStoleEdgeThicknessOverlay,
+      _ => template.overlayCaption,
+    };
   }
 
   static String? lightingNotesForTemplate(
     AppLocalizations l10n,
-    String? englishName,
+    String? idOrName,
   ) {
-    if (englishName == null) return null;
-    if (englishName == SareePhotographyTemplates.textureAndWeave.name) {
+    final template = _templateByIdOrName(idOrName);
+    if (template == null) return null;
+    if (template.id.contains('texture_weave')) {
       return l10n.templateTextureWeaveLighting;
     }
     return null;
+  }
+
+  static PhotographyTemplate? _templateByIdOrName(String? idOrName) {
+    if (idOrName == null) return null;
+    return PhotographyTemplates.byId(idOrName) ??
+        PhotographyTemplates.byName(idOrName);
   }
 
   static String presetName(AppLocalizations l10n, String id) => switch (id) {
@@ -421,15 +517,15 @@ abstract final class AppCopy {
   static String displayedContent(
     AppLocalizations l10n, {
     FoldPreset? preset,
+    String? templateId,
     String? templateName,
     required String fallback,
   }) {
-    if (templateName != null) {
-      for (final template in SareePhotographyTemplates.all) {
-        if (template.name == templateName) {
-          return templateContent(l10n, template.id);
-        }
-      }
+    final template = PhotographyTemplates.byId(templateId ?? '') ??
+        _templateByIdOrName(templateName);
+    if (template != null) {
+      final mapped = templateContent(l10n, template.id);
+      if (mapped.isNotEmpty) return mapped;
     }
     if (preset != null) {
       final mapped = presetContent(l10n, preset);
@@ -441,15 +537,14 @@ abstract final class AppCopy {
   static String? displayedNeeds(
     AppLocalizations l10n, {
     FoldPreset? preset,
+    String? templateId,
     String? templateName,
     String? fallback,
   }) {
-    if (templateName != null) {
-      for (final template in SareePhotographyTemplates.all) {
-        if (template.name == templateName) {
-          return templateNeeds(l10n, template.id);
-        }
-      }
+    final template = PhotographyTemplates.byId(templateId ?? '') ??
+        _templateByIdOrName(templateName);
+    if (template != null) {
+      return templateNeeds(l10n, template.id);
     }
     if (preset != null) {
       final mapped = presetNeeds(l10n, preset);
@@ -460,15 +555,14 @@ abstract final class AppCopy {
 
   static String? displayedPlacement(
     AppLocalizations l10n, {
+    String? templateId,
     String? templateName,
     String? fallback,
   }) {
-    if (templateName != null) {
-      for (final template in SareePhotographyTemplates.all) {
-        if (template.name == templateName) {
-          return templatePlacement(l10n, template.id);
-        }
-      }
+    final template = PhotographyTemplates.byId(templateId ?? '') ??
+        _templateByIdOrName(templateName);
+    if (template != null) {
+      return templatePlacement(l10n, template.id);
     }
     return fallback;
   }

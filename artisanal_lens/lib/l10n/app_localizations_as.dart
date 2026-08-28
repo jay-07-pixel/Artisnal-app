@@ -124,6 +124,12 @@ class AppLocalizationsAs extends AppLocalizations {
   String get sareePhotographyTemplatesBody => 'এই পাঁচখন ফটো তুলিব লাগিব।';
 
   @override
+  String get photographyTemplatesTitle => 'ফটোগ্ৰাফী টেমপ্লেট';
+
+  @override
+  String get photographyTemplatesBody => 'এই পাঁচখন ফটো তুলিব লাগিব।';
+
+  @override
   String get viewCompletedSet => 'সম্পূৰ্ণ ছেট চাওক';
 
   @override
@@ -740,6 +746,291 @@ class AppLocalizationsAs extends AppLocalizations {
   @override
   String get templateTextureWeaveLighting =>
       'কোমল পোহৰ ব্যৱহাৰ কৰক। তীব্ৰ প্ৰতিফলন এৰাই চলক।';
+
+  @override
+  String get templateCushionFullCover => 'সম্পূৰ্ণ কভাৰ প্ৰদৰ্শন';
+
+  @override
+  String get templateCushionTextureWeave => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateCushionStackedPair => 'যোৰাৰ দ\'ম / ডাঠতা';
+
+  @override
+  String get templateCushionCornerStitching => 'কোণ আৰু চিলাই';
+
+  @override
+  String get templateCushionInUse => 'আসনত ব্যৱহাৰত';
+
+  @override
+  String get templateCushionFullCoverLower => 'সম্পূৰ্ণ কভাৰ প্ৰদৰ্শন';
+
+  @override
+  String get templateCushionTextureWeaveLower => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateCushionStackedPairLower => 'যোৰাৰ দ\'ম / ডাঠতা';
+
+  @override
+  String get templateCushionCornerStitchingLower => 'কোণ আৰু চিলাই';
+
+  @override
+  String get templateCushionInUseLower => 'আসনত ব্যৱহাৰত';
+
+  @override
+  String get templateCushionFullCoverContent => 'ৰং, আৰ্হি, সামগ্ৰী';
+
+  @override
+  String get templateCushionTextureWeaveContent => 'গঠন, ডাঠতা, সামগ্ৰী';
+
+  @override
+  String get templateCushionStackedPairContent => 'ডাঠতা, সামগ্ৰী, গঠন';
+
+  @override
+  String get templateCushionCornerStitchingContent =>
+      'গুণগত মান, গঠন, এমব্ৰয়ডাৰী';
+
+  @override
+  String get templateCushionInUseContent => 'ৰং, আৰ্হি, গুণগত মান';
+
+  @override
+  String get templateCushionFullCoverNeeds =>
+      'প্ৰাকৃতিক দিনৰ পোহৰ; সাধাৰণ পৃষ্ঠ';
+
+  @override
+  String get templateCushionTextureWeaveNeeds => 'যিমান পাৰি প্ৰাকৃতিক পোহৰ';
+
+  @override
+  String get templateCushionStackedPairNeeds => 'কাষৰ পোহৰ; এযোৰ কভাৰ';
+
+  @override
+  String get templateCushionCornerStitchingNeeds => 'কাষৰ পোহৰ';
+
+  @override
+  String get templateCushionInUseNeeds => 'কুৰ্ছী, ছোফা বা বিচনা';
+
+  @override
+  String get templateCushionFullCoverPlacement =>
+      'কভাৰখন সাধাৰণ পৃষ্ঠত সমতলকৈ ৰাখক';
+
+  @override
+  String get templateCushionTextureWeavePlacement => 'কভাৰৰ ভালকৈ পোহৰ পৰা অংশ';
+
+  @override
+  String get templateCushionStackedPairPlacement =>
+      'দুখন কভাৰ এনেদৰে থাপক যাতে কাষবোৰ কেমেৰাৰ ফালে থাকে';
+
+  @override
+  String get templateCushionCornerStitchingPlacement =>
+      'চিলাই কৰা কোণৰ ক্ল\'জ-আপ';
+
+  @override
+  String get templateCushionInUsePlacement =>
+      'কভাৰখন আসনত থিয় কৰাই কেমেৰাৰ ফালে ৰাখক';
+
+  @override
+  String get templateCushionFullCoverOverlay => 'কাষবোৰ গ্ৰিডৰ সৈতে পোনকৈ ৰাখক';
+
+  @override
+  String get templateCushionTextureWeaveOverlay => 'গঠনটো কেন্দ্ৰত ৰাখক';
+
+  @override
+  String get templateCushionStackedPairOverlay =>
+      'ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক';
+
+  @override
+  String get templateCushionCornerStitchingOverlay => 'চিলাই ফ্ৰেমৰ ভিতৰত ৰাখক';
+
+  @override
+  String get templateCushionInUseOverlay => 'কভাৰখন ফ্ৰেমত ৰাখক';
+
+  @override
+  String get templateShawlFullDesign => 'সম্পূৰ্ণ ডিজাইন প্ৰদৰ্শন';
+
+  @override
+  String get templateShawlTextureWeave => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateShawlDrapedLook => 'ড্ৰেপ লুক';
+
+  @override
+  String get templateShawlBorderCorner => 'বৰ্ডাৰ আৰু কোণ';
+
+  @override
+  String get templateShawlFoldedStack => 'ভাঁজ কৰা দ\'ম';
+
+  @override
+  String get templateShawlFullDesignLower => 'সম্পূৰ্ণ ডিজাইন প্ৰদৰ্শন';
+
+  @override
+  String get templateShawlTextureWeaveLower => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateShawlDrapedLookLower => 'ড্ৰেপ লুক';
+
+  @override
+  String get templateShawlBorderCornerLower => 'বৰ্ডাৰ আৰু কোণ';
+
+  @override
+  String get templateShawlFoldedStackLower => 'ভাঁজ কৰা দ\'ম';
+
+  @override
+  String get templateShawlFullDesignContent => 'আৰ্হি, ৰং, স্বচ্ছতা';
+
+  @override
+  String get templateShawlTextureWeaveContent => 'গঠন, ডাঠতা, সামগ্ৰী';
+
+  @override
+  String get templateShawlDrapedLookContent => 'পাতলতা, সামগ্ৰী, আৰ্হি';
+
+  @override
+  String get templateShawlBorderCornerContent => 'গঠন, গুণগত মান, এমব্ৰয়ডাৰী';
+
+  @override
+  String get templateShawlFoldedStackContent => 'ডাঠতা, সামগ্ৰী';
+
+  @override
+  String get templateShawlFullDesignNeeds => 'ৰছী, বাঁহ বা দেৱাল য\'ত পিন কৰিব';
+
+  @override
+  String get templateShawlTextureWeaveNeeds => 'যিমান পাৰি প্ৰাকৃতিক পোহৰ';
+
+  @override
+  String get templateShawlDrapedLookNeeds => 'শাল পিন্ধা কোনোবা';
+
+  @override
+  String get templateShawlBorderCornerNeeds => 'কাষৰ পোহৰ';
+
+  @override
+  String get templateShawlFoldedStackNeeds => 'কাষৰ পোহৰ';
+
+  @override
+  String get templateShawlFullDesignPlacement =>
+      'শাল নামি নোযোৱাকৈ সমতলকৈ ওলোমাই বা পিন কৰক';
+
+  @override
+  String get templateShawlTextureWeavePlacement => 'শালৰ ভালকৈ পোহৰ পৰা অংশ';
+
+  @override
+  String get templateShawlDrapedLookPlacement =>
+      'শাল এখন কান্ধত, স্বাভাৱিকভাৱে সৰি পৰা';
+
+  @override
+  String get templateShawlBorderCornerPlacement => 'কোণ আৰু বৰ্ডাৰৰ ক্ল\'জ-আপ';
+
+  @override
+  String get templateShawlFoldedStackPlacement => 'চাফা দ\'ম, ভাঁজ দেখা যায়';
+
+  @override
+  String get templateShawlFullDesignOverlay =>
+      'বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলাওক';
+
+  @override
+  String get templateShawlTextureWeaveOverlay => 'গঠনটো কেন্দ্ৰত ৰাখক';
+
+  @override
+  String get templateShawlDrapedLookOverlay =>
+      'ভাঁজবোৰ তিৰ্যক ৰেখাৰ সৈতে যাবলৈ দিয়ক';
+
+  @override
+  String get templateShawlBorderCornerOverlay => 'বৰ্ডাৰ ফ্ৰেমৰ ভিতৰত ৰাখক';
+
+  @override
+  String get templateShawlFoldedStackOverlay =>
+      'ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক';
+
+  @override
+  String get templateStoleFullLength => 'সম্পূৰ্ণ দৈৰ্ঘ্যৰ প্ৰদৰ্শন';
+
+  @override
+  String get templateStoleTextureWeave => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateStoleNeckWrap => 'পৰিধান কৰা ডিঙি ৰেপ';
+
+  @override
+  String get templateStoleSoftnessKnot => 'কোমলতা / গাঁঠি';
+
+  @override
+  String get templateStoleEdgeThickness => 'কাষ আৰু ডাঠতা';
+
+  @override
+  String get templateStoleFullLengthLower => 'সম্পূৰ্ণ দৈৰ্ঘ্যৰ প্ৰদৰ্শন';
+
+  @override
+  String get templateStoleTextureWeaveLower => 'গঠন আৰু বয়ন';
+
+  @override
+  String get templateStoleNeckWrapLower => 'পৰিধান কৰা ডিঙি ৰেপ';
+
+  @override
+  String get templateStoleSoftnessKnotLower => 'কোমলতা / গাঁঠি';
+
+  @override
+  String get templateStoleEdgeThicknessLower => 'কাষ আৰু ডাঠতা';
+
+  @override
+  String get templateStoleFullLengthContent => 'আৰ্হি, ৰং, সামগ্ৰী';
+
+  @override
+  String get templateStoleTextureWeaveContent => 'গঠন, ডাঠতা, সামগ্ৰী';
+
+  @override
+  String get templateStoleNeckWrapContent => 'পাতলতা, ৰং, আৰ্হি';
+
+  @override
+  String get templateStoleSoftnessKnotContent => 'পাতলতা, গঠন, সামগ্ৰী';
+
+  @override
+  String get templateStoleEdgeThicknessContent => 'ডাঠতা, গঠন, সামগ্ৰী';
+
+  @override
+  String get templateStoleFullLengthNeeds =>
+      'প্ৰাকৃতিক দিনৰ পোহৰ; সাধাৰণ পৃষ্ঠ';
+
+  @override
+  String get templateStoleTextureWeaveNeeds => 'যিমান পাৰি প্ৰাকৃতিক পোহৰ';
+
+  @override
+  String get templateStoleNeckWrapNeeds => 'ষ্টোল পিন্ধা কোনোবা';
+
+  @override
+  String get templateStoleSoftnessKnotNeeds => 'কোমল কাষৰ পোহৰ';
+
+  @override
+  String get templateStoleEdgeThicknessNeeds => 'কোমল কাষৰ পোহৰ';
+
+  @override
+  String get templateStoleFullLengthPlacement =>
+      'ষ্টোল সম্পূৰ্ণ দৈৰ্ঘ্য দেখা পোৱাকৈ মেলি দিয়ক';
+
+  @override
+  String get templateStoleTextureWeavePlacement => 'ষ্টোলৰ ভালকৈ পোহৰ পৰা অংশ';
+
+  @override
+  String get templateStoleNeckWrapPlacement =>
+      'ডিঙিত এবাৰ মেৰিয়াই দুয়ো মূৰ দেখা যায়';
+
+  @override
+  String get templateStoleSoftnessKnotPlacement => 'মাজত এটা ঢিলা গাঁঠি';
+
+  @override
+  String get templateStoleEdgeThicknessPlacement => 'ষ্টোল ঢিলাকৈ কুণ্ডলিত কৰক';
+
+  @override
+  String get templateStoleFullLengthOverlay => 'ষ্টোল গ্ৰিডৰ সৈতে ৰাখক';
+
+  @override
+  String get templateStoleTextureWeaveOverlay => 'গঠনটো কেন্দ্ৰত ৰাখক';
+
+  @override
+  String get templateStoleNeckWrapOverlay => 'ৰেপ ফ্ৰেমত ৰাখক';
+
+  @override
+  String get templateStoleSoftnessKnotOverlay => 'গাঁঠি কেন্দ্ৰত ৰাখক';
+
+  @override
+  String get templateStoleEdgeThicknessOverlay => 'কুণ্ডলী কেন্দ্ৰত ৰাখক';
 
   @override
   String get presetSareePalluDrapeName => 'পল্লু ড্ৰেপ (হেংগাৰ)';

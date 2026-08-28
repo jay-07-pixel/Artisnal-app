@@ -5,7 +5,6 @@ import 'package:artisanal_lens/domain/entities/fabric_material.dart';
 import 'package:artisanal_lens/domain/entities/photography_template.dart';
 import 'package:artisanal_lens/shared/widgets/asset_placeholder.dart';
 import 'package:artisanal_lens/shared/widgets/catalog_video.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -37,8 +36,8 @@ void main() {
     }
   });
 
-  test('Saree photography template thumbnails are bundled', () async {
-    for (final template in SareePhotographyTemplates.all) {
+  test('photography template thumbnails are bundled', () async {
+    for (final template in PhotographyTemplates.all) {
       final path = template.referenceImageAsset;
       expect(path, isNotNull, reason: template.id);
       expect(path, startsWith('assets/images/templates/'));

@@ -37,7 +37,7 @@ class LightingSetupPage extends ConsumerWidget {
     final guidance = ref.watch(sessionGuidanceProvider);
     final captureGuidance = ref.watch(sessionCaptureGuidanceProvider);
     final technique = captureGuidance.technique;
-    final slotLabel = _slotLabel(context, session);
+    final slotLabel = _slotLabel(context, session, set?.categoryId);
     final hasTutorial = hasTutorialContent(preset);
     final l10n = AppLocalizations.of(context);
 
@@ -86,6 +86,7 @@ class LightingSetupPage extends ConsumerWidget {
               body: AppCopy.displayedContent(
                 l10n,
                 preset: preset,
+                templateId: guidance.templateId,
                 templateName: guidance.templateName,
                 fallback: guidance.content,
               ),
@@ -99,6 +100,7 @@ class LightingSetupPage extends ConsumerWidget {
               body: AppCopy.displayedNeeds(
                     l10n,
                     preset: preset,
+                    templateId: guidance.templateId,
                     templateName: guidance.templateName,
                     fallback: guidance.needs,
                   ) ??
@@ -113,6 +115,7 @@ class LightingSetupPage extends ConsumerWidget {
               title: l10n.placeTheProduct,
               body: AppCopy.displayedPlacement(
                     l10n,
+                    templateId: guidance.templateId,
                     templateName: guidance.templateName,
                     fallback: captureGuidance.placement,
                   ) ??
@@ -124,6 +127,7 @@ class LightingSetupPage extends ConsumerWidget {
               title: l10n.placeTheProduct,
               body: AppCopy.displayedPlacement(
                     l10n,
+                    templateId: guidance.templateId,
                     templateName: guidance.templateName,
                     fallback: guidance.placement,
                   ) ??
@@ -150,7 +154,10 @@ class LightingSetupPage extends ConsumerWidget {
           _InfoCard(
             icon: Icons.wb_sunny_outlined,
             title: AppCopy.lightingLabel(l10n, technique.lighting),
-            body: AppCopy.lightingNotesForTemplate(l10n, guidance.templateName) ??
+            body: AppCopy.lightingNotesForTemplate(
+                  l10n,
+                  guidance.templateId ?? guidance.templateName,
+                ) ??
                 guidance.lightingNotes ??
                 AppCopy.lightingHint(l10n, technique.lighting),
           ),
@@ -176,14 +183,21 @@ class LightingSetupPage extends ConsumerWidget {
     );
   }
 
-  static String _slotLabel(BuildContext context, CaptureSession session) {
+  static String _slotLabel(
+    BuildContext context,
+    CaptureSession session,
+    String? categoryId,
+  ) {
     final type = session.shotType;
     final index = session.slotIndex;
-    if (type == null || index == null || index >= type.slotLabels.length) {
+    if (type == null || index == null) {
       return '';
     }
     final l10n = AppLocalizations.of(context);
-    return '${AppCopy.shotTypeLabel(l10n, type)} · ${AppCopy.slotLabel(l10n, type, index)}';
+    final template = type.isPhotography
+        ? PhotographyTemplates.byIndex(categoryId ?? '', index)
+        : null;
+    return '${AppCopy.shotTypeLabel(l10n, type)} · ${AppCopy.slotLabel(l10n, type, index, template: template)}';
   }
 
   /// The photo of how this setup should look.
@@ -199,15 +213,10 @@ class LightingSetupPage extends ConsumerWidget {
     final fromPreset = preset?.referenceImageAsset.trim();
     if (fromPreset != null && fromPreset.isNotEmpty) return fromPreset;
 
-    final templateName = guidance.templateName;
-    if (templateName != null) {
-      for (final template in SareePhotographyTemplates.all) {
-        final path = template.referenceImageAsset?.trim();
-        if (template.name == templateName && path != null && path.isNotEmpty) {
-          return path;
-        }
-      }
-    }
+    final template = PhotographyTemplates.byId(guidance.templateId ?? '') ??
+        PhotographyTemplates.byName(guidance.templateName);
+    final path = template?.referenceImageAsset?.trim();
+    if (path != null && path.isNotEmpty) return path;
 
     for (final step in captureGuidance.setupSteps) {
       if (step.hasIllustrationPath) return step.illustrationAsset;

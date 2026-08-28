@@ -3,9 +3,10 @@ import 'technique_preset.dart';
 
 /// Shot types that fill a product's required-photo list.
 ///
-/// Cushion Cover, Shawl and Stole keep the Figma seven-slot checklist
-/// (Process, Product, Detail, Lifestyle). Saree uses the five BTP
-/// photography templates instead — that list is [sareePhotography] only.
+/// Every category uses a five-photograph template list. Saree keeps
+/// [sareePhotography] so existing sets stay mapped. Cushion Cover, Shawl
+/// and Stole use [photography]. Process, Product, Detail and Lifestyle
+/// remain on the enum for older sets and fallback technique.
 enum ShotType {
   process(
     id: 'process',
@@ -51,6 +52,23 @@ enum ShotType {
       'Embroidery & Border Details',
       'Folded Stack / Saree Stack',
     ],
+  ),
+
+  /// Five photography templates for Cushion Cover, Shawl and Stole.
+  ///
+  /// Slot labels are fallbacks. The photo list uses [PhotographyTemplate.name].
+  photography(
+    id: 'photography',
+    label: 'Photography',
+    checklistDescription: 'Photography templates',
+    pickerDescription: 'Photography templates',
+    slotLabels: [
+      'Full display',
+      'Texture & Weave',
+      'Styled look',
+      'Detail',
+      'Folded stack',
+    ],
   );
 
   const ShotType({
@@ -79,13 +97,15 @@ enum ShotType {
   /// How many photographs this type contributes to a complete set.
   int get requiredCount => slotLabels.length;
 
-  /// Figma seven-shot total for Cushion Cover, Shawl and Stole.
-  ///
-  /// Saree does not use this. Its required count is the five BTP templates.
+  /// Legacy Figma seven-shot total. New sets use five photography templates.
   static int get totalRequired => figmaChecklistTypes.fold(
         0,
         (sum, type) => sum + type.requiredCount,
       );
+
+  /// Whether this type is a photography-template list (not Process/Detail).
+  bool get isPhotography =>
+      this == ShotType.sareePhotography || this == ShotType.photography;
 
   /// Process, Product, Detail, Lifestyle — the non-Saree checklist.
   static const List<ShotType> figmaChecklistTypes = [
@@ -95,10 +115,10 @@ enum ShotType {
     lifestyle,
   ];
 
-  /// Required-photo types for one category. Saree is templates only.
+  /// Required-photo types for one category. All four use photography templates.
   static List<ShotType> checklistTypesFor(String categoryId) {
     if (categoryId == 'saree') return const [sareePhotography];
-    return figmaChecklistTypes;
+    return const [photography];
   }
 
   /// The order the app walks through types when suggesting what to shoot next.
@@ -128,9 +148,9 @@ enum ShotType {
   /// guide does not define templates for those categories. Motif uses a
   /// Pattern close-up through `ShotGuidance.forSlot`.
   TechniquePreset get fallbackTechnique => switch (this) {
-        // Saree templates load BTP §7.3 through ShotGuidance.forSlot.
+        // Template photographs load through ShotGuidance.forSlot.
         // This is only the last-resort overlay if a slot index is missing.
-        ShotType.sareePhotography => const TechniquePreset(
+        ShotType.sareePhotography || ShotType.photography => const TechniquePreset(
             angle: CameraAngle.eyeLevel,
             lighting: LightingSetup.diffusedDaylight,
             composition: CompositionRule.ruleOfThirds,

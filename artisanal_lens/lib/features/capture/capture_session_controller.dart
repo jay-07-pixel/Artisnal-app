@@ -21,6 +21,7 @@ class CaptureSession extends Equatable {
     this.slotIndex,
     this.presetId,
     this.pendingPhotoPath,
+    this.skipsStyle = false,
   });
 
   final String? setId;
@@ -35,11 +36,14 @@ class CaptureSession extends Equatable {
   /// A photograph taken but not yet accepted on the review screen.
   final String? pendingPhotoPath;
 
+  /// True when the current photograph is a close-up and has no fold step.
+  final bool skipsStyle;
+
   bool get canOpenCamera =>
       setId != null &&
       shotType != null &&
       slotIndex != null &&
-      (shotType!.skipsStyleStep || presetId != null);
+      (skipsStyle || shotType!.skipsStyleStep || presetId != null);
 
   CaptureSession copyWith({
     String? setId,
@@ -47,6 +51,7 @@ class CaptureSession extends Equatable {
     int? slotIndex,
     String? presetId,
     String? pendingPhotoPath,
+    bool? skipsStyle,
     bool clearPreset = false,
     bool clearPendingPhoto = false,
   }) {
@@ -58,12 +63,13 @@ class CaptureSession extends Equatable {
       pendingPhotoPath: clearPendingPhoto
           ? null
           : (pendingPhotoPath ?? this.pendingPhotoPath),
+      skipsStyle: skipsStyle ?? this.skipsStyle,
     );
   }
 
   @override
   List<Object?> get props =>
-      [setId, shotType, slotIndex, presetId, pendingPhotoPath];
+      [setId, shotType, slotIndex, presetId, pendingPhotoPath, skipsStyle];
 }
 
 class CaptureSessionController extends Notifier<CaptureSession> {
@@ -79,10 +85,15 @@ class CaptureSessionController extends Notifier<CaptureSession> {
   ///
   /// Changing the type invalidates any previously chosen style, because styles
   /// are scoped to the type.
-  void chooseShotType(ShotType shotType, {required int slotIndex}) {
+  void chooseShotType(
+    ShotType shotType, {
+    required int slotIndex,
+    bool skipsStyle = false,
+  }) {
     state = state.copyWith(
       shotType: shotType,
       slotIndex: slotIndex,
+      skipsStyle: skipsStyle,
       clearPreset: true,
     );
   }
@@ -140,11 +151,10 @@ final sessionGuidanceProvider = Provider<ShotGuidance>((ref) {
   );
 });
 
-/// Technique loaded into the camera and the instruction screens.
-///
-/// Product and Lifestyle inherit this from the chosen fold preset. Process
-/// and Detail skip the style step. Saree photography keeps the BTP template
-/// technique after a fold is chosen; other categories keep the Detail fallback.
+  /// Technique loaded into the camera and the instruction screens.
+  ///
+  /// Photography templates keep their own grid after a fold is chosen.
+  /// Process and Detail skip the style step.
 final sessionTechniqueProvider = Provider<TechniquePreset>((ref) {
   return ref.watch(sessionGuidanceProvider).technique;
 });

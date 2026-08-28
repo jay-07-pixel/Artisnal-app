@@ -316,6 +316,18 @@ abstract class AppLocalizations {
   /// **'These are the five photographs to take.'**
   String get sareePhotographyTemplatesBody;
 
+  /// No description provided for @photographyTemplatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photography templates'**
+  String get photographyTemplatesTitle;
+
+  /// No description provided for @photographyTemplatesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These are the five photographs to take.'**
+  String get photographyTemplatesBody;
+
   /// No description provided for @viewCompletedSet.
   ///
   /// In en, this message translates to:
@@ -1437,6 +1449,546 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use soft light. Avoid harsh reflections.'**
   String get templateTextureWeaveLighting;
+
+  /// No description provided for @templateCushionFullCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Cover Display'**
+  String get templateCushionFullCover;
+
+  /// No description provided for @templateCushionTextureWeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture & Weave'**
+  String get templateCushionTextureWeave;
+
+  /// No description provided for @templateCushionStackedPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Stacked Pair / Thickness'**
+  String get templateCushionStackedPair;
+
+  /// No description provided for @templateCushionCornerStitching.
+  ///
+  /// In en, this message translates to:
+  /// **'Corner & Stitching'**
+  String get templateCushionCornerStitching;
+
+  /// No description provided for @templateCushionInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'In Use on Seating'**
+  String get templateCushionInUse;
+
+  /// No description provided for @templateCushionFullCoverLower.
+  ///
+  /// In en, this message translates to:
+  /// **'full cover display'**
+  String get templateCushionFullCoverLower;
+
+  /// No description provided for @templateCushionTextureWeaveLower.
+  ///
+  /// In en, this message translates to:
+  /// **'texture & weave'**
+  String get templateCushionTextureWeaveLower;
+
+  /// No description provided for @templateCushionStackedPairLower.
+  ///
+  /// In en, this message translates to:
+  /// **'stacked pair / thickness'**
+  String get templateCushionStackedPairLower;
+
+  /// No description provided for @templateCushionCornerStitchingLower.
+  ///
+  /// In en, this message translates to:
+  /// **'corner & stitching'**
+  String get templateCushionCornerStitchingLower;
+
+  /// No description provided for @templateCushionInUseLower.
+  ///
+  /// In en, this message translates to:
+  /// **'in use on seating'**
+  String get templateCushionInUseLower;
+
+  /// No description provided for @templateCushionFullCoverContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour, Pattern, Material'**
+  String get templateCushionFullCoverContent;
+
+  /// No description provided for @templateCushionTextureWeaveContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture, Thickness, Material'**
+  String get templateCushionTextureWeaveContent;
+
+  /// No description provided for @templateCushionStackedPairContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thickness, Material, Texture'**
+  String get templateCushionStackedPairContent;
+
+  /// No description provided for @templateCushionCornerStitchingContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality, Texture, Embroidery'**
+  String get templateCushionCornerStitchingContent;
+
+  /// No description provided for @templateCushionInUseContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour, Pattern, Quality'**
+  String get templateCushionInUseContent;
+
+  /// No description provided for @templateCushionFullCoverNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural daylight; plain surface'**
+  String get templateCushionFullCoverNeeds;
+
+  /// No description provided for @templateCushionTextureWeaveNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferably natural light'**
+  String get templateCushionTextureWeaveNeeds;
+
+  /// No description provided for @templateCushionStackedPairNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Side lighting; a matching pair'**
+  String get templateCushionStackedPairNeeds;
+
+  /// No description provided for @templateCushionCornerStitchingNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Side lighting'**
+  String get templateCushionCornerStitchingNeeds;
+
+  /// No description provided for @templateCushionInUseNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'A chair, sofa or bed'**
+  String get templateCushionInUseNeeds;
+
+  /// No description provided for @templateCushionFullCoverPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover laid flat on a plain surface'**
+  String get templateCushionFullCoverPlacement;
+
+  /// No description provided for @templateCushionTextureWeavePlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'A well-lit section of the cover'**
+  String get templateCushionTextureWeavePlacement;
+
+  /// No description provided for @templateCushionStackedPairPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Two covers stacked with edges facing the camera'**
+  String get templateCushionStackedPairPlacement;
+
+  /// No description provided for @templateCushionCornerStitchingPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Close-up of a stitched corner'**
+  String get templateCushionCornerStitchingPlacement;
+
+  /// No description provided for @templateCushionInUsePlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover propped on a seat, facing the camera'**
+  String get templateCushionInUsePlacement;
+
+  /// No description provided for @templateCushionFullCoverOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the edges straight along the grid'**
+  String get templateCushionFullCoverOverlay;
+
+  /// No description provided for @templateCushionTextureWeaveOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the texture in the centre'**
+  String get templateCushionTextureWeaveOverlay;
+
+  /// No description provided for @templateCushionStackedPairOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the folds parallel to the horizontal lines'**
+  String get templateCushionStackedPairOverlay;
+
+  /// No description provided for @templateCushionCornerStitchingOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the stitching inside the frame'**
+  String get templateCushionCornerStitchingOverlay;
+
+  /// No description provided for @templateCushionInUseOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the cover in the frame'**
+  String get templateCushionInUseOverlay;
+
+  /// No description provided for @templateShawlFullDesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Design Display'**
+  String get templateShawlFullDesign;
+
+  /// No description provided for @templateShawlTextureWeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture & Weave'**
+  String get templateShawlTextureWeave;
+
+  /// No description provided for @templateShawlDrapedLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Draped Look'**
+  String get templateShawlDrapedLook;
+
+  /// No description provided for @templateShawlBorderCorner.
+  ///
+  /// In en, this message translates to:
+  /// **'Border & Corner'**
+  String get templateShawlBorderCorner;
+
+  /// No description provided for @templateShawlFoldedStack.
+  ///
+  /// In en, this message translates to:
+  /// **'Folded Stack'**
+  String get templateShawlFoldedStack;
+
+  /// No description provided for @templateShawlFullDesignLower.
+  ///
+  /// In en, this message translates to:
+  /// **'full design display'**
+  String get templateShawlFullDesignLower;
+
+  /// No description provided for @templateShawlTextureWeaveLower.
+  ///
+  /// In en, this message translates to:
+  /// **'texture & weave'**
+  String get templateShawlTextureWeaveLower;
+
+  /// No description provided for @templateShawlDrapedLookLower.
+  ///
+  /// In en, this message translates to:
+  /// **'draped look'**
+  String get templateShawlDrapedLookLower;
+
+  /// No description provided for @templateShawlBorderCornerLower.
+  ///
+  /// In en, this message translates to:
+  /// **'border & corner'**
+  String get templateShawlBorderCornerLower;
+
+  /// No description provided for @templateShawlFoldedStackLower.
+  ///
+  /// In en, this message translates to:
+  /// **'folded stack'**
+  String get templateShawlFoldedStackLower;
+
+  /// No description provided for @templateShawlFullDesignContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Pattern, Colour, Transparency'**
+  String get templateShawlFullDesignContent;
+
+  /// No description provided for @templateShawlTextureWeaveContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture, Thickness, Material'**
+  String get templateShawlTextureWeaveContent;
+
+  /// No description provided for @templateShawlDrapedLookContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Flimsiness, Material, Pattern'**
+  String get templateShawlDrapedLookContent;
+
+  /// No description provided for @templateShawlBorderCornerContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture, Quality, Embroidery'**
+  String get templateShawlBorderCornerContent;
+
+  /// No description provided for @templateShawlFoldedStackContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thickness, Material'**
+  String get templateShawlFoldedStackContent;
+
+  /// No description provided for @templateShawlFullDesignNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'A line, bamboo pole or wall to pin against'**
+  String get templateShawlFullDesignNeeds;
+
+  /// No description provided for @templateShawlTextureWeaveNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferably natural light'**
+  String get templateShawlTextureWeaveNeeds;
+
+  /// No description provided for @templateShawlDrapedLookNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone to wear the shawl'**
+  String get templateShawlDrapedLookNeeds;
+
+  /// No description provided for @templateShawlBorderCornerNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Side lighting'**
+  String get templateShawlBorderCornerNeeds;
+
+  /// No description provided for @templateShawlFoldedStackNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Side lighting'**
+  String get templateShawlFoldedStackNeeds;
+
+  /// No description provided for @templateShawlFullDesignPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Shawl hung or pinned flat without sagging'**
+  String get templateShawlFullDesignPlacement;
+
+  /// No description provided for @templateShawlTextureWeavePlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'A well-lit section of the shawl'**
+  String get templateShawlTextureWeavePlacement;
+
+  /// No description provided for @templateShawlDrapedLookPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Shawl over one shoulder, falling naturally'**
+  String get templateShawlDrapedLookPlacement;
+
+  /// No description provided for @templateShawlBorderCornerPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Close-up of the corner and border'**
+  String get templateShawlBorderCornerPlacement;
+
+  /// No description provided for @templateShawlFoldedStackPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Neatly stacked with visible folds'**
+  String get templateShawlFoldedStackPlacement;
+
+  /// No description provided for @templateShawlFullDesignOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Line the border up with the top third'**
+  String get templateShawlFullDesignOverlay;
+
+  /// No description provided for @templateShawlTextureWeaveOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the texture in the centre'**
+  String get templateShawlTextureWeaveOverlay;
+
+  /// No description provided for @templateShawlDrapedLookOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the folds follow the diagonal'**
+  String get templateShawlDrapedLookOverlay;
+
+  /// No description provided for @templateShawlBorderCornerOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the border inside the frame'**
+  String get templateShawlBorderCornerOverlay;
+
+  /// No description provided for @templateShawlFoldedStackOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the folds parallel to the horizontal lines'**
+  String get templateShawlFoldedStackOverlay;
+
+  /// No description provided for @templateStoleFullLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Length Display'**
+  String get templateStoleFullLength;
+
+  /// No description provided for @templateStoleTextureWeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture & Weave'**
+  String get templateStoleTextureWeave;
+
+  /// No description provided for @templateStoleNeckWrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Worn Neck Wrap'**
+  String get templateStoleNeckWrap;
+
+  /// No description provided for @templateStoleSoftnessKnot.
+  ///
+  /// In en, this message translates to:
+  /// **'Softness / Knot'**
+  String get templateStoleSoftnessKnot;
+
+  /// No description provided for @templateStoleEdgeThickness.
+  ///
+  /// In en, this message translates to:
+  /// **'Edge & Thickness'**
+  String get templateStoleEdgeThickness;
+
+  /// No description provided for @templateStoleFullLengthLower.
+  ///
+  /// In en, this message translates to:
+  /// **'full length display'**
+  String get templateStoleFullLengthLower;
+
+  /// No description provided for @templateStoleTextureWeaveLower.
+  ///
+  /// In en, this message translates to:
+  /// **'texture & weave'**
+  String get templateStoleTextureWeaveLower;
+
+  /// No description provided for @templateStoleNeckWrapLower.
+  ///
+  /// In en, this message translates to:
+  /// **'worn neck wrap'**
+  String get templateStoleNeckWrapLower;
+
+  /// No description provided for @templateStoleSoftnessKnotLower.
+  ///
+  /// In en, this message translates to:
+  /// **'softness / knot'**
+  String get templateStoleSoftnessKnotLower;
+
+  /// No description provided for @templateStoleEdgeThicknessLower.
+  ///
+  /// In en, this message translates to:
+  /// **'edge & thickness'**
+  String get templateStoleEdgeThicknessLower;
+
+  /// No description provided for @templateStoleFullLengthContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Pattern, Colour, Material'**
+  String get templateStoleFullLengthContent;
+
+  /// No description provided for @templateStoleTextureWeaveContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Texture, Thickness, Material'**
+  String get templateStoleTextureWeaveContent;
+
+  /// No description provided for @templateStoleNeckWrapContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Flimsiness, Colour, Pattern'**
+  String get templateStoleNeckWrapContent;
+
+  /// No description provided for @templateStoleSoftnessKnotContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Flimsiness, Texture, Material'**
+  String get templateStoleSoftnessKnotContent;
+
+  /// No description provided for @templateStoleEdgeThicknessContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thickness, Texture, Material'**
+  String get templateStoleEdgeThicknessContent;
+
+  /// No description provided for @templateStoleFullLengthNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Natural daylight; plain surface'**
+  String get templateStoleFullLengthNeeds;
+
+  /// No description provided for @templateStoleTextureWeaveNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferably natural light'**
+  String get templateStoleTextureWeaveNeeds;
+
+  /// No description provided for @templateStoleNeckWrapNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone to wear the stole'**
+  String get templateStoleNeckWrapNeeds;
+
+  /// No description provided for @templateStoleSoftnessKnotNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft side light'**
+  String get templateStoleSoftnessKnotNeeds;
+
+  /// No description provided for @templateStoleEdgeThicknessNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft side light'**
+  String get templateStoleEdgeThicknessNeeds;
+
+  /// No description provided for @templateStoleFullLengthPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Stole spread so its full length is visible'**
+  String get templateStoleFullLengthPlacement;
+
+  /// No description provided for @templateStoleTextureWeavePlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'A well-lit section of the stole'**
+  String get templateStoleTextureWeavePlacement;
+
+  /// No description provided for @templateStoleNeckWrapPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrapped once around the neck with both ends visible'**
+  String get templateStoleNeckWrapPlacement;
+
+  /// No description provided for @templateStoleSoftnessKnotPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'One loose knot in the middle'**
+  String get templateStoleSoftnessKnotPlacement;
+
+  /// No description provided for @templateStoleEdgeThicknessPlacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Stole rolled loosely into a coil'**
+  String get templateStoleEdgeThicknessPlacement;
+
+  /// No description provided for @templateStoleFullLengthOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the stole along the grid'**
+  String get templateStoleFullLengthOverlay;
+
+  /// No description provided for @templateStoleTextureWeaveOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the texture in the centre'**
+  String get templateStoleTextureWeaveOverlay;
+
+  /// No description provided for @templateStoleNeckWrapOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the wrap in the frame'**
+  String get templateStoleNeckWrapOverlay;
+
+  /// No description provided for @templateStoleSoftnessKnotOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the knot in the centre'**
+  String get templateStoleSoftnessKnotOverlay;
+
+  /// No description provided for @templateStoleEdgeThicknessOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the coil in the centre'**
+  String get templateStoleEdgeThicknessOverlay;
 
   /// No description provided for @presetSareePalluDrapeName.
   ///

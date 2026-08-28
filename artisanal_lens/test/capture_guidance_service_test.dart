@@ -34,6 +34,8 @@ FrameMetrics metrics({
   double edgeAngleDegrees = 0,
   double edgeCoherence = 0,
   double targetArea = 0.36,
+  double ghostInsetX = 0.2,
+  double ghostInsetY = 0.2,
 }) =>
     FrameMetrics(
       meanLuminance: meanLuminance,
@@ -57,6 +59,8 @@ FrameMetrics metrics({
       edgeAngleDegrees: edgeAngleDegrees,
       edgeCoherence: edgeCoherence,
       targetArea: targetArea,
+      ghostInsetX: ghostInsetX,
+      ghostInsetY: ghostInsetY,
     );
 
 const _eyeLevelPreset = TechniquePreset(
@@ -162,7 +166,7 @@ void main() {
           meanLuminance: 0.05,
           subjectLeft: 0,
           subjectTop: 0.15,
-          subjectRight: 1,
+          subjectRight: 0.72,
           subjectBottom: 0.85,
         ),
       );
@@ -233,9 +237,9 @@ void main() {
       final feedback = evaluate(
         metrics(
           detailCentroidX: 0.78,
-          subjectLeft: 0.40,
+          subjectLeft: 0.48,
           subjectTop: 0.25,
-          subjectRight: 0.82,
+          subjectRight: 0.92,
           subjectBottom: 0.75,
         ),
       );
@@ -415,6 +419,145 @@ void main() {
 
       expect(feedback.distanceQuality, DistanceQuality.tooClose);
       expect(feedback.prompt, CapturePrompt.moveFurther);
+    });
+
+    test('wall-to-wall fabric on a full-product shot is told to move back', () {
+      // Extreme close-up: cloth fills the whole picture. Used to force
+      // Distance OK (treated as "floor") and show Ready — wrong for Full Cover.
+      final feedback = evaluate(
+        metrics(
+          centreDetail: 0.09,
+          borderDetail: 0.08,
+          targetCoverage: 0.95,
+          subjectCoverage: 0.9,
+          subjectEdgeContact: 0.9,
+          subjectLeft: 0,
+          subjectTop: 0,
+          subjectRight: 1,
+          subjectBottom: 1,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooClose);
+      expect(feedback.prompt, CapturePrompt.moveFurther);
+      expect(feedback.prompt, isNot(CapturePrompt.ready));
+      expect(feedback.prompt, isNot(CapturePrompt.moveCloser));
+    });
+
+    test('a cushion cut off on left and right is told to move back', () {
+      // Top/bottom still show floor, but sides hit the picture edge — used to
+      // stay Ready because occupancy shrunk to an interior patch.
+      final feedback = evaluate(
+        metrics(
+          centreDetail: 0.09,
+          borderDetail: 0.07,
+          targetCoverage: 0.9,
+          subjectCoverage: 0.7,
+          subjectEdgeContact: 0.5,
+          subjectLeft: 0.0,
+          subjectTop: 0.18,
+          subjectRight: 1.0,
+          subjectBottom: 0.82,
+          ghostInsetX: 0.10,
+          ghostInsetY: 0.16,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooClose);
+      expect(feedback.prompt, CapturePrompt.moveFurther);
+      expect(feedback.prompt, isNot(CapturePrompt.ready));
+    });
+
+    test('a close-up template may fill the whole picture', () {
+      const texture = TechniquePreset(
+        angle: CameraAngle.macroCloseUp,
+        lighting: LightingSetup.softWindowLight,
+        composition: CompositionRule.centerFocus,
+        grid: GridOverlayType.centerFocus,
+      );
+      final feedback = evaluate(
+        metrics(
+          centreDetail: 0.09,
+          borderDetail: 0.08,
+          targetCoverage: 0.95,
+          subjectCoverage: 0.9,
+          subjectEdgeContact: 0.9,
+          subjectLeft: 0,
+          subjectTop: 0,
+          subjectRight: 1,
+          subjectBottom: 1,
+          detailCentroidX: 0.5,
+          detailCentroidY: 0.5,
+        ),
+        technique: texture,
+        pitch: 45,
+      );
+
+      expect(feedback.distanceQuality, isNot(DistanceQuality.tooClose));
+      expect(feedback.prompt, isNot(CapturePrompt.moveFurther));
+    });
+
+    test('a close product that overshoots the ghost is told to move back', () {
+      // Spills past a rule-of-thirds ghost without claiming the whole picture.
+      // The old 0.14 slack was larger than inset 0.10, so left/right never
+      // counted and Distance stayed on "Move closer".
+      final feedback = evaluate(
+        metrics(
+          targetCoverage: 0.9,
+          subjectCoverage: 0.55,
+          subjectEdgeContact: 0.1,
+          subjectLeft: 0.02,
+          subjectTop: 0.04,
+          subjectRight: 0.98,
+          subjectBottom: 0.96,
+          ghostInsetX: 0.10,
+          ghostInsetY: 0.16,
+        ),
+      );
+
+      expect(feedback.distanceQuality, DistanceQuality.tooClose);
+      expect(feedback.prompt, CapturePrompt.moveFurther);
+    });
+
+    test('a borderline fill does not flip Distance every frame', () {
+      const service = CaptureGuidanceService();
+      final profile = CameraGuidanceProfile.fromTechnique(
+        _eyeLevelPreset,
+        productNoun: 'saree',
+      );
+      // Fill ~0.28 — under the 0.32 floor, but inside the hysteresis band.
+      final borderline = metrics(
+        subjectLeft: 0.32,
+        subjectTop: 0.36,
+        subjectRight: 0.68,
+        subjectBottom: 0.64,
+      );
+
+      final first = service.evaluate(
+        metrics: borderline,
+        technique: _eyeLevelPreset,
+        pitchDegrees: 0,
+        profile: profile,
+      );
+      expect(first.distanceQuality, DistanceQuality.tooFar);
+
+      final held = service.evaluate(
+        metrics: borderline,
+        technique: _eyeLevelPreset,
+        pitchDegrees: 0,
+        profile: profile,
+        previousDistance: DistanceQuality.tooFar,
+      );
+      expect(held.distanceQuality, DistanceQuality.tooFar);
+
+      final fromOk = service.evaluate(
+        metrics: borderline,
+        technique: _eyeLevelPreset,
+        pitchDegrees: 0,
+        profile: profile,
+        previousDistance: DistanceQuality.ok,
+      );
+      expect(fromOk.distanceQuality, DistanceQuality.ok);
     });
 
     test('a busy floor that reaches the picture edge is not called too close',
@@ -714,6 +857,25 @@ void main() {
       );
 
       expect(measured.subjectEdgeContact, greaterThan(0.9));
+    });
+
+    test('keeps left/right crop when the cloth hits opposite picture edges', () {
+      // Interior-only merge used to shrink this box and leave Distance OK.
+      const frame = SyntheticFrame(
+        tiledFloor: true,
+        background: 175,
+        productMid: 80,
+        contrast: 40,
+        grain: FabricGrain.vertical,
+      );
+      final measured = analyse(
+        frame.build(left: 0.0, top: 0.18, right: 1.0, bottom: 0.82),
+      );
+
+      expect(measured.touchesOppositePictureEdges, isTrue);
+      expect(measured.boxOverflowsGhost, isTrue);
+      expect(measured.subjectLeft, lessThan(0.05));
+      expect(measured.subjectRight, greaterThan(0.95));
     });
 
     test('reads an empty surface as holding no product', () {

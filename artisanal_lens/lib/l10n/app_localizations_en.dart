@@ -125,6 +125,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'These are the five photographs to take.';
 
   @override
+  String get photographyTemplatesTitle => 'Photography templates';
+
+  @override
+  String get photographyTemplatesBody =>
+      'These are the five photographs to take.';
+
+  @override
   String get viewCompletedSet => 'View completed set';
 
   @override
@@ -746,6 +753,308 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get templateTextureWeaveLighting =>
       'Use soft light. Avoid harsh reflections.';
+
+  @override
+  String get templateCushionFullCover => 'Full Cover Display';
+
+  @override
+  String get templateCushionTextureWeave => 'Texture & Weave';
+
+  @override
+  String get templateCushionStackedPair => 'Stacked Pair / Thickness';
+
+  @override
+  String get templateCushionCornerStitching => 'Corner & Stitching';
+
+  @override
+  String get templateCushionInUse => 'In Use on Seating';
+
+  @override
+  String get templateCushionFullCoverLower => 'full cover display';
+
+  @override
+  String get templateCushionTextureWeaveLower => 'texture & weave';
+
+  @override
+  String get templateCushionStackedPairLower => 'stacked pair / thickness';
+
+  @override
+  String get templateCushionCornerStitchingLower => 'corner & stitching';
+
+  @override
+  String get templateCushionInUseLower => 'in use on seating';
+
+  @override
+  String get templateCushionFullCoverContent => 'Colour, Pattern, Material';
+
+  @override
+  String get templateCushionTextureWeaveContent =>
+      'Texture, Thickness, Material';
+
+  @override
+  String get templateCushionStackedPairContent =>
+      'Thickness, Material, Texture';
+
+  @override
+  String get templateCushionCornerStitchingContent =>
+      'Quality, Texture, Embroidery';
+
+  @override
+  String get templateCushionInUseContent => 'Colour, Pattern, Quality';
+
+  @override
+  String get templateCushionFullCoverNeeds => 'Natural daylight; plain surface';
+
+  @override
+  String get templateCushionTextureWeaveNeeds => 'Preferably natural light';
+
+  @override
+  String get templateCushionStackedPairNeeds =>
+      'Side lighting; a matching pair';
+
+  @override
+  String get templateCushionCornerStitchingNeeds => 'Side lighting';
+
+  @override
+  String get templateCushionInUseNeeds => 'A chair, sofa or bed';
+
+  @override
+  String get templateCushionFullCoverPlacement =>
+      'Cover laid flat on a plain surface';
+
+  @override
+  String get templateCushionTextureWeavePlacement =>
+      'A well-lit section of the cover';
+
+  @override
+  String get templateCushionStackedPairPlacement =>
+      'Two covers stacked with edges facing the camera';
+
+  @override
+  String get templateCushionCornerStitchingPlacement =>
+      'Close-up of a stitched corner';
+
+  @override
+  String get templateCushionInUsePlacement =>
+      'Cover propped on a seat, facing the camera';
+
+  @override
+  String get templateCushionFullCoverOverlay =>
+      'Keep the edges straight along the grid';
+
+  @override
+  String get templateCushionTextureWeaveOverlay =>
+      'Keep the texture in the centre';
+
+  @override
+  String get templateCushionStackedPairOverlay =>
+      'Keep the folds parallel to the horizontal lines';
+
+  @override
+  String get templateCushionCornerStitchingOverlay =>
+      'Keep the stitching inside the frame';
+
+  @override
+  String get templateCushionInUseOverlay => 'Keep the cover in the frame';
+
+  @override
+  String get templateShawlFullDesign => 'Full Design Display';
+
+  @override
+  String get templateShawlTextureWeave => 'Texture & Weave';
+
+  @override
+  String get templateShawlDrapedLook => 'Draped Look';
+
+  @override
+  String get templateShawlBorderCorner => 'Border & Corner';
+
+  @override
+  String get templateShawlFoldedStack => 'Folded Stack';
+
+  @override
+  String get templateShawlFullDesignLower => 'full design display';
+
+  @override
+  String get templateShawlTextureWeaveLower => 'texture & weave';
+
+  @override
+  String get templateShawlDrapedLookLower => 'draped look';
+
+  @override
+  String get templateShawlBorderCornerLower => 'border & corner';
+
+  @override
+  String get templateShawlFoldedStackLower => 'folded stack';
+
+  @override
+  String get templateShawlFullDesignContent => 'Pattern, Colour, Transparency';
+
+  @override
+  String get templateShawlTextureWeaveContent => 'Texture, Thickness, Material';
+
+  @override
+  String get templateShawlDrapedLookContent => 'Flimsiness, Material, Pattern';
+
+  @override
+  String get templateShawlBorderCornerContent => 'Texture, Quality, Embroidery';
+
+  @override
+  String get templateShawlFoldedStackContent => 'Thickness, Material';
+
+  @override
+  String get templateShawlFullDesignNeeds =>
+      'A line, bamboo pole or wall to pin against';
+
+  @override
+  String get templateShawlTextureWeaveNeeds => 'Preferably natural light';
+
+  @override
+  String get templateShawlDrapedLookNeeds => 'Someone to wear the shawl';
+
+  @override
+  String get templateShawlBorderCornerNeeds => 'Side lighting';
+
+  @override
+  String get templateShawlFoldedStackNeeds => 'Side lighting';
+
+  @override
+  String get templateShawlFullDesignPlacement =>
+      'Shawl hung or pinned flat without sagging';
+
+  @override
+  String get templateShawlTextureWeavePlacement =>
+      'A well-lit section of the shawl';
+
+  @override
+  String get templateShawlDrapedLookPlacement =>
+      'Shawl over one shoulder, falling naturally';
+
+  @override
+  String get templateShawlBorderCornerPlacement =>
+      'Close-up of the corner and border';
+
+  @override
+  String get templateShawlFoldedStackPlacement =>
+      'Neatly stacked with visible folds';
+
+  @override
+  String get templateShawlFullDesignOverlay =>
+      'Line the border up with the top third';
+
+  @override
+  String get templateShawlTextureWeaveOverlay =>
+      'Keep the texture in the centre';
+
+  @override
+  String get templateShawlDrapedLookOverlay =>
+      'Let the folds follow the diagonal';
+
+  @override
+  String get templateShawlBorderCornerOverlay =>
+      'Keep the border inside the frame';
+
+  @override
+  String get templateShawlFoldedStackOverlay =>
+      'Keep the folds parallel to the horizontal lines';
+
+  @override
+  String get templateStoleFullLength => 'Full Length Display';
+
+  @override
+  String get templateStoleTextureWeave => 'Texture & Weave';
+
+  @override
+  String get templateStoleNeckWrap => 'Worn Neck Wrap';
+
+  @override
+  String get templateStoleSoftnessKnot => 'Softness / Knot';
+
+  @override
+  String get templateStoleEdgeThickness => 'Edge & Thickness';
+
+  @override
+  String get templateStoleFullLengthLower => 'full length display';
+
+  @override
+  String get templateStoleTextureWeaveLower => 'texture & weave';
+
+  @override
+  String get templateStoleNeckWrapLower => 'worn neck wrap';
+
+  @override
+  String get templateStoleSoftnessKnotLower => 'softness / knot';
+
+  @override
+  String get templateStoleEdgeThicknessLower => 'edge & thickness';
+
+  @override
+  String get templateStoleFullLengthContent => 'Pattern, Colour, Material';
+
+  @override
+  String get templateStoleTextureWeaveContent => 'Texture, Thickness, Material';
+
+  @override
+  String get templateStoleNeckWrapContent => 'Flimsiness, Colour, Pattern';
+
+  @override
+  String get templateStoleSoftnessKnotContent =>
+      'Flimsiness, Texture, Material';
+
+  @override
+  String get templateStoleEdgeThicknessContent =>
+      'Thickness, Texture, Material';
+
+  @override
+  String get templateStoleFullLengthNeeds => 'Natural daylight; plain surface';
+
+  @override
+  String get templateStoleTextureWeaveNeeds => 'Preferably natural light';
+
+  @override
+  String get templateStoleNeckWrapNeeds => 'Someone to wear the stole';
+
+  @override
+  String get templateStoleSoftnessKnotNeeds => 'Soft side light';
+
+  @override
+  String get templateStoleEdgeThicknessNeeds => 'Soft side light';
+
+  @override
+  String get templateStoleFullLengthPlacement =>
+      'Stole spread so its full length is visible';
+
+  @override
+  String get templateStoleTextureWeavePlacement =>
+      'A well-lit section of the stole';
+
+  @override
+  String get templateStoleNeckWrapPlacement =>
+      'Wrapped once around the neck with both ends visible';
+
+  @override
+  String get templateStoleSoftnessKnotPlacement =>
+      'One loose knot in the middle';
+
+  @override
+  String get templateStoleEdgeThicknessPlacement =>
+      'Stole rolled loosely into a coil';
+
+  @override
+  String get templateStoleFullLengthOverlay => 'Keep the stole along the grid';
+
+  @override
+  String get templateStoleTextureWeaveOverlay =>
+      'Keep the texture in the centre';
+
+  @override
+  String get templateStoleNeckWrapOverlay => 'Keep the wrap in the frame';
+
+  @override
+  String get templateStoleSoftnessKnotOverlay => 'Keep the knot in the centre';
+
+  @override
+  String get templateStoleEdgeThicknessOverlay => 'Keep the coil in the centre';
 
   @override
   String get presetSareePalluDrapeName => 'Pallu drape (hanger)';

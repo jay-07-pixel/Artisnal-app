@@ -21,10 +21,20 @@ CaptureFeedback verdict(
       productNoun: 'saree',
     );
 
-/// Two matching frames, which is what it takes to leave waiting.
+/// Enough matching frames to leave waiting / change the prompt.
 CaptureFeedback show(LiveGuidanceStabiliser s, CapturePrompt prompt) {
-  s.accept(verdict(prompt));
-  return s.accept(verdict(prompt));
+  late CaptureFeedback last;
+  for (var i = 0; i < s.framesToChange; i++) {
+    last = s.accept(verdict(prompt));
+  }
+  return last;
+}
+
+/// Enough matching chip frames to flip Distance / Centre.
+void holdChip(LiveGuidanceStabiliser s, CaptureFeedback measured) {
+  for (var i = 0; i < s.framesToChangeChip; i++) {
+    s.accept(measured);
+  }
 }
 
 void main() {
@@ -32,6 +42,10 @@ void main() {
     final stabiliser = LiveGuidanceStabiliser();
 
     expect(stabiliser.current.prompt, CapturePrompt.waiting);
+    expect(
+      stabiliser.accept(verdict(CapturePrompt.moveCloser)).prompt,
+      CapturePrompt.waiting,
+    );
     expect(
       stabiliser.accept(verdict(CapturePrompt.moveCloser)).prompt,
       CapturePrompt.waiting,
@@ -67,6 +81,10 @@ void main() {
     );
     expect(
       stabiliser.accept(verdict(CapturePrompt.centerSubject)).prompt,
+      CapturePrompt.moveCloser,
+    );
+    expect(
+      stabiliser.accept(verdict(CapturePrompt.centerSubject)).prompt,
       CapturePrompt.centerSubject,
     );
   });
@@ -75,10 +93,10 @@ void main() {
     final stabiliser = LiveGuidanceStabiliser();
     show(stabiliser, CapturePrompt.centerSubject);
 
-    stabiliser.accept(verdict(CapturePrompt.ready));
-    expect(stabiliser.current.prompt, CapturePrompt.centerSubject);
-    stabiliser.accept(verdict(CapturePrompt.ready));
-    expect(stabiliser.current.prompt, CapturePrompt.centerSubject);
+    for (var i = 0; i < stabiliser.framesToBecomeReady - 1; i++) {
+      stabiliser.accept(verdict(CapturePrompt.ready));
+      expect(stabiliser.current.prompt, CapturePrompt.centerSubject);
+    }
 
     expect(
       stabiliser.accept(verdict(CapturePrompt.ready)).prompt,
@@ -105,6 +123,14 @@ void main() {
     expect(
       stabiliser
           .accept(verdict(CapturePrompt.tooDark, light: LightQuality.tooDark))
+          .prompt,
+      CapturePrompt.waiting,
+    );
+    expect(
+      stabiliser
+          .accept(
+            verdict(CapturePrompt.moveCloser, distance: DistanceQuality.tooFar),
+          )
           .prompt,
       CapturePrompt.waiting,
     );
@@ -150,32 +176,40 @@ void main() {
             ),
           )
           .prompt,
+      CapturePrompt.moveCloser,
+    );
+    expect(
+      stabiliser
+          .accept(
+            verdict(
+              CapturePrompt.centerSubject,
+              centre: CentreQuality.ok,
+            ),
+          )
+          .prompt,
       CapturePrompt.centerSubject,
     );
   });
 
-  test('a one-frame chip flicker does not change Distance on screen', () {
+  test('a short chip flicker does not change Distance on screen', () {
     final stabiliser = LiveGuidanceStabiliser();
-    stabiliser.accept(
+    holdChip(
+      stabiliser,
       verdict(CapturePrompt.moveCloser, distance: DistanceQuality.tooFar),
     );
-    expect(
-      stabiliser
-          .accept(
-            verdict(CapturePrompt.moveCloser, distance: DistanceQuality.tooFar),
-          )
-          .distanceQuality,
-      DistanceQuality.tooFar,
-    );
+    expect(stabiliser.current.distanceQuality, DistanceQuality.tooFar);
 
-    expect(
-      stabiliser
-          .accept(
-            verdict(CapturePrompt.moveCloser, distance: DistanceQuality.ok),
-          )
-          .distanceQuality,
-      DistanceQuality.tooFar,
-    );
+    // Fewer than framesToChangeChip — still held.
+    for (var i = 0; i < stabiliser.framesToChangeChip - 1; i++) {
+      expect(
+        stabiliser
+            .accept(
+              verdict(CapturePrompt.moveCloser, distance: DistanceQuality.ok),
+            )
+            .distanceQuality,
+        DistanceQuality.tooFar,
+      );
+    }
     expect(
       stabiliser
           .accept(

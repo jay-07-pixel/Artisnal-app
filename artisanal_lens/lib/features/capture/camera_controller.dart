@@ -10,6 +10,7 @@ import '../../domain/entities/capture_feedback.dart';
 import '../../domain/entities/preset_capture_guidance.dart';
 import '../../domain/services/capture_guidance_service.dart';
 import '../../domain/services/frame_analyzer.dart';
+import '../../domain/services/frame_metrics_smoother.dart';
 import '../../domain/services/live_guidance_stabiliser.dart';
 
 /// Lifecycle state of the guided camera.
@@ -90,6 +91,7 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
   FrameMetrics _metrics = const FrameMetrics.empty();
   PresetCaptureGuidance? _guidance;
   final LiveGuidanceStabiliser _stabiliser = LiveGuidanceStabiliser();
+  final FrameMetricsSmoother _metricsSmoother = FrameMetricsSmoother();
   bool _isAnalysing = false;
   DateTime _lastAnalysis = DateTime.fromMillisecondsSinceEpoch(0);
   DateTime? _openedAt;
@@ -196,6 +198,7 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
     _unexposedSkips = 0;
     _lastAnalysis = DateTime.fromMillisecondsSinceEpoch(0);
     _stabiliser.reset();
+    _metricsSmoother.reset();
     state = state.copyWith(feedback: _stabiliser.current);
   }
 
@@ -288,7 +291,7 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
       // it is passed straight through — copying it every frame would allocate
       // megabytes per second on the low-end handsets this app targets.
       final plane = image.planes.first;
-      _metrics = ref.read(frameAnalyzerProvider).analyseLumaPlane(
+      final raw = ref.read(frameAnalyzerProvider).analyseLumaPlane(
             luma: plane.bytes,
             width: image.width,
             height: image.height,
@@ -300,17 +303,20 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
 
       // The first frames after the shutter opens are often black. Feeding
       // them to the evaluator locked the chips on Too dark / Move in.
-      if (_unexposedSkips < _maxUnexposedSkips &&
-          _metrics.isUnexposedPreview) {
+      if (_unexposedSkips < _maxUnexposedSkips && raw.isUnexposedPreview) {
         _unexposedSkips++;
         return;
       }
+
+      _metrics = _metricsSmoother.accept(raw);
 
       final measured = ref.read(captureGuidanceServiceProvider).evaluate(
             metrics: _metrics,
             technique: guidance.technique,
             pitchDegrees: _pitchDegrees,
             profile: guidance.cameraGuidance,
+            previousDistance: state.feedback.distanceQuality,
+            previousCentre: state.feedback.centreQuality,
           );
 
       final feedback = _stabiliser.accept(measured);

@@ -75,9 +75,9 @@ class ShotSlot extends Equatable {
   /// The photograph filling this slot, if one has been accepted.
   final CapturedShot? shot;
 
-  /// BTP photography template when this slot is a Saree template.
+  /// BTP photography template when this slot is a template photograph.
   ///
-  /// Null for Cushion Cover, Shawl and Stole checklist slots.
+  /// Null only for leftover Process/Product/Detail/Lifestyle slots.
   final PhotographyTemplate? template;
 
   bool get isFilled => shot != null;
@@ -172,21 +172,30 @@ class ShotSet extends Equatable {
   final DateTime createdAt;
   final List<CapturedShot> shots;
 
-  /// Saree uses the five BTP photography templates, not the Figma 7-shot list.
+  /// Saree uses the five BTP photography templates. Cushion Cover, Shawl
+  /// and Stole use their own five-template lists. None use the Figma 7-shot list.
+  bool get usesPhotographyTemplates =>
+      PhotographyTemplates.usesTemplates(categoryId);
+
+  /// Saree-only alias kept so existing checks still read clearly.
   bool get usesSareePhotographyTemplates => categoryId == sareeCategoryId;
 
   /// Every required photograph in the set, in checklist order, each paired
   /// with the shot filling it if there is one.
   List<ShotSlot> get slots {
-    if (usesSareePhotographyTemplates) {
+    final templates = PhotographyTemplates.forCategory(categoryId);
+    if (templates.isNotEmpty) {
+      final type = categoryId == sareeCategoryId
+          ? ShotType.sareePhotography
+          : ShotType.photography;
       return [
-        for (var i = 0; i < SareePhotographyTemplates.all.length; i++)
+        for (var i = 0; i < templates.length; i++)
           ShotSlot(
-            shotType: ShotType.sareePhotography,
+            shotType: type,
             index: i,
-            label: SareePhotographyTemplates.all[i].name,
-            shot: _shotFor(ShotType.sareePhotography, i),
-            template: SareePhotographyTemplates.all[i],
+            label: templates[i].name,
+            shot: _shotFor(type, i),
+            template: templates[i],
           ),
       ];
     }
@@ -225,21 +234,20 @@ class ShotSet extends Equatable {
   /// Accepted photographs that fill a required slot.
   int get completedCount => slots.where((slot) => slot.isFilled).length;
 
-  int get requiredCount => usesSareePhotographyTemplates
-      ? SareePhotographyTemplates.all.length
-      : ShotType.totalRequired;
+  int get requiredCount {
+    final templates = PhotographyTemplates.forCategory(categoryId);
+    if (templates.isNotEmpty) return templates.length;
+    return ShotType.totalRequired;
+  }
 
   bool get isFinished => completedCount >= requiredCount;
 
   double get completionRatio =>
       requiredCount == 0 ? 1 : (completedCount / requiredCount).clamp(0.0, 1.0);
 
-  /// The next empty slot, following the recommended order.
-  ///
-  /// This drives the "RECOMMENDED NEXT" badge and the "Start with …" button.
-  /// Saree walks the five BTP templates in source order.
+  /// The next empty slot, following template order when the category has one.
   ShotSlot? get nextSlot {
-    if (usesSareePhotographyTemplates) {
+    if (usesPhotographyTemplates) {
       for (final slot in slots) {
         if (!slot.isFilled) return slot;
       }
