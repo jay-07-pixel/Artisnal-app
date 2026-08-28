@@ -13,6 +13,7 @@ abstract final class SupabaseConfig {
 
   static const photosBucket = 'photos';
   static const tutorialVideosBucket = 'tutorial-videos';
+  static const tutorialImagesBucket = 'tutorial-images';
 
   static bool get isConfigured => url.isNotEmpty && anonKey.isNotEmpty;
 }

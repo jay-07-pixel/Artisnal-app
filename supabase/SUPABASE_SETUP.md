@@ -138,6 +138,27 @@ phone for faster replays.
 | `stole_loose_knot.mp4` |
 | `stole_rolled_coil.mp4` |
 
+### Tutorial catalog table (names, transcripts, step images)
+
+Run
+[`migrations/20250828140000_tutorial_catalog.sql`](migrations/20250828140000_tutorial_catalog.sql)
+in the SQL Editor. This creates:
+
+- `public.tutorial_videos` — display name, video key, transcript lines, step
+  image keys (one row per fold preset)
+- Storage bucket `tutorial-images` — public PNG step cards
+
+Upload step images from the repo folder `tutorial-videos-images/`:
+
+```powershell
+cd supabase/scripts
+.\upload_tutorial_images.ps1
+```
+
+Paths must match the `storage_key` values in the table (e.g.
+`saree roll display/saree_roll_display_howto_1.png`). Until images are uploaded,
+the app falls back to bundled assets in `assets/images/steps/`.
+
 ## 7. Sign in inside the app
 
 1. Open **Settings → Account & backup**.
@@ -158,10 +179,13 @@ Settings shows “Cloud backup not configured”.
 | Shot metadata | `public.shots` |
 | JPEG files | Storage bucket `photos` |
 | Tutorial videos | Storage bucket `tutorial-videos` (public, streamed) |
+| Tutorial step images | Storage bucket `tutorial-images` (public) |
+| Tutorial names & transcripts | `public.tutorial_videos` |
 | User profile | `public.profiles` (auto-created on sign-up) |
 
 Catalog presets, photography templates, and live camera guidance stay on-device.
-Tutorial videos stream from Supabase when online.
+Tutorial videos stream from Supabase when online. Names, transcripts, and step
+image keys are read from `public.tutorial_videos` when Supabase is configured.
 
 ## Troubleshooting sign-in
 

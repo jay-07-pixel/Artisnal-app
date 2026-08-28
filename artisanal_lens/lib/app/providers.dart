@@ -8,6 +8,8 @@ import '../data/repositories/shot_set_repository_impl.dart';
 import '../domain/repositories/catalog_repository.dart';
 import '../domain/repositories/shot_set_repository.dart';
 import '../data/services/cloud_sync_service.dart';
+import '../data/services/tutorial_catalog_service.dart';
+import '../domain/entities/tutorial_catalog_entry.dart';
 import '../domain/services/capture_guidance_service.dart';
 import '../domain/services/frame_analyzer.dart';
 
@@ -50,4 +52,16 @@ final cloudSyncServiceProvider = Provider<CloudSyncService>(
     database: ref.watch(databaseProvider),
     photoStorage: ref.watch(photoStorageProvider),
   ),
+);
+
+final tutorialCatalogServiceProvider = Provider<TutorialCatalogService>(
+  (ref) => TutorialCatalogService(),
+);
+
+final tutorialCatalogEntryProvider =
+    FutureProvider.family<TutorialCatalogEntry?, String?>(
+  (ref, presetId) async {
+    if (presetId == null || presetId.trim().isEmpty) return null;
+    return ref.watch(tutorialCatalogServiceProvider).fetchByPresetId(presetId);
+  },
 );
