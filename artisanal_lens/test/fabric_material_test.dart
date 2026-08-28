@@ -7,19 +7,29 @@ void main() {
       FabricMaterial.all.map((material) => material.name).toList(),
       ['Silk', 'Cotton', 'Wool', 'Jute'],
     );
-    expect(FabricMaterial.silk.asksSilkType, isTrue);
-    expect(FabricMaterial.cotton.asksSilkType, isFalse);
-    expect(FabricMaterial.wool.asksSilkType, isFalse);
-    expect(FabricMaterial.jute.asksSilkType, isFalse);
-    expect(FabricMaterial.placeholderTypeCount, 4);
   });
 
-  test('silk types are asked only after Silk', () {
+  test('silk types are documented', () {
     expect(
       SilkVariety.all.map((variety) => variety.name).toList(),
       ['Mulberry', 'Eri', 'Tasar', 'Muga'],
     );
     expect(SilkVariety.byId('eri')?.name, 'Eri');
     expect(SilkVariety.byId('cotton'), isNull);
+  });
+
+  test('cotton wool and jute types are documented', () {
+    expect(
+      CottonVariety.all.map((variety) => variety.name).toList(),
+      ['Khadi', 'Muslin', 'Handloom', 'Jamdani'],
+    );
+    expect(
+      WoolVariety.all.map((variety) => variety.name).toList(),
+      ['Pashmina', 'Angora', 'Merino', 'Handspun'],
+    );
+    expect(
+      JuteVariety.all.map((variety) => variety.name).toList(),
+      ['Golden', 'Tossa', 'Hessian', 'Blended'],
+    );
   });
 }

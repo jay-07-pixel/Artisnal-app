@@ -599,6 +599,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get silkMuga => 'Muga';
 
   @override
+  String get cottonKhadi => 'Khadi';
+
+  @override
+  String get cottonMuslin => 'Muslin';
+
+  @override
+  String get cottonHandloom => 'Handloom';
+
+  @override
+  String get cottonJamdani => 'Jamdani';
+
+  @override
+  String get woolPashmina => 'Pashmina';
+
+  @override
+  String get woolAngora => 'Angora';
+
+  @override
+  String get woolMerino => 'Merino';
+
+  @override
+  String get woolHandspun => 'Handspun';
+
+  @override
+  String get juteGolden => 'Golden';
+
+  @override
+  String get juteTossa => 'Tossa';
+
+  @override
+  String get juteHessian => 'Hessian';
+
+  @override
+  String get juteBlended => 'Blended';
+
+  @override
   String get shotProcess => 'Process';
 
   @override

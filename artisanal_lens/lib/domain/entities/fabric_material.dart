@@ -14,13 +14,10 @@ class FabricMaterial extends Equatable {
   final String thumbnailAsset;
   final int sortOrder;
 
-  bool get asksSilkType => id == silkId;
-
-  /// Cotton, Wool and Jute use the type page too, with empty slots until
-  /// varieties are documented.
-  static const int placeholderTypeCount = 4;
-
   static const String silkId = 'silk';
+  static const String cottonId = 'cotton';
+  static const String woolId = 'wool';
+  static const String juteId = 'jute';
 
   static const silk = FabricMaterial(
     id: silkId,
@@ -108,6 +105,171 @@ class SilkVariety extends Equatable {
   static const List<SilkVariety> all = [mulberry, eri, tasar, muga];
 
   static SilkVariety? byId(String id) {
+    for (final variety in all) {
+      if (variety.id == id) return variety;
+    }
+    return null;
+  }
+
+  @override
+  List<Object?> get props => [id];
+}
+
+/// Handloom cotton variety.
+class CottonVariety extends Equatable {
+  const CottonVariety({
+    required this.id,
+    required this.name,
+    required this.thumbnailAsset,
+    required this.sortOrder,
+  });
+
+  final String id;
+  final String name;
+  final String thumbnailAsset;
+  final int sortOrder;
+
+  static const khadi = CottonVariety(
+    id: 'khadi',
+    name: 'Khadi',
+    thumbnailAsset: 'assets/images/cotton_types/khadi.png',
+    sortOrder: 0,
+  );
+
+  static const muslin = CottonVariety(
+    id: 'muslin',
+    name: 'Muslin',
+    thumbnailAsset: 'assets/images/cotton_types/muslin.png',
+    sortOrder: 1,
+  );
+
+  static const handloom = CottonVariety(
+    id: 'handloom',
+    name: 'Handloom',
+    thumbnailAsset: 'assets/images/cotton_types/handloom.png',
+    sortOrder: 2,
+  );
+
+  static const jamdani = CottonVariety(
+    id: 'jamdani',
+    name: 'Jamdani',
+    thumbnailAsset: 'assets/images/cotton_types/jamdani.png',
+    sortOrder: 3,
+  );
+
+  static const List<CottonVariety> all = [khadi, muslin, handloom, jamdani];
+
+  static CottonVariety? byId(String id) {
+    for (final variety in all) {
+      if (variety.id == id) return variety;
+    }
+    return null;
+  }
+
+  @override
+  List<Object?> get props => [id];
+}
+
+/// Wool variety common in Northeast handloom products.
+class WoolVariety extends Equatable {
+  const WoolVariety({
+    required this.id,
+    required this.name,
+    required this.thumbnailAsset,
+    required this.sortOrder,
+  });
+
+  final String id;
+  final String name;
+  final String thumbnailAsset;
+  final int sortOrder;
+
+  static const pashmina = WoolVariety(
+    id: 'pashmina',
+    name: 'Pashmina',
+    thumbnailAsset: 'assets/images/wool_types/pashmina.png',
+    sortOrder: 0,
+  );
+
+  static const angora = WoolVariety(
+    id: 'angora',
+    name: 'Angora',
+    thumbnailAsset: 'assets/images/wool_types/angora.png',
+    sortOrder: 1,
+  );
+
+  static const merino = WoolVariety(
+    id: 'merino',
+    name: 'Merino',
+    thumbnailAsset: 'assets/images/wool_types/merino.png',
+    sortOrder: 2,
+  );
+
+  static const handspun = WoolVariety(
+    id: 'handspun',
+    name: 'Handspun',
+    thumbnailAsset: 'assets/images/wool_types/handspun.png',
+    sortOrder: 3,
+  );
+
+  static const List<WoolVariety> all = [pashmina, angora, merino, handspun];
+
+  static WoolVariety? byId(String id) {
+    for (final variety in all) {
+      if (variety.id == id) return variety;
+    }
+    return null;
+  }
+
+  @override
+  List<Object?> get props => [id];
+}
+
+/// Jute variety for bags, mats and blended textiles.
+class JuteVariety extends Equatable {
+  const JuteVariety({
+    required this.id,
+    required this.name,
+    required this.thumbnailAsset,
+    required this.sortOrder,
+  });
+
+  final String id;
+  final String name;
+  final String thumbnailAsset;
+  final int sortOrder;
+
+  static const golden = JuteVariety(
+    id: 'golden',
+    name: 'Golden',
+    thumbnailAsset: 'assets/images/jute_types/golden.png',
+    sortOrder: 0,
+  );
+
+  static const tossa = JuteVariety(
+    id: 'tossa',
+    name: 'Tossa',
+    thumbnailAsset: 'assets/images/jute_types/tossa.png',
+    sortOrder: 1,
+  );
+
+  static const hessian = JuteVariety(
+    id: 'hessian',
+    name: 'Hessian',
+    thumbnailAsset: 'assets/images/jute_types/hessian.png',
+    sortOrder: 2,
+  );
+
+  static const blended = JuteVariety(
+    id: 'blended',
+    name: 'Blended',
+    thumbnailAsset: 'assets/images/jute_types/blended.png',
+    sortOrder: 3,
+  );
+
+  static const List<JuteVariety> all = [golden, tossa, hessian, blended];
+
+  static JuteVariety? byId(String id) {
     for (final variety in all) {
       if (variety.id == id) return variety;
     }

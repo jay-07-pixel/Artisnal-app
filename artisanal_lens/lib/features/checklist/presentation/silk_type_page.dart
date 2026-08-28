@@ -10,7 +10,7 @@ import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/choice_image_grid.dart';
 import '../../../shared/widgets/common.dart';
 
-/// Second New Product step: silk varieties, or empty type slots for the rest.
+/// Second New Product step: named varieties for each fibre material.
 class SilkTypePage extends StatefulWidget {
   const SilkTypePage({this.materialId, super.key});
 
@@ -26,27 +26,62 @@ class _SilkTypePageState extends State<SilkTypePage> {
   FabricMaterial get _material =>
       FabricMaterial.byId(widget.materialId ?? '') ?? FabricMaterial.silk;
 
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final namedTypes = _material.asksSilkType;
-    final choices = namedTypes
-        ? [
+  List<ImageChoice> _choices(AppLocalizations l10n) => switch (_material.id) {
+        FabricMaterial.silkId => [
             for (final variety in SilkVariety.all)
               ImageChoice(
                 id: variety.id,
-                name: AppCopy.silkVarietyName(l10n, variety.id),
+                name: AppCopy.materialVarietyName(
+                  l10n,
+                  _material.id,
+                  variety.id,
+                ),
                 thumbnailAsset: variety.thumbnailAsset,
               ),
-          ]
-        : [
-            for (var i = 0; i < FabricMaterial.placeholderTypeCount; i++)
+          ],
+        FabricMaterial.cottonId => [
+            for (final variety in CottonVariety.all)
               ImageChoice(
-                id: '${_material.id}_type_$i',
-                name: '',
-                thumbnailAsset: '',
+                id: variety.id,
+                name: AppCopy.materialVarietyName(
+                  l10n,
+                  _material.id,
+                  variety.id,
+                ),
+                thumbnailAsset: variety.thumbnailAsset,
               ),
-          ];
+          ],
+        FabricMaterial.woolId => [
+            for (final variety in WoolVariety.all)
+              ImageChoice(
+                id: variety.id,
+                name: AppCopy.materialVarietyName(
+                  l10n,
+                  _material.id,
+                  variety.id,
+                ),
+                thumbnailAsset: variety.thumbnailAsset,
+              ),
+          ],
+        FabricMaterial.juteId => [
+            for (final variety in JuteVariety.all)
+              ImageChoice(
+                id: variety.id,
+                name: AppCopy.materialVarietyName(
+                  l10n,
+                  _material.id,
+                  variety.id,
+                ),
+                thumbnailAsset: variety.thumbnailAsset,
+              ),
+          ],
+        _ => const [],
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final choices = _choices(l10n);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -81,7 +116,7 @@ class _SilkTypePageState extends State<SilkTypePage> {
       ),
       bottomNavigationBar: BottomAction(
         child: FilledButton.icon(
-          onPressed: namedTypes && _selectedId == null ? null : _continue,
+          onPressed: _selectedId == null ? null : _continue,
           icon: const Icon(Icons.arrow_forward, size: 20),
           label: Text(l10n.continueAction),
         ),
@@ -94,8 +129,7 @@ class _SilkTypePageState extends State<SilkTypePage> {
       AppRoute.productSetup,
       queryParameters: {
         'material': _material.id,
-        if (_material.asksSilkType && _selectedId != null)
-          'silkType': _selectedId!,
+        if (_selectedId != null) 'silkType': _selectedId!,
       },
     );
   }

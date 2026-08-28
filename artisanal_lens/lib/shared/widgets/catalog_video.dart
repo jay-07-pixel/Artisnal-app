@@ -196,23 +196,27 @@ class _Playback extends StatelessWidget {
                 child: VideoPlayer(controller),
               ),
             ),
-            Material(
-              color: Colors.transparent,
-              child: IconButton(
-                iconSize: 56,
-                color: AppColors.white,
-                onPressed: () {
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
                   if (value.isPlaying) {
                     controller.pause();
                   } else {
                     controller.play();
                   }
                 },
-                icon: Icon(
-                  value.isPlaying
-                      ? Icons.pause_circle_outline
-                      : Icons.play_circle_outline,
-                ),
+                child: value.isPlaying
+                    ? const SizedBox.expand()
+                    : ColoredBox(
+                        color: Colors.black26,
+                        child: Center(
+                          child: Icon(
+                            Icons.play_circle_outline,
+                            size: 56,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
               ),
             ),
           ],

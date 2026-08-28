@@ -57,29 +57,68 @@ void main() {
     expect(_continue(tester).onPressed, isNotNull);
   });
 
-  for (final material in ['cotton', 'wool', 'jute']) {
-    testWidgets('$material type page shows four empty boxes', (tester) async {
-      await tester.binding.setSurfaceSize(const Size(400, 1200));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(
-        ProviderScope(
-          child: l10nApp(home: SilkTypePage(materialId: material)),
-        ),
-      );
-      await tester.pumpAndSettle();
+  testWidgets('cotton type page lists Khadi Muslin Handloom Jamdani',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        child: l10nApp(home: SilkTypePage(materialId: 'cotton')),
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      expect(
-        find.text('What type of $material\nare you using?'),
-        findsOneWidget,
-      );
-      expect(find.byIcon(Icons.image_outlined), findsNWidgets(4));
-      expect(find.text('Mulberry'), findsNothing);
-      expect(find.text('Saree'), findsNothing);
-      expect(_continue(tester).onPressed, isNotNull);
-    });
-  }
+    expect(find.text('What type of cotton\nare you using?'), findsOneWidget);
+    expect(find.text('Khadi'), findsOneWidget);
+    expect(find.text('Muslin'), findsOneWidget);
+    expect(find.text('Handloom'), findsOneWidget);
+    expect(find.text('Jamdani'), findsOneWidget);
+    expect(_continue(tester).onPressed, isNull);
 
-  testWidgets('Silk continue opens silk types; Cotton opens empty type boxes',
+    await tester.tap(find.text('Handloom'));
+    await tester.pumpAndSettle();
+    expect(_continue(tester).onPressed, isNotNull);
+  });
+
+  testWidgets('wool type page lists Pashmina Angora Merino Handspun',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        child: l10nApp(home: SilkTypePage(materialId: 'wool')),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('What type of wool\nare you using?'), findsOneWidget);
+    expect(find.text('Pashmina'), findsOneWidget);
+    expect(find.text('Angora'), findsOneWidget);
+    expect(find.text('Merino'), findsOneWidget);
+    expect(find.text('Handspun'), findsOneWidget);
+    expect(_continue(tester).onPressed, isNull);
+  });
+
+  testWidgets('jute type page lists Golden Tossa Hessian Blended',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      ProviderScope(
+        child: l10nApp(home: SilkTypePage(materialId: 'jute')),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('What type of jute\nare you using?'), findsOneWidget);
+    expect(find.text('Golden'), findsOneWidget);
+    expect(find.text('Tossa'), findsOneWidget);
+    expect(find.text('Hessian'), findsOneWidget);
+    expect(find.text('Blended'), findsOneWidget);
+    expect(_continue(tester).onPressed, isNull);
+  });
+
+  testWidgets('Silk continue opens silk types; Cotton opens cotton types',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 1400));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -136,9 +175,9 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Continue'));
     await tester.pumpAndSettle();
     expect(find.text('What type of cotton\nare you using?'), findsOneWidget);
+    expect(find.text('Khadi'), findsOneWidget);
     expect(find.text('Saree'), findsNothing);
     expect(find.text('Mulberry'), findsNothing);
-    expect(find.byIcon(Icons.image_outlined), findsNWidgets(4));
-    expect(_continue(tester).onPressed, isNotNull);
+    expect(_continue(tester).onPressed, isNull);
   });
 }

@@ -1162,6 +1162,78 @@ abstract class AppLocalizations {
   /// **'Muga'**
   String get silkMuga;
 
+  /// No description provided for @cottonKhadi.
+  ///
+  /// In en, this message translates to:
+  /// **'Khadi'**
+  String get cottonKhadi;
+
+  /// No description provided for @cottonMuslin.
+  ///
+  /// In en, this message translates to:
+  /// **'Muslin'**
+  String get cottonMuslin;
+
+  /// No description provided for @cottonHandloom.
+  ///
+  /// In en, this message translates to:
+  /// **'Handloom'**
+  String get cottonHandloom;
+
+  /// No description provided for @cottonJamdani.
+  ///
+  /// In en, this message translates to:
+  /// **'Jamdani'**
+  String get cottonJamdani;
+
+  /// No description provided for @woolPashmina.
+  ///
+  /// In en, this message translates to:
+  /// **'Pashmina'**
+  String get woolPashmina;
+
+  /// No description provided for @woolAngora.
+  ///
+  /// In en, this message translates to:
+  /// **'Angora'**
+  String get woolAngora;
+
+  /// No description provided for @woolMerino.
+  ///
+  /// In en, this message translates to:
+  /// **'Merino'**
+  String get woolMerino;
+
+  /// No description provided for @woolHandspun.
+  ///
+  /// In en, this message translates to:
+  /// **'Handspun'**
+  String get woolHandspun;
+
+  /// No description provided for @juteGolden.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden'**
+  String get juteGolden;
+
+  /// No description provided for @juteTossa.
+  ///
+  /// In en, this message translates to:
+  /// **'Tossa'**
+  String get juteTossa;
+
+  /// No description provided for @juteHessian.
+  ///
+  /// In en, this message translates to:
+  /// **'Hessian'**
+  String get juteHessian;
+
+  /// No description provided for @juteBlended.
+  ///
+  /// In en, this message translates to:
+  /// **'Blended'**
+  String get juteBlended;
+
   /// No description provided for @shotProcess.
   ///
   /// In en, this message translates to:

@@ -598,6 +598,42 @@ class AppLocalizationsHi extends AppLocalizations {
   String get silkMuga => 'मूगा';
 
   @override
+  String get cottonKhadi => 'खादी';
+
+  @override
+  String get cottonMuslin => 'मलमल';
+
+  @override
+  String get cottonHandloom => 'हथकरघा';
+
+  @override
+  String get cottonJamdani => 'जमदानी';
+
+  @override
+  String get woolPashmina => 'पश्मीना';
+
+  @override
+  String get woolAngora => 'एंगोरा';
+
+  @override
+  String get woolMerino => 'मेरिनो';
+
+  @override
+  String get woolHandspun => 'हाथ से काता';
+
+  @override
+  String get juteGolden => 'सुनहरा';
+
+  @override
+  String get juteTossa => 'टोसा';
+
+  @override
+  String get juteHessian => 'हेसियन';
+
+  @override
+  String get juteBlended => 'मिश्रित';
+
+  @override
   String get shotProcess => 'प्रक्रिया';
 
   @override

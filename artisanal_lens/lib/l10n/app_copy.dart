@@ -82,6 +82,46 @@ abstract final class AppCopy {
         _ => id,
       };
 
+  static String cottonVarietyName(AppLocalizations l10n, String id) =>
+      switch (id) {
+        'khadi' => l10n.cottonKhadi,
+        'muslin' => l10n.cottonMuslin,
+        'handloom' => l10n.cottonHandloom,
+        'jamdani' => l10n.cottonJamdani,
+        _ => id,
+      };
+
+  static String woolVarietyName(AppLocalizations l10n, String id) =>
+      switch (id) {
+        'pashmina' => l10n.woolPashmina,
+        'angora' => l10n.woolAngora,
+        'merino' => l10n.woolMerino,
+        'handspun' => l10n.woolHandspun,
+        _ => id,
+      };
+
+  static String juteVarietyName(AppLocalizations l10n, String id) =>
+      switch (id) {
+        'golden' => l10n.juteGolden,
+        'tossa' => l10n.juteTossa,
+        'hessian' => l10n.juteHessian,
+        'blended' => l10n.juteBlended,
+        _ => id,
+      };
+
+  static String materialVarietyName(
+    AppLocalizations l10n,
+    String materialId,
+    String varietyId,
+  ) =>
+      switch (materialId) {
+        'silk' => silkVarietyName(l10n, varietyId),
+        'cotton' => cottonVarietyName(l10n, varietyId),
+        'wool' => woolVarietyName(l10n, varietyId),
+        'jute' => juteVarietyName(l10n, varietyId),
+        _ => varietyId,
+      };
+
   static String shotTypeLabel(AppLocalizations l10n, ShotType type) =>
       switch (type) {
         ShotType.process => l10n.shotProcess,

@@ -60,6 +60,27 @@ void main() {
         reason: variety.thumbnailAsset,
       );
     }
+    for (final variety in CottonVariety.all) {
+      expect(
+        await isBundled(variety.thumbnailAsset),
+        isTrue,
+        reason: variety.thumbnailAsset,
+      );
+    }
+    for (final variety in WoolVariety.all) {
+      expect(
+        await isBundled(variety.thumbnailAsset),
+        isTrue,
+        reason: variety.thumbnailAsset,
+      );
+    }
+    for (final variety in JuteVariety.all) {
+      expect(
+        await isBundled(variety.thumbnailAsset),
+        isTrue,
+        reason: variety.thumbnailAsset,
+      );
+    }
   });
 
   test('existing fold thumbnails are bundled', () async {
