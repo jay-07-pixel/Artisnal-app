@@ -74,6 +74,8 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
       'material_id': set.materialId,
       'silk_type_id': set.silkTypeId,
       'created_at': set.createdAt.millisecondsSinceEpoch,
+      'updated_at': set.createdAt.millisecondsSinceEpoch,
+      'sync_status': 'pending',
     });
 
     return set;
@@ -97,9 +99,12 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
         'captured_at': shot.capturedAt.millisecondsSinceEpoch,
         'preset_id': shot.presetId,
         'saved_to_gallery': shot.savedToDeviceGallery ? 1 : 0,
+        'sync_status': 'pending',
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    await _database.touchShotSet(setId);
 
     final updated = await findById(setId);
     if (updated == null) {
@@ -132,7 +137,11 @@ class ShotSetRepositoryImpl implements ShotSetRepository {
   }) async {
     await _db.update(
       AppDatabase.tableSets,
-      {'product_name': productName},
+      {
+        'product_name': productName,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'sync_status': 'pending',
+      },
       where: 'id = ?',
       whereArgs: [setId],
     );

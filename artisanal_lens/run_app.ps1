@@ -1,13 +1,10 @@
-# Runs The Artisanal Lens on the Android emulator.
+# Runs The Artisanal Lens on Android — physical phone or emulator.
 #
 #   .\run_app.ps1              hot-reload dev session (flutter run)
 #   .\run_app.ps1 -Apk         install the built APK instead (no dev session)
 #   .\run_app.ps1 -Avd Pixel_6 use a different emulator
 #
-# Handles two quirks of this machine:
-#   * the emulator window opens off-screen (top = -1096), so it gets moved back
-#   * `flutter emulators --launch` ties the emulator to the shell, so it is
-#     started detached instead and survives the terminal closing
+# For a USB-connected phone only, prefer:  .\run_phone.ps1
 
 param(
     [string]$Avd = "Pixel_7_Pro",
@@ -22,10 +19,16 @@ $package = "com.artisanallens.artisanal_lens"
 
 Set-Location $PSScriptRoot
 
-# ---------------------------------------------------------------- emulator ---
-$running = & $adb devices | Select-String "emulator-\d+\s+device"
+# ------------------------------------------------------------------ device ---
+& $adb start-server | Out-Null
+$anyDevice = & $adb devices | Select-String "^\S+\s+device$"
+$emulator  = & $adb devices | Select-String "emulator-\d+\s+device"
+$phone     = $anyDevice | Where-Object { $_.Line -notmatch "^emulator-" }
 
-if (-not $running) {
+if ($phone) {
+    $deviceId = ($phone[0].Line -split "\s+")[0]
+    Write-Host "Physical phone detected: $deviceId" -ForegroundColor Green
+} elseif (-not $emulator) {
     Write-Host "Starting emulator '$Avd'..." -ForegroundColor Cyan
     Start-Process -FilePath $emuExe -ArgumentList "-avd", $Avd -WindowStyle Normal
 
@@ -37,11 +40,14 @@ if (-not $running) {
     }
     if ($booted -ne "1") { throw "Emulator did not finish booting." }
     Write-Host "Emulator ready." -ForegroundColor Green
+    $deviceId = $null
 } else {
     Write-Host "Emulator already running." -ForegroundColor Green
+    $deviceId = ($emulator[0].Line -split "\s+")[0]
 }
 
 # ------------------------------------------------- drag window back on screen ---
+if (-not $phone) {
 Add-Type @"
 using System;
 using System.Runtime.InteropServices;
@@ -59,20 +65,34 @@ if ($win) {
     [EmuWin]::SetForegroundWindow($win.MainWindowHandle)                 | Out-Null
     Write-Host "Emulator window placed at (60,20)." -ForegroundColor Green
 }
+}
+
+$deviceFlag = @()
+if ($deviceId) { $deviceFlag = @("-d", $deviceId) }
 
 # --------------------------------------------------------------------- app ---
+$defineFile = Join-Path $PSScriptRoot "supabase.local.json"
+$defineArgs = @()
+if (Test-Path $defineFile) {
+    $defineArgs = @("--dart-define-from-file=$defineFile")
+    Write-Host "Supabase: using supabase.local.json" -ForegroundColor Green
+} else {
+    Write-Host "Supabase: offline only (copy supabase.local.example.json to supabase.local.json to enable cloud sync)." -ForegroundColor Yellow
+}
+
 if ($Apk) {
     $path = "build\app\outputs\flutter-apk\app-debug.apk"
     if (-not (Test-Path $path)) {
         Write-Host "No APK yet - building..." -ForegroundColor Cyan
-        flutter build apk --debug
+        flutter build apk --debug @defineArgs
     }
     Write-Host "Installing..." -ForegroundColor Cyan
-    & $adb install -r -t $path
+    if ($deviceId) { & $adb -s $deviceId install -r -t $path }
+    else { & $adb install -r -t $path }
     & $adb shell pm grant $package android.permission.CAMERA 2>$null
     & $adb shell am start -n "$package/.MainActivity" | Out-Null
     Write-Host "Launched. (No hot reload - run without -Apk for that.)" -ForegroundColor Green
 } else {
     Write-Host "Starting dev session - press r to hot reload, q to quit." -ForegroundColor Cyan
-    flutter run
+    flutter run @deviceFlag @defineArgs
 }

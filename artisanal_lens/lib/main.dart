@@ -9,6 +9,7 @@ import 'app/theme/app_colors.dart';
 import 'app/theme/app_dimens.dart';
 import 'app/theme/app_theme.dart';
 import 'data/datasources/app_database.dart';
+import 'data/services/supabase_initializer.dart';
 import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
@@ -19,6 +20,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  await initializeSupabase();
   final database = await AppDatabase.open();
 
   runApp(

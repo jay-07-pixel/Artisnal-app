@@ -14,6 +14,8 @@ light, angle and framing live through the camera before the shutter is pressed.
 Flutter app: [`artisanal_lens/`](artisanal_lens/). Package id:
 `com.artisanallens.artisanal_lens`.
 
+Repository: [github.com/jay-07-pixel/Artisnal-app](https://github.com/jay-07-pixel/Artisnal-app)
+
 ---
 
 ## Where it comes from
@@ -60,7 +62,37 @@ Dart at startup, which buries that sequence behind a long splash:
 flutter build apk --release
 ```
 
+The release APK is written to
+`artisanal_lens/build/app/outputs/flutter-apk/app-release.apk`.
+
 More device notes: [`artisanal_lens/RUNNING.md`](artisanal_lens/RUNNING.md).
+
+### Supabase (cloud backup & sync)
+
+Full setup guide: [`supabase/SUPABASE_SETUP.md`](supabase/SUPABASE_SETUP.md).
+
+1. Create a Supabase project and run
+   `supabase/migrations/20250828120000_initial_schema.sql` in the SQL editor.
+2. Run the app with your project credentials:
+
+```bash
+# Option A — local config file (recommended, gitignored)
+cp supabase.local.example.json supabase.local.json
+# edit supabase.local.json with your URL and anon key
+flutter run --dart-define-from-file=supabase.local.json
+
+# Option B — inline flags
+flutter run \
+  --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=your-anon-key
+```
+
+On Windows, `.\run_app.ps1` picks up `supabase.local.json` automatically.
+
+3. Open **Settings → Account & backup** to sign in and sync photos.
+
+Without those flags the app stays fully offline. Local SQLite is still the
+source of truth; Supabase backs up shot sets and JPEGs when online.
 
 ---
 
@@ -73,11 +105,13 @@ Opening sequence  (tap to skip)
         ├─ New Product
         │     Material (Silk, Cotton, Wool, Jute)
         │       └─ Fibre type
-        │            Silk → Mulberry, Eri, Tasar, Muga
-        │            Cotton / Wool / Jute → four empty slots (types not documented yet)
+        │            Silk   → Mulberry, Eri, Tasar, Muga
+        │            Cotton → Khadi, Muslin, Handloom, Jamdani
+        │            Wool   → Pashmina, Angora, Merino, Handspun
+        │            Jute   → Golden, Tossa, Hessian, Blended
         │              └─ Category (Saree, Cushion Cover, Shawl, Stole) + name
-        │                   └─ Photo list
-        │                        └─ How should it look?  (fold / style; skipped for Process and Detail)
+        │                   └─ Photo list  (five photography templates)
+        │                        └─ How should it look?  (fold / style; skipped for close-ups)
         │                             └─ Lighting → Tutorial → Camera (live guidance)
         │                                  └─ Review (Use photo / Retake)
         │
@@ -88,40 +122,31 @@ Opening sequence  (tap to skip)
 Finished sets open the product viewer. Pending sets return to the photo list.
 Empty slots in the viewer re-enter capture for that one photograph.
 
-### Saree — five photography templates
+Each material and fibre type has its own thumbnail image in
+`assets/images/materials/`, `silk_types/`, `cotton_types/`, `wool_types/`
+and `jute_types/`.
 
-Saree follows the Product Photography Guide, not the seven-shot Figma list:
+### Photography templates — all four categories
 
-| Template | Content |
+Every category follows the Product Photography Guide with **five templates**
+each, not the old seven-shot Figma checklist. List thumbnails live in
+`assets/images/templates/`. **How should it look?** cards use one matching
+product per category in the pose each fold needs.
+
+| Category | Templates |
 |---|---|
-| Full Saree Display | Colour, pattern, material |
-| Texture & Weave | Texture, thickness, material, transparency |
-| Draped Look | Flimsiness, sheen, flow, weight |
-| Embroidery & Border Details | Embroidery, quality |
-| Folded Stack / Saree Stack | Thickness, material weight |
+| **Saree** | Full Saree Display · Texture & Weave · Draped Look · Embroidery & Border · Folded Stack |
+| **Cushion Cover** | Full Cover Display · Texture & Weave · Stacked Pair / Thickness · Corner & Stitching · In Use on Seating |
+| **Shawl** | Full Design Display · Texture & Weave · Draped on Shoulder · Border & Corner · Folded Stack |
+| **Stole** | Full Length Display · Texture & Weave · Neck Wrap · Edge Thickness · Softness Knot |
 
-List thumbnails and **How should it look?** cards use one matching saree
-(teal/emerald silk, maroon gold-zari border) in the pose each step needs.
+Close-up templates (texture, border, corner, and so on) skip **How should it
+look?** — there is no fold to choose.
 
-After a template is chosen, Saree still offers the four documented folds:
-Pallu drape, Box / flat fold, Worn drape, Roll display.
-
-### Other categories — seven photographs
-
-Cushion Cover, Shawl and Stole keep the Figma checklist:
-
-| Shot type | Count | Slots |
-|---|---|---|
-| Process | 2 | Loom setup, Dyeing |
-| Product | 1 | Hero shot |
-| Detail | 3 | Border, Weave, Motif |
-| Lifestyle | 1 | Styled shot |
-
-Process and Detail skip the style step. A fold describes how to arrange
-finished cloth; a loom or a weave close-up has no drape to choose.
-
-Each of those categories has four folds in the solution deck (for example
-Cushion: Flat lay, Stacked pair, Propped, Corner tuck).
+After a template is chosen, the app offers the four documented folds for that
+category. Saree: Pallu drape, Box / flat fold, Worn drape, Roll display.
+Cushion: Flat lay, Stacked pair, Propped, Corner tuck. Shawl and Stole have
+their own four-fold lists in the same pattern.
 
 ---
 
@@ -139,6 +164,9 @@ single pass and measures: brightness and clipped highlights, texture, a coarse
 map of where the product is (its bounding box, how much of the ghost frame it
 fills, how much of the frame edge it runs over), fine-versus-coarse detail for
 focus, and the dominant direction the fabric runs in.
+
+**`FrameMetricsSmoother`** low-pass filters those readings so small hand
+movements do not flicker the verdict.
 
 **`CaptureGuidanceService`** turns those plus device pitch into one prompt, in
 triage order: nothing in view → product outside the guide or off the edge →
@@ -172,10 +200,10 @@ artisanal_lens/lib/
 ├── app/                  MaterialApp, router, DI, locale, theme tokens
 ├── domain/
 │   ├── entities/         ShotSet, ShotType, FoldPreset, PhotographyTemplate,
-│   │                     FabricMaterial, CaptureFeedback, …
+│   │                     FabricMaterial, CottonVariety, WoolVariety, JuteVariety, …
 │   ├── repositories/     abstract interfaces
-│   └── services/         FrameAnalyzer, CaptureGuidanceService,
-│                         LiveGuidanceStabiliser
+│   └── services/         FrameAnalyzer, FrameMetricsSmoother,
+│                         CaptureGuidanceService, LiveGuidanceStabiliser
 ├── data/
 │   ├── datasources/      preset_catalog · app_database · photo_storage
 │   └── repositories/     implementations
@@ -193,6 +221,9 @@ the shell so the bottom bar is hidden mid-shoot.
 **Storage** — sqflite, local only, offline-first. A shoot survives being closed
 mid-set. Photographs are copied into app storage and, on Android, into the
 device gallery album *The Artisanal Lens*.
+
+**Languages** — Assamese, Hindi and English. Switch in Settings
+(`lib/l10n/`).
 
 ---
 
@@ -217,22 +248,23 @@ Categories and folds are data in
 `ProductCategory` and its `FoldPreset`s. `test/catalog_coverage_test.dart`
 checks that every category × shot type can reach the camera.
 
-Saree photography templates live in
+Photography templates live in
 `artisanal_lens/lib/domain/entities/photography_template.dart`.
 
 ---
 
 ## Known gaps
 
-- **Cotton, Wool and Jute types.** Those materials use the same type screen as
-  Silk, with four empty boxes. Varieties are not named until a source documents
-  them.
-- **Tutorial videos and step illustrations.** The catalog points at those
-  files; most are still missing, so the screens fail safe with placeholders.
+- **Tutorial videos.** The catalog references a `.mp4` per fold. Videos stream
+  from Supabase Storage (`tutorial-videos` bucket) — they are not bundled in
+  the APK. Upload each key via the Supabase Dashboard until all 15 are live;
+  missing uploads show a placeholder in the app.
+- **Step illustrations in the app bundle.** How-to cards for **Saree roll display**
+  (5 steps) are bundled. Other folds still have source art in
+  [`tutorial-videos-images/`](tutorial-videos-images/) that is not yet copied into `assets/images/steps/`.
 - **Localisation polish.** Settings switches the UI between Assamese, Hindi
-  and English (`lib/l10n/`). Catalog transcript lines and a few long setup
-  sentences are still English; a native speaker should review the Assamese
-  and Hindi copy.
+  and English. Catalog transcript lines and a few long setup sentences are
+  still English; a native speaker should review the Assamese and Hindi copy.
 
 ---
 
@@ -241,6 +273,9 @@ Saree photography templates live in
 ```
 .
 ├── artisanal_lens/     Flutter application
+│   └── assets/images/  presets, templates, materials, fibre types, steps
+├── supabase/           SQL migrations, tutorial video bucket, setup guide
+├── tutorial-videos-images/  how-to step card source art for tutorial videos
 ├── docs/               audit notes (BTP report / solution deck used as sources)
 └── README.md
 ```

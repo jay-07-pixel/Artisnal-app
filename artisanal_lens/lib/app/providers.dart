@@ -7,6 +7,7 @@ import '../data/repositories/catalog_repository_impl.dart';
 import '../data/repositories/shot_set_repository_impl.dart';
 import '../domain/repositories/catalog_repository.dart';
 import '../domain/repositories/shot_set_repository.dart';
+import '../data/services/cloud_sync_service.dart';
 import '../domain/services/capture_guidance_service.dart';
 import '../domain/services/frame_analyzer.dart';
 
@@ -42,4 +43,11 @@ final frameAnalyzerProvider = Provider<FrameAnalyzer>(
 
 final captureGuidanceServiceProvider = Provider<CaptureGuidanceService>(
   (ref) => const CaptureGuidanceService(),
+);
+
+final cloudSyncServiceProvider = Provider<CloudSyncService>(
+  (ref) => CloudSyncService(
+    database: ref.watch(databaseProvider),
+    photoStorage: ref.watch(photoStorageProvider),
+  ),
 );

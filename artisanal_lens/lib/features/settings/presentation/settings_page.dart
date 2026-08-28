@@ -7,6 +7,7 @@ import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/photography_guideline.dart';
 import '../../../l10n/app_copy.dart';
+import 'profile_settings_section.dart';
 
 /// Settings.
 ///
@@ -75,6 +76,17 @@ class SettingsPage extends ConsumerWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: AppDimens.space24),
+              const Divider(),
+              const SizedBox(height: AppDimens.space24),
+              Text('Your name', style: AppTypography.displayMedium),
+              const SizedBox(height: AppDimens.space4),
+              Text(
+                'Saved on this phone only.',
+                style: AppTypography.labelSmall,
+              ),
+              const SizedBox(height: AppDimens.space12),
+              const ProfileSettingsSection(),
               const SizedBox(height: AppDimens.space24),
               const Divider(),
               const SizedBox(height: AppDimens.space24),

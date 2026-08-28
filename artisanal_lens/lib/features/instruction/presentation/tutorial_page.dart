@@ -35,8 +35,9 @@ bool hasTutorialContent(FoldPreset? preset) {
 
 /// Video tutorial with on-screen transcript.
 ///
-/// Catalog entries already name the `.mp4` files. Until those files are in
-/// `assets/videos/`, this screen shows a labelled placeholder. Transcript
+/// Catalog entries name the Supabase Storage keys (`.mp4` filenames). Until
+/// a video is uploaded to the `tutorial-videos` bucket, this screen shows a
+/// labelled placeholder. Transcript
 /// lines are shown only when the selected fold lists them. Setup steps are
 /// not repeated here: they play over the live camera on the next screen.
 class TutorialPage extends ConsumerWidget {
@@ -49,7 +50,7 @@ class TutorialPage extends ConsumerWidget {
     final set = ref.watch(shotSetProvider(setId));
     final preset = ref.watch(selectedPresetProvider);
     final guidance = ref.watch(sessionGuidanceProvider);
-    final videoAsset = preset?.tutorialVideoAsset;
+    final videoKey = preset?.tutorialVideoAsset;
     final transcript = spokenTranscriptFor(preset);
     final l10n = AppLocalizations.of(context);
 
@@ -83,7 +84,7 @@ class TutorialPage extends ConsumerWidget {
             style: AppTypography.bodyMedium,
           ),
           const SizedBox(height: AppDimens.space20),
-          CatalogVideo(assetPath: videoAsset),
+          CatalogVideo(videoKey: videoKey),
           const SizedBox(height: AppDimens.space24),
           Text(l10n.transcript, style: AppTypography.sectionHeader),
           const SizedBox(height: AppDimens.space12),

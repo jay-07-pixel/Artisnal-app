@@ -76,6 +76,14 @@ BTP_210205009_210205031 (2).pdf
 # Empty scratch folder from the original working directory.
 info/
 
+# Local Supabase / API secrets — use --dart-define or .env locally only.
+.env
+**/.env
+!**/.env.example
+artisanal_lens/supabase.local.json
+**/supabase.local.json
+!**/supabase.local.example.json
+
 # Emulator screenshots taken while checking live camera guidance by hand.
 .shots/
 *.log

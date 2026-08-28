@@ -58,6 +58,7 @@ class ShotSetsController extends AsyncNotifier<List<ShotSet>> {
   Future<void> _refresh() async {
     state = AsyncValue.data(await _repository.watchAll());
   }
+
 }
 
 final shotSetsProvider =

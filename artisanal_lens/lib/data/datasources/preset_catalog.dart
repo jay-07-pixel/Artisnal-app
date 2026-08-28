@@ -114,7 +114,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         ShotType.lifestyle,
         ShotType.sareePhotography,
       ],
-      tutorialVideoAsset: 'assets/videos/saree_pallu_drape.mp4',
+      tutorialVideoAsset: 'saree_pallu_drape.mp4',
       tutorialTranscript: const [
         'Hang the saree so its fall is clearly visible.',
         'Use a hanger, bamboo pole or mannequin at about shoulder height.',
@@ -167,7 +167,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/saree_box_fold.png',
       supportedShotTypes: const [ShotType.product, ShotType.sareePhotography],
-      tutorialVideoAsset: 'assets/videos/saree_box_fold.mp4',
+      tutorialVideoAsset: 'saree_box_fold.mp4',
       tutorialTranscript: const [
         'Fold the saree into a neat stack so the layers stay visible.',
         'Keep the folded edge facing the camera — that edge shows thickness.',
@@ -227,7 +227,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         ShotType.lifestyle,
         ShotType.sareePhotography,
       ],
-      tutorialVideoAsset: 'assets/videos/saree_worn_drape.mp4',
+      tutorialVideoAsset: 'saree_worn_drape.mp4',
       tutorialTranscript: const [
         'A worn shot shows the full saree — colour, pattern and material.',
         'Stand in open shade so the colour stays true.',
@@ -239,7 +239,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
         SetupStep(
           title: 'Drape the saree',
           instruction:
-              'Drape the saree on the person so it covers most of the frame.',
+              'Drape the saree on the person so colour, pattern and border show clearly.',
           illustrationAsset: 'assets/images/steps/saree_worn_drape_1.png',
         ),
         SetupStep(
@@ -248,10 +248,27 @@ class BundledCatalogDataSource implements CatalogDataSource {
           illustrationAsset: 'assets/images/steps/saree_worn_drape_2.png',
         ),
         SetupStep(
+          title: 'Fill the frame',
+          instruction: 'Step in until the saree covers most of the frame.',
+          illustrationAsset: 'assets/images/steps/saree_worn_drape_3.png',
+        ),
+        SetupStep(
+          title: 'Hold at eye level',
+          instruction:
+              'Keep the phone upright at chest-to-eye height — not tilted down.',
+          illustrationAsset: 'assets/images/steps/saree_worn_drape_4.png',
+        ),
+        SetupStep(
           title: 'Align with the gridlines',
           instruction:
               'Line the top border with the top third. Keep pleats on the vertical guides.',
-          illustrationAsset: 'assets/images/steps/saree_worn_drape_3.png',
+          illustrationAsset: 'assets/images/steps/saree_worn_drape_5.png',
+        ),
+        SetupStep(
+          title: 'Take the photo',
+          instruction:
+              'When framing looks right, tap the shutter. Your worn-drape shot is ready.',
+          illustrationAsset: 'assets/images/steps/saree_worn_drape_6.png',
         ),
       ],
     ),
@@ -280,6 +297,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/saree_roll_display.png',
       supportedShotTypes: const [ShotType.product, ShotType.sareePhotography],
+      tutorialVideoAsset: 'saree_roll_display.mp4',
       tutorialTranscript: const [
         'Roll the saree so the pallu and border face the camera.',
         'Let the roll cover most of the frame.',
@@ -331,7 +349,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/cushion_flat_lay.png',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/cushion_flat_lay.mp4',
+      tutorialVideoAsset: 'cushion_flat_lay.mp4',
       tutorialTranscript: const [
         'Lay the cushion cover flat on a plain surface.',
         'Smooth it out but leave the natural texture visible.',
@@ -373,7 +391,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/cushion_stacked_pair.png',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/cushion_stacked_pair.mp4',
+      tutorialVideoAsset: 'cushion_stacked_pair.mp4',
       tutorialTranscript: const [
         'Stack two covers so the buyer can see the thickness.',
         'Keep the stacked edges facing the camera.',
@@ -415,7 +433,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       referenceImageAsset: 'assets/images/presets/cushion_propped.png',
       requiresProp: 'A chair, sofa or bed',
       supportedShotTypes: const [ShotType.lifestyle],
-      tutorialVideoAsset: 'assets/videos/cushion_propped.mp4',
+      tutorialVideoAsset: 'cushion_propped.mp4',
       tutorialTranscript: const [
         'Placing the cushion on a chair shows its real size.',
         'Choose a seat that does not compete with the pattern.',
@@ -457,7 +475,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/cushion_corner_tuck.png',
       supportedShotTypes: const [ShotType.detail],
-      tutorialVideoAsset: 'assets/videos/cushion_corner_tuck.mp4',
+      tutorialVideoAsset: 'cushion_corner_tuck.mp4',
       tutorialTranscript: const [
         'The corner shows your stitching most clearly.',
         'Move close until the corner fills the small frame.',
@@ -501,7 +519,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       referenceImageAsset: 'assets/images/presets/shawl_draped_shoulder.png',
       requiresProp: 'Someone to wear the shawl',
       supportedShotTypes: const [ShotType.lifestyle],
-      tutorialVideoAsset: 'assets/videos/shawl_draped_shoulder.mp4',
+      tutorialVideoAsset: 'shawl_draped_shoulder.mp4',
       tutorialTranscript: const [
         'Draping the shawl on a shoulder shows how heavy it is.',
         'Let one end hang lower than the other.',
@@ -544,7 +562,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/shawl_folded_stack.png',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/shawl_folded_stack.mp4',
+      tutorialVideoAsset: 'shawl_folded_stack.mp4',
       tutorialTranscript: const [
         'Stack the shawl neatly with the folds visible.',
         'Keep the folds parallel to the horizontal lines.',
@@ -588,7 +606,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       referenceImageAsset: 'assets/images/presets/shawl_hung_flat.png',
       requiresProp: 'A line, bamboo pole or wall to pin against',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/shawl_hung_flat.mp4',
+      tutorialVideoAsset: 'shawl_hung_flat.mp4',
       tutorialTranscript: const [
         'Hanging the shawl flat shows the whole design at once.',
         'Pin both top corners so it does not sag in the middle.',
@@ -630,7 +648,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/shawl_corner_tuck.png',
       supportedShotTypes: const [ShotType.detail],
-      tutorialVideoAsset: 'assets/videos/shawl_corner_tuck.mp4',
+      tutorialVideoAsset: 'shawl_corner_tuck.mp4',
       tutorialTranscript: const [
         'A close-up of the corner shows the weave and the border together.',
         'Fold one corner back so both sides are visible.',
@@ -674,7 +692,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       referenceImageAsset: 'assets/images/presets/stole_neck_wrap.png',
       requiresProp: 'Someone to wear the stole',
       supportedShotTypes: const [ShotType.lifestyle],
-      tutorialVideoAsset: 'assets/videos/stole_neck_wrap.mp4',
+      tutorialVideoAsset: 'stole_neck_wrap.mp4',
       tutorialTranscript: const [
         'A worn shot answers the most common question — how big is it?',
         'Wrap it once around the neck and let both ends hang.',
@@ -716,7 +734,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/stole_flat_spread.png',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/stole_flat_spread.mp4',
+      tutorialVideoAsset: 'stole_flat_spread.mp4',
       tutorialTranscript: const [
         'Spread the stole out so its full length is visible.',
         'Leave the natural creases — they show what the fabric is like.',
@@ -757,7 +775,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/stole_loose_knot.png',
       supportedShotTypes: const [ShotType.product],
-      tutorialVideoAsset: 'assets/videos/stole_loose_knot.mp4',
+      tutorialVideoAsset: 'stole_loose_knot.mp4',
       tutorialTranscript: const [
         'A loose knot shows how soft and light the stole is.',
         'Tie it loosely — never pull it tight.',
@@ -798,7 +816,7 @@ class BundledCatalogDataSource implements CatalogDataSource {
       ],
       referenceImageAsset: 'assets/images/presets/stole_rolled_coil.png',
       supportedShotTypes: const [ShotType.product, ShotType.detail],
-      tutorialVideoAsset: 'assets/videos/stole_rolled_coil.mp4',
+      tutorialVideoAsset: 'stole_rolled_coil.mp4',
       tutorialTranscript: const [
         'Rolling the stole into a coil shows the edge and the thickness.',
         'Roll it loosely so the layers stay separate.',

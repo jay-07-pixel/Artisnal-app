@@ -81,7 +81,7 @@ class FoldPreset extends Equatable {
   /// Which shot types this preset is offered for.
   final List<ShotType> supportedShotTypes;
 
-  /// Short localised tutorial video demonstrating the setup.
+  /// Supabase Storage key for the tutorial video, e.g. `cushion_propped.mp4`.
   ///
   /// Source: BTP §8.2 — illustrated tutorials were replaced by one-minute
   /// videos after user testing showed static illustrations were misread.

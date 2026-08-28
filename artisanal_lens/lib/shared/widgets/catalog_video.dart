@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_dimens.dart';
+import '../../data/services/tutorial_video_service.dart';
 import '../../l10n/app_localizations.dart';
 import 'asset_placeholder.dart';
 
-/// Plays a catalog tutorial video when the bundled file exists.
+/// Streams a catalog tutorial video from Supabase Storage when configured.
 ///
-/// Missing `.mp4` files stay missing: this never fabricates a clip or
-/// substitutes an unrelated video.
+/// Videos are not bundled in the APK. After the first successful stream the
+/// file is cached on-device for faster replays.
 class CatalogVideo extends StatefulWidget {
   const CatalogVideo({
-    required this.assetPath,
+    required this.videoKey,
     this.height = 200,
     super.key,
   });
 
-  final String? assetPath;
+  /// Storage object name, e.g. `cushion_propped.mp4`.
+  final String? videoKey;
   final double height;
 
   @override
@@ -26,69 +27,10 @@ class CatalogVideo extends StatefulWidget {
 }
 
 class _CatalogVideoState extends State<CatalogVideo> {
-  Future<bool>? _exists;
-
-  @override
-  void initState() {
-    super.initState();
-    _exists = _assetExists(widget.assetPath);
-  }
-
-  @override
-  void didUpdateWidget(CatalogVideo oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.assetPath != widget.assetPath) {
-      _exists = _assetExists(widget.assetPath);
-    }
-  }
-
-  static Future<bool> _assetExists(String? path) async {
-    if (path == null || path.isEmpty) return false;
-    try {
-      await rootBundle.load(path);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _exists,
-      builder: (context, snapshot) {
-        if (snapshot.data == true) {
-          return _BundledPlayer(
-            assetPath: widget.assetPath!,
-            height: widget.height,
-          );
-        }
-        return AssetPlaceholder(
-          label: AppLocalizations.of(context).tutorialVideoPlaceholder,
-          icon: Icons.play_circle_outline,
-          height: widget.height,
-        );
-      },
-    );
-  }
-}
-
-class _BundledPlayer extends StatefulWidget {
-  const _BundledPlayer({
-    required this.assetPath,
-    required this.height,
-  });
-
-  final String assetPath;
-  final double height;
-
-  @override
-  State<_BundledPlayer> createState() => _BundledPlayerState();
-}
-
-class _BundledPlayerState extends State<_BundledPlayer> {
+  final _videoService = TutorialVideoService();
   VideoPlayerController? _controller;
   Object? _error;
+  bool _loading = true;
 
   @override
   void initState() {
@@ -97,29 +39,64 @@ class _BundledPlayerState extends State<_BundledPlayer> {
   }
 
   @override
-  void didUpdateWidget(_BundledPlayer oldWidget) {
+  void didUpdateWidget(CatalogVideo oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.assetPath != widget.assetPath) {
+    if (oldWidget.videoKey != widget.videoKey) {
       _controller?.dispose();
       _controller = null;
       _error = null;
+      _loading = true;
       _open();
     }
   }
 
   Future<void> _open() async {
-    final controller = VideoPlayerController.asset(widget.assetPath);
+    final key = widget.videoKey;
+    if (key == null || key.trim().isEmpty) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _error = StateError('missing key');
+      });
+      return;
+    }
+
+    final url = _videoService.publicUrlForKey(key);
+    if (url == null) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _error = StateError('cloud not configured');
+      });
+      return;
+    }
+
+    final cached = await _videoService.cachedFile(key);
+    final controller = cached != null
+        ? VideoPlayerController.file(cached)
+        : VideoPlayerController.networkUrl(url);
+
     try {
       await controller.initialize();
       if (!mounted) {
         await controller.dispose();
         return;
       }
-      setState(() => _controller = controller);
+      setState(() {
+        _controller = controller;
+        _loading = false;
+      });
+      if (cached == null) {
+        // Best-effort cache; playback already works from the stream.
+        _videoService.cacheFromUrl(key, url);
+      }
     } catch (error) {
       await controller.dispose();
       if (!mounted) return;
-      setState(() => _error = error);
+      setState(() {
+        _error = error;
+        _loading = false;
+      });
     }
   }
 
@@ -141,6 +118,13 @@ class _BundledPlayerState extends State<_BundledPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return SizedBox(
+        height: widget.height,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final controller = _controller;
     if (_error != null || controller == null || !controller.value.isInitialized) {
       return AssetPlaceholder(

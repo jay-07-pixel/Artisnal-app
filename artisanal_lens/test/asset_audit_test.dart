@@ -4,6 +4,7 @@ import 'package:artisanal_lens/data/datasources/preset_catalog.dart';
 import 'package:artisanal_lens/domain/entities/fabric_material.dart';
 import 'package:artisanal_lens/domain/entities/photography_template.dart';
 import 'package:artisanal_lens/shared/widgets/asset_placeholder.dart';
+import 'package:artisanal_lens/data/services/tutorial_video_service.dart';
 import 'package:artisanal_lens/shared/widgets/catalog_video.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -122,13 +123,34 @@ void main() {
         }
         final video = preset.tutorialVideoAsset;
         if (video != null) {
-          expect(video, contains('/$prefix'));
+          expect(video, contains(prefix));
+          expect(video, endsWith('.mp4'));
         }
       }
     }
   });
 
   test('every catalog step illustration is still a missing source asset', () async {
+    const bundledSteps = {
+      'assets/images/steps/saree_roll_display_1.png',
+      'assets/images/steps/saree_roll_display_2.png',
+      'assets/images/steps/saree_roll_display_3.png',
+      'assets/images/steps/saree_roll_display_4.png',
+      'assets/images/steps/saree_roll_display_5.png',
+      'assets/images/steps/saree_worn_drape_1.png',
+      'assets/images/steps/saree_worn_drape_2.png',
+      'assets/images/steps/saree_worn_drape_3.png',
+      'assets/images/steps/saree_worn_drape_4.png',
+      'assets/images/steps/saree_worn_drape_5.png',
+      'assets/images/steps/saree_worn_drape_6.png',
+      'assets/images/steps/shawl_folded_stack_1.png',
+      'assets/images/steps/shawl_folded_stack_2.png',
+      'assets/images/steps/shawl_folded_stack_howto_1.png',
+      'assets/images/steps/shawl_folded_stack_howto_2.png',
+      'assets/images/steps/shawl_folded_stack_howto_3.png',
+      'assets/images/steps/shawl_folded_stack_howto_4.png',
+      'assets/images/steps/shawl_folded_stack_howto_5.png',
+    };
     final paths = <String>{};
     for (final category in catalog.categories()) {
       for (final preset in catalog.presetsForCategory(category.id)) {
@@ -139,21 +161,27 @@ void main() {
     }
     expect(paths, isNotEmpty);
     for (final path in paths) {
+      if (bundledSteps.contains(path)) {
+        expect(await isBundled(path), isTrue, reason: path);
+        continue;
+      }
       expect(await isBundled(path), isFalse, reason: path);
     }
   });
 
-  test('bundled catalog tutorial videos load', () async {
-    const bundled = <String>{
-      'assets/videos/cushion_propped.mp4',
-    };
-    for (final path in bundled) {
-      expect(await isBundled(path), isTrue, reason: path);
-    }
+  test('tutorial video keys normalize legacy bundled paths', () {
+    expect(
+      TutorialVideoService.normalizeKey('assets/videos/cushion_propped.mp4'),
+      'cushion_propped.mp4',
+    );
+    expect(
+      TutorialVideoService.normalizeKey('cushion_flat_lay.mp4'),
+      'cushion_flat_lay.mp4',
+    );
   });
 
-  test('every other catalog tutorial video is still a missing source asset',
-      () async {
+  test('catalog tutorial videos use Supabase storage keys, not bundled assets',
+      () {
     final paths = <String>{};
     for (final category in catalog.categories()) {
       for (final preset in catalog.presetsForCategory(category.id)) {
@@ -161,15 +189,14 @@ void main() {
         if (video != null) paths.add(video);
       }
     }
-    expect(paths.length, 15);
-    const bundled = {'assets/videos/cushion_propped.mp4'};
-    for (final path in paths) {
-      if (bundled.contains(path)) continue;
-      expect(await isBundled(path), isFalse, reason: path);
+    expect(paths.length, 16);
+    for (final key in paths) {
+      expect(key, isNot(contains('assets/')));
+      expect(key, endsWith('.mp4'));
     }
     expect(
       catalog.presetById('saree_roll_display')!.tutorialVideoAsset,
-      isNull,
+      'saree_roll_display.mp4',
     );
   });
 
@@ -198,7 +225,7 @@ void main() {
   testWidgets('missing tutorial video fails safely', (tester) async {
     await tester.pumpWidget(
       l10nApp(
-        home: const CatalogVideo(assetPath: 'assets/videos/saree_pallu_drape.mp4'),
+        home: const CatalogVideo(videoKey: 'saree_pallu_drape.mp4'),
       ),
     );
     await tester.pumpAndSettle();
