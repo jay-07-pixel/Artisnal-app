@@ -36,6 +36,17 @@ class WebPhotoStorage implements PhotoStorage {
   }
 
   @override
+  Future<String> persistBytes(
+    Uint8List bytes, {
+    required String setId,
+    required String shotId,
+  }) async {
+    final handle = '$_scheme${setId}_$shotId';
+    _photos[handle] = bytes;
+    return handle;
+  }
+
+  @override
   ImageProvider? imageProvider(String handle) {
     if (handle.startsWith('assets/')) return AssetImage(handle);
     final bytes = _photos[handle];

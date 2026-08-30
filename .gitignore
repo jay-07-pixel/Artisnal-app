@@ -87,3 +87,8 @@ artisanal_lens/supabase.local.json
 # Emulator screenshots taken while checking live camera guidance by hand.
 .shots/
 *.log
+
+# Local release binaries and scratch media — never commit these.
+*.apk
+*.mp4
+analyze_out.txt

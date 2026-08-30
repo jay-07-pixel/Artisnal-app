@@ -544,7 +544,7 @@ class _Wordmark extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'THE ARTISANAL LENS',
+                AppLocalizations.of(context).appTitle.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: AppTypography.overline.copyWith(
                   color: AppColors.primary,
@@ -669,7 +669,7 @@ class _SkipHint extends StatelessWidget {
       child: Opacity(
         opacity: opacity * 0.75,
         child: Text(
-          'Tap to skip',
+          AppLocalizations.of(context).tapToSkip,
           textAlign: TextAlign.center,
           style: AppTypography.navLabel.copyWith(color: AppColors.textMuted),
         ),

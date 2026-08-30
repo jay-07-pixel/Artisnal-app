@@ -153,7 +153,7 @@ class _CatalogVideoState extends State<CatalogVideo> {
           child: TextButton.icon(
             onPressed: _openFullscreen,
             icon: const Icon(Icons.fullscreen, size: 18),
-            label: const Text('Full screen'),
+            label: Text(AppLocalizations.of(context).fullScreen),
           ),
         ),
       ],
@@ -162,15 +162,30 @@ class _CatalogVideoState extends State<CatalogVideo> {
 }
 
 class _Playback extends StatelessWidget {
-  const _Playback({required this.controller});
+  const _Playback({required this.controller, this.showControls = true});
 
   final VideoPlayerController controller;
+  final bool showControls;
+
+  static String _format(Duration d) {
+    final total = d.inSeconds;
+    final m = (total ~/ 60).toString().padLeft(1, '0');
+    final s = (total % 60).toString().padLeft(2, '0');
+    return '$m:$s';
+  }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<VideoPlayerValue>(
       valueListenable: controller,
       builder: (context, value, _) {
+        final duration = value.duration;
+        final position = value.position;
+        final progress = duration.inMilliseconds == 0
+            ? 0.0
+            : (position.inMilliseconds / duration.inMilliseconds)
+                .clamp(0.0, 1.0);
+
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -191,7 +206,7 @@ class _Playback extends StatelessWidget {
                 },
                 child: value.isPlaying
                     ? const SizedBox.expand()
-                    : ColoredBox(
+                    : const ColoredBox(
                         color: Colors.black26,
                         child: Center(
                           child: Icon(
@@ -203,6 +218,71 @@ class _Playback extends StatelessWidget {
                       ),
               ),
             ),
+            if (showControls)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [Colors.black54, Colors.transparent],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 20, 12, 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 3,
+                            thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 6,
+                            ),
+                            overlayShape: const RoundSliderOverlayShape(
+                              overlayRadius: 12,
+                            ),
+                            activeTrackColor: AppColors.white,
+                            inactiveTrackColor: Colors.white38,
+                            thumbColor: AppColors.white,
+                            overlayColor: Colors.white24,
+                          ),
+                          child: Slider(
+                            value: progress,
+                            onChanged: (v) {
+                              final ms =
+                                  (duration.inMilliseconds * v).round();
+                              controller.seekTo(Duration(milliseconds: ms));
+                            },
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              color: AppColors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${_format(position)} / ${_format(duration)}',
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       },
@@ -222,7 +302,7 @@ class _FullscreenTutorial extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.textPrimary,
         foregroundColor: AppColors.white,
-        title: const Text('Tutorial'),
+        title: Text(AppLocalizations.of(context).tutorial),
       ),
       body: Center(child: _Playback(controller: controller)),
     );

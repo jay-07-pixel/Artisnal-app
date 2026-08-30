@@ -84,7 +84,7 @@ class _HomeAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'The Artisanal Lens',
+                AppLocalizations.of(context).appTitle,
                 style: AppTypography.displayMedium.copyWith(
                   color: AppColors.primary,
                 ),
@@ -378,7 +378,10 @@ class _PreviousSetCard extends StatelessWidget {
                     ),
                     const SizedBox(height: AppDimens.space4),
                     Text(
-                      formatPreviousSetDate(set.createdAt),
+                      AppCopy.formatSetDate(
+                        AppLocalizations.of(context),
+                        set.createdAt,
+                      ),
                       style: AppTypography.labelSmall.copyWith(
                         color: AppColors.textMuted,
                       ),

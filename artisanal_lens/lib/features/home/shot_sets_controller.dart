@@ -28,6 +28,7 @@ class ShotSetsController extends AsyncNotifier<List<ShotSet>> {
       silkTypeId: silkTypeId,
     );
     await _refresh();
+    await _syncIfSignedIn();
     return created;
   }
 
@@ -37,28 +38,44 @@ class ShotSetsController extends AsyncNotifier<List<ShotSet>> {
   }) async {
     final updated = await _repository.addShot(setId: setId, shot: shot);
     await _refresh();
+    await _syncIfSignedIn();
     return updated;
   }
 
   Future<void> removeShot({required String setId, required String shotId}) async {
     await _repository.removeShot(setId: setId, shotId: shotId);
     await _refresh();
+    await _syncIfSignedIn();
   }
 
   Future<void> rename({required String setId, required String productName}) async {
     await _repository.renameSet(setId: setId, productName: productName);
     await _refresh();
+    await _syncIfSignedIn();
   }
 
   Future<void> deleteSet(String setId) async {
     await _repository.deleteSet(setId);
     await _refresh();
+    await _syncIfSignedIn();
+  }
+
+  Future<void> _syncIfSignedIn() async {
+    final sync = ref.read(cloudSyncServiceProvider);
+    if (!sync.canSync) return;
+    try {
+      await sync.syncAll();
+    } catch (_) {
+      // Non-fatal — local work is already saved.
+    }
   }
 
   Future<void> _refresh() async {
     state = AsyncValue.data(await _repository.watchAll());
   }
 
+  /// Reloads from SQLite after a cloud pull.
+  Future<void> refreshFromDatabase() => _refresh();
 }
 
 final shotSetsProvider =

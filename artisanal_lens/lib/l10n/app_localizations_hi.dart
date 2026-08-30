@@ -1405,4 +1405,712 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get compositionDetailFrameHint =>
       'कढ़ाई को हाइलाइट किए फ्रेम के अंदर रखें।';
+
+  @override
+  String get accountBackup => 'खाता और बैकअप';
+
+  @override
+  String get accountBackupSubtitle =>
+      'प्रगति ऑनलाइन सहेजने के लिए उपयोगकर्ता नाम और पासवर्ड बनाएँ।';
+
+  @override
+  String get cloudBackupNotConfigured => 'क्लाउड बैकअप तैयार नहीं है';
+
+  @override
+  String get cloudBackupNotConfiguredBody =>
+      'इस बिल्ड में क्लाउड कनेक्शन नहीं है। प्रगति केवल इस फ़ोन पर रहती है।';
+
+  @override
+  String get signedInAs => 'साइन इन है';
+
+  @override
+  String get artisanFallback => 'कारीगर';
+
+  @override
+  String get syncNow => 'अभी सिंक करें';
+
+  @override
+  String get signOut => 'साइन आउट';
+
+  @override
+  String get createAccountPrompt => 'अपना काम ऑनलाइन सहेजने के लिए खाता बनाएँ।';
+
+  @override
+  String get signInPrompt =>
+      'सहेजे गए उत्पाद और फ़ोटो लोड करने के लिए साइन इन करें।';
+
+  @override
+  String get username => 'उपयोगकर्ता नाम';
+
+  @override
+  String get usernameHint => 'जैसे priya_weaver';
+
+  @override
+  String get password => 'पासवर्ड';
+
+  @override
+  String get createAccount => 'खाता बनाएँ';
+
+  @override
+  String get signIn => 'साइन इन';
+
+  @override
+  String get alreadyHaveAccount => 'पहले से खाता है? साइन इन करें';
+
+  @override
+  String get needAccount => 'खाता चाहिए? एक बनाएँ';
+
+  @override
+  String get accountCreated => 'खाता बन गया। आपकी प्रगति ऑनलाइन सिंक होगी।';
+
+  @override
+  String get signedInSuccess => 'साइन इन हो गया। आपका सहेजा काम इस फ़ोन पर है।';
+
+  @override
+  String get signedOutSuccess =>
+      'साइन आउट हो गया। स्थानीय फ़ोटो इस फ़ोन पर रहेंगे।';
+
+  @override
+  String get syncOffline => 'इंटरनेट नहीं — वापस ऑनलाइन आने पर सिंक करें।';
+
+  @override
+  String syncDone(int sets, int shots) {
+    return 'सिंक हुआ: $sets उत्पाद अपलोड, $shots फ़ोटो अपलोड।';
+  }
+
+  @override
+  String get syncUpToDate => 'सब कुछ पहले से अपडेट है।';
+
+  @override
+  String syncFailed(String error) {
+    return 'सिंक असफल: $error';
+  }
+
+  @override
+  String get yourProgress => 'आपकी प्रगति';
+
+  @override
+  String get productsStarted => 'शुरू किए उत्पाद';
+
+  @override
+  String get finishedSets => 'पूर्ण सेट';
+
+  @override
+  String get inProgressSets => 'जारी';
+
+  @override
+  String get photosCaptured => 'ली गई फ़ोटो';
+
+  @override
+  String get usernameTooShort =>
+      'उपयोगकर्ता नाम कम से कम 3 अक्षर या अंक का होना चाहिए।';
+
+  @override
+  String get usernameTooLong =>
+      'उपयोगकर्ता नाम 32 अक्षरों से अधिक नहीं होना चाहिए।';
+
+  @override
+  String get passwordTooShort => 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए।';
+
+  @override
+  String get fullScreen => 'पूर्ण स्क्रीन';
+
+  @override
+  String get tapToSkip => 'छोड़ने के लिए टैप करें';
+
+  @override
+  String get cameraPermissionNeeded =>
+      'फ़ोटो लेने के लिए कैमरा अनुमति चाहिए।\nकृपया सेटिंग्स में कैमरा एक्सेस दें।';
+
+  @override
+  String get cameraUnavailable => 'कैमरा उपलब्ध नहीं है।';
+
+  @override
+  String get noCameraFound => 'इस डिवाइस पर कोई कैमरा नहीं मिला।';
+
+  @override
+  String get accountCreateFailed => 'खाता नहीं बन सका। फिर कोशिश करें।';
+
+  @override
+  String get enterValidUsername => 'सही उपयोगकर्ता नाम डालें।';
+
+  @override
+  String get monthJan => 'जन';
+
+  @override
+  String get monthFeb => 'फर';
+
+  @override
+  String get monthMar => 'मार्च';
+
+  @override
+  String get monthApr => 'अप्रै';
+
+  @override
+  String get monthMay => 'मई';
+
+  @override
+  String get monthJun => 'जून';
+
+  @override
+  String get monthJul => 'जुल';
+
+  @override
+  String get monthAug => 'अग';
+
+  @override
+  String get monthSep => 'सित';
+
+  @override
+  String get monthOct => 'अक्टू';
+
+  @override
+  String get monthNov => 'नव';
+
+  @override
+  String get monthDec => 'दिस';
+
+  @override
+  String get presetCushionFlatLayNeeds => 'सादा, साफ़ सतह';
+
+  @override
+  String get presetCushionStackedPairNeeds => 'दो कवर; बगल की रोशनी';
+
+  @override
+  String get presetCushionProppedNeeds => 'कुर्सी, सोफ़ा या बिस्तर';
+
+  @override
+  String get presetCushionCornerTuckNeeds => 'क्लोज-अप रोशनी';
+
+  @override
+  String get presetShawlDrapedShoulderNeeds => 'शॉल पहनाने वाला कोई व्यक्ति';
+
+  @override
+  String get presetShawlFoldedStackNeeds => 'बगल की रोशनी';
+
+  @override
+  String get presetShawlHungFlatNeeds => 'रस्सी, बाँस या दीवार जहाँ पिन करें';
+
+  @override
+  String get presetShawlCornerTuckNeeds => 'क्लोज-अप रोशनी';
+
+  @override
+  String get presetStoleNeckWrapNeeds => 'स्टोल पहनाने वाला कोई व्यक्ति';
+
+  @override
+  String get presetStoleFlatSpreadNeeds => 'सादी सतह; ऊपर से नज़र';
+
+  @override
+  String get presetStoleLooseKnotNeeds => 'नरम बगल की रोशनी';
+
+  @override
+  String get presetStoleRolledCoilNeeds => 'नरम बगल की रोशनी';
+
+  @override
+  String get placementSareePalluDrape =>
+      'साड़ी को हैंगर, बाँस या मैनक्विन पर लटकाएँ ताकि पल्लू आज़ाद लटके।';
+
+  @override
+  String get placementSareeBoxFold =>
+      'साड़ी को बराबर परतों में मोड़कर ढेर करें ताकि किनारा दिखे।';
+
+  @override
+  String get placementSareeWornDrape =>
+      'व्यक्ति पर साड़ी इस तरह लपेटें कि रंग, पैटर्न और बॉर्डर साफ़ दिखें।';
+
+  @override
+  String get placementSareeRollDisplay =>
+      'साड़ी को ऐसे रोल करें कि पल्लू और बॉर्डर कैमरे की ओर हों।';
+
+  @override
+  String get placementCushionFlatLay => 'कवर को सादी, साफ़ सतह पर समतल रखें।';
+
+  @override
+  String get placementCushionStackedPair =>
+      'एक कवर को दूसरे पर साफ़-सुथरे ढंग से रखें।';
+
+  @override
+  String get placementCushionPropped =>
+      'कुशन को कुर्सी या सोफ़े पर आगे की ओर टिकाएँ।';
+
+  @override
+  String get placementCushionCornerTuck =>
+      'कवर घुमाएँ ताकि सिला हुआ एक कोना आपके सामने हो।';
+
+  @override
+  String get placementShawlDrapedShoulder =>
+      'शॉल एक कंधे पर रखें और उसे लटकने दें।';
+
+  @override
+  String get placementShawlFoldedStack =>
+      'शॉल को बराबर परतों में मोड़कर साफ़ ढेर करें।';
+
+  @override
+  String get placementShawlHungFlat =>
+      'दोनों ऊपरी कोनों को पिन करें ताकि शॉल बीच में न झुके।';
+
+  @override
+  String get placementShawlCornerTuck =>
+      'एक कोना पीछे मोड़ें ताकि बुनाई के दोनों पहलू दिखें।';
+
+  @override
+  String get placementStoleNeckWrap =>
+      'गर्दन पर एक बार लपेटें, दोनों सिरे लटकने दें।';
+
+  @override
+  String get placementStoleFlatSpread =>
+      'स्टोल को समतल फैलाएँ ताकि पूरी लंबाई दिखे।';
+
+  @override
+  String get placementStoleLooseKnot =>
+      'बीच में एक ढीली गाँठ बाँधें — कसकर न खींचें।';
+
+  @override
+  String get placementStoleRolledCoil =>
+      'स्टोल को ढीला समतल कुंडली में रोल करें।';
+
+  @override
+  String get transcriptSareePalluDrape1 =>
+      'साड़ी ऐसे लटकाएँ कि उसका गिरना साफ़ दिखे।';
+
+  @override
+  String get transcriptSareePalluDrape2 =>
+      'कंधे की ऊँचाई पर हैंगर, बाँस या मैनक्विन का उपयोग करें।';
+
+  @override
+  String get transcriptSareePalluDrape3 =>
+      'पल्लू को आज़ाद लटकने दें — सीधा न खींचें।';
+
+  @override
+  String get transcriptSareePalluDrape4 =>
+      'मोड़ स्क्रीन की तिरछी रेखाओं का अनुसरण करें।';
+
+  @override
+  String get transcriptSareePalluDrape5 =>
+      'चमक दिखाने के लिए एक रोशनी बगल में रखें।';
+
+  @override
+  String get transcriptSareeBoxFold1 =>
+      'साड़ी को साफ़ ढेर में मोड़ें ताकि परतें दिखें।';
+
+  @override
+  String get transcriptSareeBoxFold2 =>
+      'मुड़ा किनारा कैमरे की ओर रखें — वह मोटाई दिखाता है।';
+
+  @override
+  String get transcriptSareeBoxFold3 => 'मोड़ों को क्षैतिज गाइड से मिलाएँ।';
+
+  @override
+  String get transcriptSareeBoxFold4 =>
+      'हर परत में गहराई के लिए बगल से रोशनी लें।';
+
+  @override
+  String get transcriptSareeWornDrape1 =>
+      'पहनी हुई फ़ोटो पूरी साड़ी दिखाती है — रंग, पैटर्न और सामग्री।';
+
+  @override
+  String get transcriptSareeWornDrape2 =>
+      'रंग सही रहे इसलिए खुली छाया में खड़े हों।';
+
+  @override
+  String get transcriptSareeWornDrape3 => 'साड़ी ज़्यादातर फ्रेम ढक ले।';
+
+  @override
+  String get transcriptSareeWornDrape4 =>
+      'ऊपरी बॉर्डर को ग्रिड के ऊपरी तिहाई से मिलाएँ।';
+
+  @override
+  String get transcriptSareeWornDrape5 =>
+      'अगर प्लीट हों तो ऊर्ध्वाधर ग्रिड रेखाओं का अनुसरण करें।';
+
+  @override
+  String get transcriptSareeRollDisplay1 =>
+      'साड़ी ऐसे रोल करें कि पल्लू और बॉर्डर कैमरे की ओर हों।';
+
+  @override
+  String get transcriptSareeRollDisplay2 => 'रोल ज़्यादातर फ्रेम ढक ले।';
+
+  @override
+  String get transcriptSareeRollDisplay3 =>
+      'ऊपरी बॉर्डर को ग्रिड के ऊपरी तिहाई से मिलाएँ।';
+
+  @override
+  String get transcriptSareeRollDisplay4 =>
+      'रंग सही रहे इसलिए नरम दिन की रोशनी लें।';
+
+  @override
+  String get transcriptCushionFlatLay1 => 'कुशन कवर को सादी सतह पर समतल रखें।';
+
+  @override
+  String get transcriptCushionFlatLay2 =>
+      'समतल करें पर प्राकृतिक बनावट रहने दें।';
+
+  @override
+  String get transcriptCushionFlatLay3 => 'फ़ोन सीधे ऊपर रखें, कोण पर नहीं।';
+
+  @override
+  String get transcriptCushionFlatLay4 => 'किनारों को ग्रिड के साथ सीधा रखें।';
+
+  @override
+  String get transcriptCushionStackedPair1 =>
+      'दो कवर ढेर करें ताकि खरीदार मोटाई देख सके।';
+
+  @override
+  String get transcriptCushionStackedPair2 => 'ढेर के किनारे कैमरे की ओर रखें।';
+
+  @override
+  String get transcriptCushionStackedPair3 =>
+      'हर परत की छाया के लिए बगल की रोशनी लें।';
+
+  @override
+  String get transcriptCushionPropped1 =>
+      'कुर्सी पर कुशन रखने से उसका असली आकार दिखता है।';
+
+  @override
+  String get transcriptCushionPropped2 =>
+      'ऐसी सीट चुनें जो पैटर्न से टक्कर न करे।';
+
+  @override
+  String get transcriptCushionPropped3 => 'आँखों की ऊँचाई से लें, ऊपर से नहीं।';
+
+  @override
+  String get transcriptCushionCornerTuck1 =>
+      'कोना आपकी सिलाई सबसे साफ़ दिखाता है।';
+
+  @override
+  String get transcriptCushionCornerTuck2 =>
+      'पास जाएँ जब तक कोना छोटे फ्रेम को भर दे।';
+
+  @override
+  String get transcriptCushionCornerTuck3 =>
+      'फोकस के लिए सिलाई पर स्क्रीन टैप करें।';
+
+  @override
+  String get transcriptShawlDrapedShoulder1 =>
+      'कंधे पर शॉल लपेटने से उसका भार दिखता है।';
+
+  @override
+  String get transcriptShawlDrapedShoulder2 =>
+      'एक सिरा दूसरे से नीचे लटकने दें।';
+
+  @override
+  String get transcriptShawlDrapedShoulder3 =>
+      'पिन न करें — कपड़े को अपने आप गिरने दें।';
+
+  @override
+  String get transcriptShawlFoldedStack1 =>
+      'शॉल को मोड़ दिखाई देने के साथ साफ़ ढेर करें।';
+
+  @override
+  String get transcriptShawlFoldedStack2 =>
+      'मोड़ों को क्षैतिज रेखाओं के समानांतर रखें।';
+
+  @override
+  String get transcriptShawlFoldedStack3 => 'मोटाई के लिए शॉल का किनारा दिखे।';
+
+  @override
+  String get transcriptShawlFoldedStack4 =>
+      'हर मोड़ में गहराई के लिए बगल की रोशनी लें।';
+
+  @override
+  String get transcriptShawlHungFlat1 =>
+      'समतल लटकाने से पूरा डिज़ाइन एक साथ दिखता है।';
+
+  @override
+  String get transcriptShawlHungFlat2 =>
+      'दोनों ऊपरी कोनों को पिन करें ताकि बीच में न झुके।';
+
+  @override
+  String get transcriptShawlHungFlat3 => 'सीधे सामने खड़े हों, एक तरफ़ नहीं।';
+
+  @override
+  String get transcriptShawlCornerTuck1 =>
+      'कोने का क्लोज-अप बुनाई और बॉर्डर साथ दिखाता है।';
+
+  @override
+  String get transcriptShawlCornerTuck2 =>
+      'एक कोना पीछे मोड़ें ताकि दोनों पहलू दिखें।';
+
+  @override
+  String get transcriptShawlCornerTuck3 => 'पास जाएँ जब तक बुनाई फ्रेम भर दे।';
+
+  @override
+  String get transcriptStoleNeckWrap1 =>
+      'पहनी हुई फ़ोटो सबसे आम सवाल का जवाब देती है — कितना बड़ा है?';
+
+  @override
+  String get transcriptStoleNeckWrap2 =>
+      'गर्दन पर एक बार लपेटें और दोनों सिरे लटकने दें।';
+
+  @override
+  String get transcriptStoleNeckWrap3 =>
+      'सीने से ऊपर लें ताकि सिरे फ्रेम में रहें।';
+
+  @override
+  String get transcriptStoleFlatSpread1 => 'स्टोल फैलाएँ ताकि पूरी लंबाई दिखे।';
+
+  @override
+  String get transcriptStoleFlatSpread2 =>
+      'प्राकृतिक सिलवटें रहने दें — वे कपड़े का स्वभाव दिखाती हैं।';
+
+  @override
+  String get transcriptStoleFlatSpread3 => 'फ़ोन सीधे बीच के ऊपर रखें।';
+
+  @override
+  String get transcriptStoleLooseKnot1 =>
+      'ढीली गाँठ दिखाती है कि स्टोल कितना नरम और हल्का है।';
+
+  @override
+  String get transcriptStoleLooseKnot2 => 'ढीला बाँधें — कसकर कभी न खींचें।';
+
+  @override
+  String get transcriptStoleLooseKnot3 => 'गाँठ फ्रेम के केंद्र में रखें।';
+
+  @override
+  String get transcriptStoleRolledCoil1 =>
+      'कुंडली में रोल करने से किनारा और मोटाई दिखते हैं।';
+
+  @override
+  String get transcriptStoleRolledCoil2 => 'ढीला रोल करें ताकि परतें अलग रहें।';
+
+  @override
+  String get transcriptStoleRolledCoil3 => 'कुंडली पर सीधे ऊपर से शूट करें।';
+
+  @override
+  String get guideSareeFullDisplay1 => 'साड़ी फ्रेम का ज़्यादातर हिस्सा ढक ले।';
+
+  @override
+  String get guideSareeFullDisplay2 =>
+      'ऊपरी बॉर्डर ग्रिड के ऊपरी तिहाई से मिले।';
+
+  @override
+  String get guideSareeFullDisplay3 =>
+      'ड्रेप में प्लीट्स ऊर्ध्वाधर ग्रिड से मिलें।';
+
+  @override
+  String get guideSareeTextureWeave1 => 'साड़ी पूरा फ्रेम भर दे।';
+
+  @override
+  String get guideSareeTextureWeave2 => 'बनावट बीच में रहे।';
+
+  @override
+  String get guideSareeTextureWeave3 => 'नरम रोशनी का इस्तेमाल करें।';
+
+  @override
+  String get guideSareeTextureWeave4 => 'तेज़ चमक से बचें।';
+
+  @override
+  String get guideSareeEmbroideryBorder1 => 'कढ़ाई फ्रेम के अंदर रहे।';
+
+  @override
+  String get guideSareeEmbroideryBorder2 => 'बगल से रोशनी लें।';
+
+  @override
+  String get guideSareeEmbroideryBorder3 =>
+      'विवरण साफ़ और अच्छी रोशनी में रखें।';
+
+  @override
+  String get guideCushionTextureWeave1 => 'बुन फ्रेम भर दे।';
+
+  @override
+  String get guideCushionTextureWeave2 => 'बनावट बीच में रहे।';
+
+  @override
+  String get guideShawlFullDesign1 =>
+      'शॉल समतल टाँगने से पूरा डिज़ाइन एक साथ दिखता है।';
+
+  @override
+  String get guideShawlFullDesign2 =>
+      'दोनों ऊपरी कोने पिन करें ताकि बीच में न झुके।';
+
+  @override
+  String get guideShawlTextureWeave1 => 'बुन फ्रेम भर दे।';
+
+  @override
+  String get guideShawlTextureWeave2 => 'बनावट बीच में रहे।';
+
+  @override
+  String get guideStoleFullLength1 => 'स्टोल को फैलाएँ ताकि पूरी लंबाई दिखे।';
+
+  @override
+  String get guideStoleFullLength2 =>
+      'प्राकृतिक सिलवटें रहने दें — वे कपड़े का स्वभाव दिखाती हैं।';
+
+  @override
+  String get guideStoleTextureWeave1 => 'बुन फ्रेम भर दे।';
+
+  @override
+  String get guideStoleTextureWeave2 => 'बनावट बीच में रहे।';
+
+  @override
+  String get authInvalidCredentials => 'गलत उपयोगकर्ता नाम या पासवर्ड।';
+
+  @override
+  String get authUserAlreadyRegistered =>
+      'यह उपयोगकर्ता नाम पहले से लिया जा चुका है।';
+
+  @override
+  String get authEmailNotConfirmed => 'ईमेल की पुष्टि करें, फिर कोशिश करें।';
+
+  @override
+  String get authGeneric => 'साइन इन नहीं हो सका। फिर कोशिश करें।';
+
+  @override
+  String get languageAssamese => 'असमिया';
+
+  @override
+  String get languageHindi => 'हिन्दी';
+
+  @override
+  String get languageEnglish => 'अंग्रेज़ी';
+
+  @override
+  String get guideSareeDrapedLook1 => 'कपड़े को स्वाभाविक रूप से गिरने दें।';
+
+  @override
+  String get guideSareeDrapedLook2 => 'मोड़ विकर्ण के साथ चलें।';
+
+  @override
+  String get guideSareeDrapedLook3 => 'बगल से रोशनी लें।';
+
+  @override
+  String get guideSareeEmbroideryBorder4 => 'कंट्रास्ट वाला बैकग्राउंड लें।';
+
+  @override
+  String get guideSareeFoldedStack1 => 'मोड़ क्षैतिज रेखाओं के समानांतर रहें।';
+
+  @override
+  String get guideSareeFoldedStack2 => 'बगल से रोशनी लें।';
+
+  @override
+  String get guideSareeFoldedStack3 => 'किनारा दिखता रहे।';
+
+  @override
+  String get guideCushionFullCover1 =>
+      'कवर को समतल रखें ताकि पूरा पैटर्न दिखे।';
+
+  @override
+  String get guideCushionFullCover2 => 'फ़ोन सीधे ऊपर से पकड़ें, तिरछा नहीं।';
+
+  @override
+  String get guideCushionFullCover3 => 'किनारे ग्रिड के साथ सीधे रखें।';
+
+  @override
+  String get guideCushionTextureWeave3 => 'नरम रोशनी का इस्तेमाल करें।';
+
+  @override
+  String get guideCushionTextureWeave4 => 'तेज़ चमक से बचें।';
+
+  @override
+  String get guideCushionStackedThickness1 =>
+      'दो कवर इस तरह रखें कि मोटाई दिखे।';
+
+  @override
+  String get guideCushionStackedThickness2 => 'ढेर के किनारे कैमरे की ओर रखें।';
+
+  @override
+  String get guideCushionStackedThickness3 =>
+      'बगल की रोशनी से हर परत की हल्की छाया बने।';
+
+  @override
+  String get guideCushionCornerStitching1 => 'कोने पर सिलाई सबसे साफ़ दिखे।';
+
+  @override
+  String get guideCushionCornerStitching2 =>
+      'पास जाएँ जब तक कोना छोटे फ्रेम को भर दे।';
+
+  @override
+  String get guideCushionCornerStitching3 =>
+      'सिलाई तेज़ और अच्छी रोशनी में रखें।';
+
+  @override
+  String get guideCushionInUse1 => 'कुर्सी पर रखने से असली आकार दिखता है।';
+
+  @override
+  String get guideCushionInUse2 => 'ऐसी सीट चुनें जो पैटर्न से न टकराए।';
+
+  @override
+  String get guideCushionInUse3 => 'आँखों की ऊँचाई से लें, ऊपर से नहीं।';
+
+  @override
+  String get guideShawlFullDesign3 => 'सीधे सामने खड़े हों, एक तरफ़ नहीं।';
+
+  @override
+  String get guideShawlTextureWeave3 => 'नरम रोशनी का इस्तेमाल करें।';
+
+  @override
+  String get guideShawlTextureWeave4 => 'तेज़ चमक से बचें।';
+
+  @override
+  String get guideShawlDrapedLook1 =>
+      'कंधे पर शॉल ड्रेप करने से उसके वजन का अंदाज़ा मिलता है।';
+
+  @override
+  String get guideShawlDrapedLook2 => 'एक सिरा दूसरे से नीचे लटकने दें।';
+
+  @override
+  String get guideShawlDrapedLook3 =>
+      'पिन न करें — कपड़े को अपने आप गिरने दें।';
+
+  @override
+  String get guideShawlBorderCorner1 =>
+      'कोने का क्लोज-अप बुन और बॉर्डर एक साथ दिखाता है।';
+
+  @override
+  String get guideShawlBorderCorner2 =>
+      'एक कोना पीछे मोड़ें ताकि दोनों तरफ़ दिखें।';
+
+  @override
+  String get guideShawlBorderCorner3 => 'पास जाएँ जब तक बुन फ्रेम भर दे।';
+
+  @override
+  String get guideShawlStackDisplay1 =>
+      'शॉल को साफ़-सुथरे ढेर में रखें, मोड़ दिखते हुए।';
+
+  @override
+  String get guideShawlStackDisplay2 => 'मोड़ क्षैतिज रेखाओं के समानांतर रखें।';
+
+  @override
+  String get guideShawlStackDisplay3 => 'बगल की रोशनी से हर मोड़ में गहराई आए।';
+
+  @override
+  String get guideStoleFullLength3 => 'फ़ोन सीधे बीच के ऊपर पकड़ें।';
+
+  @override
+  String get guideStoleTextureWeave3 => 'नरम रोशनी का इस्तेमाल करें।';
+
+  @override
+  String get guideStoleTextureWeave4 => 'तेज़ चमक से बचें।';
+
+  @override
+  String get guideStoleWornNeckWrap1 =>
+      'पहनकर ली गई तस्वीर से स्टोल का आकार पता चलता है।';
+
+  @override
+  String get guideStoleWornNeckWrap2 =>
+      'गर्दन पर एक बार लपेटें और दोनों सिरे लटकने दें।';
+
+  @override
+  String get guideStoleWornNeckWrap3 =>
+      'छाती से ऊपर से लें ताकि सिरे फ्रेम में रहें।';
+
+  @override
+  String get guideStoleSoftnessKnot1 =>
+      'ढीली गाँठ से पता चलता है कि स्टोल कितनी नरम और हल्की है।';
+
+  @override
+  String get guideStoleSoftnessKnot2 => 'ढीला बाँधें — कभी कसकर न खींचें।';
+
+  @override
+  String get guideStoleSoftnessKnot3 => 'गाँठ फ्रेम के बीच में रखें।';
+
+  @override
+  String get guideStoleEdgeThickness1 =>
+      'स्टोल को कुंडली में लपेटने से किनारा और मोटाई दिखती है।';
+
+  @override
+  String get guideStoleEdgeThickness2 => 'ढीला लपेटें ताकि परतें अलग रहें।';
+
+  @override
+  String get guideStoleEdgeThickness3 => 'कुंडली पर सीधे ऊपर से लें।';
 }

@@ -2679,6 +2679,1248 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep the embroidery inside the highlighted frame.'**
   String get compositionDetailFrameHint;
+
+  /// No description provided for @accountBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & backup'**
+  String get accountBackup;
+
+  /// No description provided for @accountBackupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a username and password to save progress online.'**
+  String get accountBackupSubtitle;
+
+  /// No description provided for @cloudBackupNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud backup not configured'**
+  String get cloudBackupNotConfigured;
+
+  /// No description provided for @cloudBackupNotConfiguredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This build has no cloud connection. Progress stays on this phone only.'**
+  String get cloudBackupNotConfiguredBody;
+
+  /// No description provided for @signedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as'**
+  String get signedInAs;
+
+  /// No description provided for @artisanFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Artisan'**
+  String get artisanFallback;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @createAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to save your work online.'**
+  String get createAccountPrompt;
+
+  /// No description provided for @signInPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to load your saved products and photos.'**
+  String get signInPrompt;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @usernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. priya_weaver'**
+  String get usernameHint;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get createAccount;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signIn;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @needAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Need an account? Create one'**
+  String get needAccount;
+
+  /// No description provided for @accountCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created. Your progress will sync online.'**
+  String get accountCreated;
+
+  /// No description provided for @signedInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in. Your saved work is on this phone.'**
+  String get signedInSuccess;
+
+  /// No description provided for @signedOutSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out. Local photos stay on this phone.'**
+  String get signedOutSuccess;
+
+  /// No description provided for @syncOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet — sync when you are back online.'**
+  String get syncOffline;
+
+  /// No description provided for @syncDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced: {sets} products uploaded, {shots} photos uploaded.'**
+  String syncDone(int sets, int shots);
+
+  /// No description provided for @syncUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is already up to date.'**
+  String get syncUpToDate;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed: {error}'**
+  String syncFailed(String error);
+
+  /// No description provided for @yourProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress'**
+  String get yourProgress;
+
+  /// No description provided for @productsStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Products started'**
+  String get productsStarted;
+
+  /// No description provided for @finishedSets.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished sets'**
+  String get finishedSets;
+
+  /// No description provided for @inProgressSets.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get inProgressSets;
+
+  /// No description provided for @photosCaptured.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos captured'**
+  String get photosCaptured;
+
+  /// No description provided for @usernameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at least 3 letters or numbers.'**
+  String get usernameTooShort;
+
+  /// No description provided for @usernameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be 32 characters or fewer.'**
+  String get usernameTooLong;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters.'**
+  String get passwordTooShort;
+
+  /// No description provided for @fullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Full screen'**
+  String get fullScreen;
+
+  /// No description provided for @tapToSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to skip'**
+  String get tapToSkip;
+
+  /// No description provided for @cameraPermissionNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission is needed to take photos.\nPlease allow camera access in Settings.'**
+  String get cameraPermissionNeeded;
+
+  /// No description provided for @cameraUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera is unavailable.'**
+  String get cameraUnavailable;
+
+  /// No description provided for @noCameraFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera found on this device.'**
+  String get noCameraFound;
+
+  /// No description provided for @accountCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create your account. Try again.'**
+  String get accountCreateFailed;
+
+  /// No description provided for @enterValidUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid username.'**
+  String get enterValidUsername;
+
+  /// No description provided for @monthJan.
+  ///
+  /// In en, this message translates to:
+  /// **'Jan'**
+  String get monthJan;
+
+  /// No description provided for @monthFeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Feb'**
+  String get monthFeb;
+
+  /// No description provided for @monthMar.
+  ///
+  /// In en, this message translates to:
+  /// **'Mar'**
+  String get monthMar;
+
+  /// No description provided for @monthApr.
+  ///
+  /// In en, this message translates to:
+  /// **'Apr'**
+  String get monthApr;
+
+  /// No description provided for @monthMay.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get monthMay;
+
+  /// No description provided for @monthJun.
+  ///
+  /// In en, this message translates to:
+  /// **'Jun'**
+  String get monthJun;
+
+  /// No description provided for @monthJul.
+  ///
+  /// In en, this message translates to:
+  /// **'Jul'**
+  String get monthJul;
+
+  /// No description provided for @monthAug.
+  ///
+  /// In en, this message translates to:
+  /// **'Aug'**
+  String get monthAug;
+
+  /// No description provided for @monthSep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sep'**
+  String get monthSep;
+
+  /// No description provided for @monthOct.
+  ///
+  /// In en, this message translates to:
+  /// **'Oct'**
+  String get monthOct;
+
+  /// No description provided for @monthNov.
+  ///
+  /// In en, this message translates to:
+  /// **'Nov'**
+  String get monthNov;
+
+  /// No description provided for @monthDec.
+  ///
+  /// In en, this message translates to:
+  /// **'Dec'**
+  String get monthDec;
+
+  /// No description provided for @presetCushionFlatLayNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain uncluttered surface'**
+  String get presetCushionFlatLayNeeds;
+
+  /// No description provided for @presetCushionStackedPairNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Two covers; side light'**
+  String get presetCushionStackedPairNeeds;
+
+  /// No description provided for @presetCushionProppedNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'A chair, sofa or bed'**
+  String get presetCushionProppedNeeds;
+
+  /// No description provided for @presetCushionCornerTuckNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Close-up light'**
+  String get presetCushionCornerTuckNeeds;
+
+  /// No description provided for @presetShawlDrapedShoulderNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone to wear the shawl'**
+  String get presetShawlDrapedShoulderNeeds;
+
+  /// No description provided for @presetShawlFoldedStackNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Side lighting'**
+  String get presetShawlFoldedStackNeeds;
+
+  /// No description provided for @presetShawlHungFlatNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'A line, bamboo pole or wall to pin against'**
+  String get presetShawlHungFlatNeeds;
+
+  /// No description provided for @presetShawlCornerTuckNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Close-up light'**
+  String get presetShawlCornerTuckNeeds;
+
+  /// No description provided for @presetStoleNeckWrapNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone to wear the stole'**
+  String get presetStoleNeckWrapNeeds;
+
+  /// No description provided for @presetStoleFlatSpreadNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain surface; overhead view'**
+  String get presetStoleFlatSpreadNeeds;
+
+  /// No description provided for @presetStoleLooseKnotNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft side light'**
+  String get presetStoleLooseKnotNeeds;
+
+  /// No description provided for @presetStoleRolledCoilNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft side light'**
+  String get presetStoleRolledCoilNeeds;
+
+  /// No description provided for @placementSareePalluDrape.
+  ///
+  /// In en, this message translates to:
+  /// **'Drape the saree over a hanger, bamboo or mannequin so the pallu falls freely.'**
+  String get placementSareePalluDrape;
+
+  /// No description provided for @placementSareeBoxFold.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold the saree into even layers and stack them so the edge is visible.'**
+  String get placementSareeBoxFold;
+
+  /// No description provided for @placementSareeWornDrape.
+  ///
+  /// In en, this message translates to:
+  /// **'Drape the saree on the person so colour, pattern and border show clearly.'**
+  String get placementSareeWornDrape;
+
+  /// No description provided for @placementSareeRollDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll the saree so the pallu and border face the camera.'**
+  String get placementSareeRollDisplay;
+
+  /// No description provided for @placementCushionFlatLay.
+  ///
+  /// In en, this message translates to:
+  /// **'Place the cover flat on a plain, uncluttered surface.'**
+  String get placementCushionFlatLay;
+
+  /// No description provided for @placementCushionStackedPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Place one cover neatly on top of the other.'**
+  String get placementCushionStackedPair;
+
+  /// No description provided for @placementCushionPropped.
+  ///
+  /// In en, this message translates to:
+  /// **'Prop the cushion on a chair or sofa, facing forward.'**
+  String get placementCushionPropped;
+
+  /// No description provided for @placementCushionCornerTuck.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the cover so one stitched corner faces you.'**
+  String get placementCushionCornerTuck;
+
+  /// No description provided for @placementShawlDrapedShoulder.
+  ///
+  /// In en, this message translates to:
+  /// **'Place the shawl over one shoulder, letting it fall.'**
+  String get placementShawlDrapedShoulder;
+
+  /// No description provided for @placementShawlFoldedStack.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold the shawl into even layers and stack them neatly.'**
+  String get placementShawlFoldedStack;
+
+  /// No description provided for @placementShawlHungFlat.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin both top corners so the shawl hangs without sagging.'**
+  String get placementShawlHungFlat;
+
+  /// No description provided for @placementShawlCornerTuck.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold one corner back to show both sides of the weave.'**
+  String get placementShawlCornerTuck;
+
+  /// No description provided for @placementStoleNeckWrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap it once around the neck, letting both ends hang.'**
+  String get placementStoleNeckWrap;
+
+  /// No description provided for @placementStoleFlatSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread the stole flat so its full length is visible.'**
+  String get placementStoleFlatSpread;
+
+  /// No description provided for @placementStoleLooseKnot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie one loose knot in the middle — do not pull tight.'**
+  String get placementStoleLooseKnot;
+
+  /// No description provided for @placementStoleRolledCoil.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll the stole loosely into a flat coil.'**
+  String get placementStoleRolledCoil;
+
+  /// No description provided for @transcriptSareePalluDrape1.
+  ///
+  /// In en, this message translates to:
+  /// **'Hang the saree so its fall is clearly visible.'**
+  String get transcriptSareePalluDrape1;
+
+  /// No description provided for @transcriptSareePalluDrape2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a hanger, bamboo pole or mannequin at about shoulder height.'**
+  String get transcriptSareePalluDrape2;
+
+  /// No description provided for @transcriptSareePalluDrape3.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the pallu hang freely — do not pull it straight.'**
+  String get transcriptSareePalluDrape3;
+
+  /// No description provided for @transcriptSareePalluDrape4.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the folds follow the diagonal lines on your screen.'**
+  String get transcriptSareePalluDrape4;
+
+  /// No description provided for @transcriptSareePalluDrape5.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep one light source to the side so the sheen shows.'**
+  String get transcriptSareePalluDrape5;
+
+  /// No description provided for @transcriptSareeBoxFold1.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold the saree into a neat stack so the layers stay visible.'**
+  String get transcriptSareeBoxFold1;
+
+  /// No description provided for @transcriptSareeBoxFold2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the folded edge facing the camera — that edge shows thickness.'**
+  String get transcriptSareeBoxFold2;
+
+  /// No description provided for @transcriptSareeBoxFold3.
+  ///
+  /// In en, this message translates to:
+  /// **'Line the folds up with the horizontal guides.'**
+  String get transcriptSareeBoxFold3;
+
+  /// No description provided for @transcriptSareeBoxFold4.
+  ///
+  /// In en, this message translates to:
+  /// **'Use light from the side so each layer has depth.'**
+  String get transcriptSareeBoxFold4;
+
+  /// No description provided for @transcriptSareeWornDrape1.
+  ///
+  /// In en, this message translates to:
+  /// **'A worn shot shows the full saree — colour, pattern and material.'**
+  String get transcriptSareeWornDrape1;
+
+  /// No description provided for @transcriptSareeWornDrape2.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand in open shade so the colour stays true.'**
+  String get transcriptSareeWornDrape2;
+
+  /// No description provided for @transcriptSareeWornDrape3.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the saree cover most of the frame.'**
+  String get transcriptSareeWornDrape3;
+
+  /// No description provided for @transcriptSareeWornDrape4.
+  ///
+  /// In en, this message translates to:
+  /// **'Line the top border up with the top third of the grid.'**
+  String get transcriptSareeWornDrape4;
+
+  /// No description provided for @transcriptSareeWornDrape5.
+  ///
+  /// In en, this message translates to:
+  /// **'If there are pleats, follow the vertical grid lines.'**
+  String get transcriptSareeWornDrape5;
+
+  /// No description provided for @transcriptSareeRollDisplay1.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll the saree so the pallu and border face the camera.'**
+  String get transcriptSareeRollDisplay1;
+
+  /// No description provided for @transcriptSareeRollDisplay2.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the roll cover most of the frame.'**
+  String get transcriptSareeRollDisplay2;
+
+  /// No description provided for @transcriptSareeRollDisplay3.
+  ///
+  /// In en, this message translates to:
+  /// **'Line the top border up with the top third of the grid.'**
+  String get transcriptSareeRollDisplay3;
+
+  /// No description provided for @transcriptSareeRollDisplay4.
+  ///
+  /// In en, this message translates to:
+  /// **'Use soft daylight so the colour stays true.'**
+  String get transcriptSareeRollDisplay4;
+
+  /// No description provided for @transcriptCushionFlatLay1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lay the cushion cover flat on a plain surface.'**
+  String get transcriptCushionFlatLay1;
+
+  /// No description provided for @transcriptCushionFlatLay2.
+  ///
+  /// In en, this message translates to:
+  /// **'Smooth it out but leave the natural texture visible.'**
+  String get transcriptCushionFlatLay2;
+
+  /// No description provided for @transcriptCushionFlatLay3.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the phone directly above, not at an angle.'**
+  String get transcriptCushionFlatLay3;
+
+  /// No description provided for @transcriptCushionFlatLay4.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the edges straight along the grid.'**
+  String get transcriptCushionFlatLay4;
+
+  /// No description provided for @transcriptCushionStackedPair1.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack two covers so the buyer can see the thickness.'**
+  String get transcriptCushionStackedPair1;
+
+  /// No description provided for @transcriptCushionStackedPair2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the stacked edges facing the camera.'**
+  String get transcriptCushionStackedPair2;
+
+  /// No description provided for @transcriptCushionStackedPair3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side light so each layer casts a soft shadow.'**
+  String get transcriptCushionStackedPair3;
+
+  /// No description provided for @transcriptCushionPropped1.
+  ///
+  /// In en, this message translates to:
+  /// **'Placing the cushion on a chair shows its real size.'**
+  String get transcriptCushionPropped1;
+
+  /// No description provided for @transcriptCushionPropped2.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a seat that does not compete with the pattern.'**
+  String get transcriptCushionPropped2;
+
+  /// No description provided for @transcriptCushionPropped3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot at eye level, not from above.'**
+  String get transcriptCushionPropped3;
+
+  /// No description provided for @transcriptCushionCornerTuck1.
+  ///
+  /// In en, this message translates to:
+  /// **'The corner shows your stitching most clearly.'**
+  String get transcriptCushionCornerTuck1;
+
+  /// No description provided for @transcriptCushionCornerTuck2.
+  ///
+  /// In en, this message translates to:
+  /// **'Move close until the corner fills the small frame.'**
+  String get transcriptCushionCornerTuck2;
+
+  /// No description provided for @transcriptCushionCornerTuck3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the screen on the stitching to focus.'**
+  String get transcriptCushionCornerTuck3;
+
+  /// No description provided for @transcriptShawlDrapedShoulder1.
+  ///
+  /// In en, this message translates to:
+  /// **'Draping the shawl on a shoulder shows how heavy it is.'**
+  String get transcriptShawlDrapedShoulder1;
+
+  /// No description provided for @transcriptShawlDrapedShoulder2.
+  ///
+  /// In en, this message translates to:
+  /// **'Let one end hang lower than the other.'**
+  String get transcriptShawlDrapedShoulder2;
+
+  /// No description provided for @transcriptShawlDrapedShoulder3.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not pin it — let the fabric fall on its own.'**
+  String get transcriptShawlDrapedShoulder3;
+
+  /// No description provided for @transcriptShawlFoldedStack1.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack the shawl neatly with the folds visible.'**
+  String get transcriptShawlFoldedStack1;
+
+  /// No description provided for @transcriptShawlFoldedStack2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the folds parallel to the horizontal lines.'**
+  String get transcriptShawlFoldedStack2;
+
+  /// No description provided for @transcriptShawlFoldedStack3.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure the edge of the shawl is visible for thickness.'**
+  String get transcriptShawlFoldedStack3;
+
+  /// No description provided for @transcriptShawlFoldedStack4.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side lighting so each fold has depth.'**
+  String get transcriptShawlFoldedStack4;
+
+  /// No description provided for @transcriptShawlHungFlat1.
+  ///
+  /// In en, this message translates to:
+  /// **'Hanging the shawl flat shows the whole design at once.'**
+  String get transcriptShawlHungFlat1;
+
+  /// No description provided for @transcriptShawlHungFlat2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin both top corners so it does not sag in the middle.'**
+  String get transcriptShawlHungFlat2;
+
+  /// No description provided for @transcriptShawlHungFlat3.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand straight in front, not to one side.'**
+  String get transcriptShawlHungFlat3;
+
+  /// No description provided for @transcriptShawlCornerTuck1.
+  ///
+  /// In en, this message translates to:
+  /// **'A close-up of the corner shows the weave and the border together.'**
+  String get transcriptShawlCornerTuck1;
+
+  /// No description provided for @transcriptShawlCornerTuck2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold one corner back so both sides are visible.'**
+  String get transcriptShawlCornerTuck2;
+
+  /// No description provided for @transcriptShawlCornerTuck3.
+  ///
+  /// In en, this message translates to:
+  /// **'Move close until the weave fills the frame.'**
+  String get transcriptShawlCornerTuck3;
+
+  /// No description provided for @transcriptStoleNeckWrap1.
+  ///
+  /// In en, this message translates to:
+  /// **'A worn shot answers the most common question — how big is it?'**
+  String get transcriptStoleNeckWrap1;
+
+  /// No description provided for @transcriptStoleNeckWrap2.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap it once around the neck and let both ends hang.'**
+  String get transcriptStoleNeckWrap2;
+
+  /// No description provided for @transcriptStoleNeckWrap3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot from the chest up so the ends stay in frame.'**
+  String get transcriptStoleNeckWrap3;
+
+  /// No description provided for @transcriptStoleFlatSpread1.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread the stole out so its full length is visible.'**
+  String get transcriptStoleFlatSpread1;
+
+  /// No description provided for @transcriptStoleFlatSpread2.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the natural creases — they show what the fabric is like.'**
+  String get transcriptStoleFlatSpread2;
+
+  /// No description provided for @transcriptStoleFlatSpread3.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the phone directly above the middle.'**
+  String get transcriptStoleFlatSpread3;
+
+  /// No description provided for @transcriptStoleLooseKnot1.
+  ///
+  /// In en, this message translates to:
+  /// **'A loose knot shows how soft and light the stole is.'**
+  String get transcriptStoleLooseKnot1;
+
+  /// No description provided for @transcriptStoleLooseKnot2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie it loosely — never pull it tight.'**
+  String get transcriptStoleLooseKnot2;
+
+  /// No description provided for @transcriptStoleLooseKnot3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the knot in the centre of the frame.'**
+  String get transcriptStoleLooseKnot3;
+
+  /// No description provided for @transcriptStoleRolledCoil1.
+  ///
+  /// In en, this message translates to:
+  /// **'Rolling the stole into a coil shows the edge and the thickness.'**
+  String get transcriptStoleRolledCoil1;
+
+  /// No description provided for @transcriptStoleRolledCoil2.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll it loosely so the layers stay separate.'**
+  String get transcriptStoleRolledCoil2;
+
+  /// No description provided for @transcriptStoleRolledCoil3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot straight down onto the coil.'**
+  String get transcriptStoleRolledCoil3;
+
+  /// No description provided for @guideSareeFullDisplay1.
+  ///
+  /// In en, this message translates to:
+  /// **'The saree covers most of the frame.'**
+  String get guideSareeFullDisplay1;
+
+  /// No description provided for @guideSareeFullDisplay2.
+  ///
+  /// In en, this message translates to:
+  /// **'The top border aligns with the top third of the grid.'**
+  String get guideSareeFullDisplay2;
+
+  /// No description provided for @guideSareeFullDisplay3.
+  ///
+  /// In en, this message translates to:
+  /// **'When draped, pleats align with the vertical grid.'**
+  String get guideSareeFullDisplay3;
+
+  /// No description provided for @guideSareeTextureWeave1.
+  ///
+  /// In en, this message translates to:
+  /// **'The saree fills the frame.'**
+  String get guideSareeTextureWeave1;
+
+  /// No description provided for @guideSareeTextureWeave2.
+  ///
+  /// In en, this message translates to:
+  /// **'The texture stays in the centre.'**
+  String get guideSareeTextureWeave2;
+
+  /// No description provided for @guideSareeTextureWeave3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use soft light.'**
+  String get guideSareeTextureWeave3;
+
+  /// No description provided for @guideSareeTextureWeave4.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid harsh reflections.'**
+  String get guideSareeTextureWeave4;
+
+  /// No description provided for @guideSareeEmbroideryBorder1.
+  ///
+  /// In en, this message translates to:
+  /// **'The embroidery stays inside the frame.'**
+  String get guideSareeEmbroideryBorder1;
+
+  /// No description provided for @guideSareeEmbroideryBorder2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side lighting.'**
+  String get guideSareeEmbroideryBorder2;
+
+  /// No description provided for @guideSareeEmbroideryBorder3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the detail sharp and well-lit.'**
+  String get guideSareeEmbroideryBorder3;
+
+  /// No description provided for @guideCushionTextureWeave1.
+  ///
+  /// In en, this message translates to:
+  /// **'The weave fills the frame.'**
+  String get guideCushionTextureWeave1;
+
+  /// No description provided for @guideCushionTextureWeave2.
+  ///
+  /// In en, this message translates to:
+  /// **'The texture stays in the centre.'**
+  String get guideCushionTextureWeave2;
+
+  /// No description provided for @guideShawlFullDesign1.
+  ///
+  /// In en, this message translates to:
+  /// **'Hanging the shawl flat shows the whole design at once.'**
+  String get guideShawlFullDesign1;
+
+  /// No description provided for @guideShawlFullDesign2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin both top corners so it does not sag in the middle.'**
+  String get guideShawlFullDesign2;
+
+  /// No description provided for @guideShawlTextureWeave1.
+  ///
+  /// In en, this message translates to:
+  /// **'The weave fills the frame.'**
+  String get guideShawlTextureWeave1;
+
+  /// No description provided for @guideShawlTextureWeave2.
+  ///
+  /// In en, this message translates to:
+  /// **'The texture stays in the centre.'**
+  String get guideShawlTextureWeave2;
+
+  /// No description provided for @guideStoleFullLength1.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread the stole out so its full length is visible.'**
+  String get guideStoleFullLength1;
+
+  /// No description provided for @guideStoleFullLength2.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the natural creases — they show what the fabric is like.'**
+  String get guideStoleFullLength2;
+
+  /// No description provided for @guideStoleTextureWeave1.
+  ///
+  /// In en, this message translates to:
+  /// **'The weave fills the frame.'**
+  String get guideStoleTextureWeave1;
+
+  /// No description provided for @guideStoleTextureWeave2.
+  ///
+  /// In en, this message translates to:
+  /// **'The texture stays in the centre.'**
+  String get guideStoleTextureWeave2;
+
+  /// No description provided for @authInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect username or password.'**
+  String get authInvalidCredentials;
+
+  /// No description provided for @authUserAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'That username is already taken.'**
+  String get authUserAlreadyRegistered;
+
+  /// No description provided for @authEmailNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your email, then try again.'**
+  String get authEmailNotConfirmed;
+
+  /// No description provided for @authGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sign in. Try again.'**
+  String get authGeneric;
+
+  /// No description provided for @languageAssamese.
+  ///
+  /// In en, this message translates to:
+  /// **'Assamese'**
+  String get languageAssamese;
+
+  /// No description provided for @languageHindi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hindi'**
+  String get languageHindi;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @guideSareeDrapedLook1.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the fabric fall naturally.'**
+  String get guideSareeDrapedLook1;
+
+  /// No description provided for @guideSareeDrapedLook2.
+  ///
+  /// In en, this message translates to:
+  /// **'Folds follow the diagonal.'**
+  String get guideSareeDrapedLook2;
+
+  /// No description provided for @guideSareeDrapedLook3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side lighting.'**
+  String get guideSareeDrapedLook3;
+
+  /// No description provided for @guideSareeEmbroideryBorder4.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a contrast background.'**
+  String get guideSareeEmbroideryBorder4;
+
+  /// No description provided for @guideSareeFoldedStack1.
+  ///
+  /// In en, this message translates to:
+  /// **'Folds stay parallel to the horizontal lines.'**
+  String get guideSareeFoldedStack1;
+
+  /// No description provided for @guideSareeFoldedStack2.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side lighting.'**
+  String get guideSareeFoldedStack2;
+
+  /// No description provided for @guideSareeFoldedStack3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the edge visible.'**
+  String get guideSareeFoldedStack3;
+
+  /// No description provided for @guideCushionFullCover1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lay the cover flat so the full pattern is visible.'**
+  String get guideCushionFullCover1;
+
+  /// No description provided for @guideCushionFullCover2.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the phone directly above, not at an angle.'**
+  String get guideCushionFullCover2;
+
+  /// No description provided for @guideCushionFullCover3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the edges straight along the grid.'**
+  String get guideCushionFullCover3;
+
+  /// No description provided for @guideCushionTextureWeave3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use soft light.'**
+  String get guideCushionTextureWeave3;
+
+  /// No description provided for @guideCushionTextureWeave4.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid harsh reflections.'**
+  String get guideCushionTextureWeave4;
+
+  /// No description provided for @guideCushionStackedThickness1.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack two covers so the buyer can see the thickness.'**
+  String get guideCushionStackedThickness1;
+
+  /// No description provided for @guideCushionStackedThickness2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the stacked edges facing the camera.'**
+  String get guideCushionStackedThickness2;
+
+  /// No description provided for @guideCushionStackedThickness3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side light so each layer casts a soft shadow.'**
+  String get guideCushionStackedThickness3;
+
+  /// No description provided for @guideCushionCornerStitching1.
+  ///
+  /// In en, this message translates to:
+  /// **'The corner shows stitching most clearly.'**
+  String get guideCushionCornerStitching1;
+
+  /// No description provided for @guideCushionCornerStitching2.
+  ///
+  /// In en, this message translates to:
+  /// **'Move close until the corner fills the small frame.'**
+  String get guideCushionCornerStitching2;
+
+  /// No description provided for @guideCushionCornerStitching3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the stitching sharp and well-lit.'**
+  String get guideCushionCornerStitching3;
+
+  /// No description provided for @guideCushionInUse1.
+  ///
+  /// In en, this message translates to:
+  /// **'Placing the cushion on a chair shows its real size.'**
+  String get guideCushionInUse1;
+
+  /// No description provided for @guideCushionInUse2.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a seat that does not compete with the pattern.'**
+  String get guideCushionInUse2;
+
+  /// No description provided for @guideCushionInUse3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot at eye level, not from above.'**
+  String get guideCushionInUse3;
+
+  /// No description provided for @guideShawlFullDesign3.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand straight in front, not to one side.'**
+  String get guideShawlFullDesign3;
+
+  /// No description provided for @guideShawlTextureWeave3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use soft light.'**
+  String get guideShawlTextureWeave3;
+
+  /// No description provided for @guideShawlTextureWeave4.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid harsh reflections.'**
+  String get guideShawlTextureWeave4;
+
+  /// No description provided for @guideShawlDrapedLook1.
+  ///
+  /// In en, this message translates to:
+  /// **'Draping the shawl on a shoulder shows how heavy it is.'**
+  String get guideShawlDrapedLook1;
+
+  /// No description provided for @guideShawlDrapedLook2.
+  ///
+  /// In en, this message translates to:
+  /// **'Let one end hang lower than the other.'**
+  String get guideShawlDrapedLook2;
+
+  /// No description provided for @guideShawlDrapedLook3.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not pin it — let the fabric fall on its own.'**
+  String get guideShawlDrapedLook3;
+
+  /// No description provided for @guideShawlBorderCorner1.
+  ///
+  /// In en, this message translates to:
+  /// **'A close-up of the corner shows the weave and the border together.'**
+  String get guideShawlBorderCorner1;
+
+  /// No description provided for @guideShawlBorderCorner2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fold one corner back so both sides are visible.'**
+  String get guideShawlBorderCorner2;
+
+  /// No description provided for @guideShawlBorderCorner3.
+  ///
+  /// In en, this message translates to:
+  /// **'Move close until the weave fills the frame.'**
+  String get guideShawlBorderCorner3;
+
+  /// No description provided for @guideShawlStackDisplay1.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack the shawl neatly with the folds visible.'**
+  String get guideShawlStackDisplay1;
+
+  /// No description provided for @guideShawlStackDisplay2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the folds parallel to the horizontal lines.'**
+  String get guideShawlStackDisplay2;
+
+  /// No description provided for @guideShawlStackDisplay3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use side lighting so each fold has depth.'**
+  String get guideShawlStackDisplay3;
+
+  /// No description provided for @guideStoleFullLength3.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the phone directly above the middle.'**
+  String get guideStoleFullLength3;
+
+  /// No description provided for @guideStoleTextureWeave3.
+  ///
+  /// In en, this message translates to:
+  /// **'Use soft light.'**
+  String get guideStoleTextureWeave3;
+
+  /// No description provided for @guideStoleTextureWeave4.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid harsh reflections.'**
+  String get guideStoleTextureWeave4;
+
+  /// No description provided for @guideStoleWornNeckWrap1.
+  ///
+  /// In en, this message translates to:
+  /// **'A worn shot answers how big the stole is.'**
+  String get guideStoleWornNeckWrap1;
+
+  /// No description provided for @guideStoleWornNeckWrap2.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap it once around the neck and let both ends hang.'**
+  String get guideStoleWornNeckWrap2;
+
+  /// No description provided for @guideStoleWornNeckWrap3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot from the chest up so the ends stay in frame.'**
+  String get guideStoleWornNeckWrap3;
+
+  /// No description provided for @guideStoleSoftnessKnot1.
+  ///
+  /// In en, this message translates to:
+  /// **'A loose knot shows how soft and light the stole is.'**
+  String get guideStoleSoftnessKnot1;
+
+  /// No description provided for @guideStoleSoftnessKnot2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie it loosely — never pull it tight.'**
+  String get guideStoleSoftnessKnot2;
+
+  /// No description provided for @guideStoleSoftnessKnot3.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the knot in the centre of the frame.'**
+  String get guideStoleSoftnessKnot3;
+
+  /// No description provided for @guideStoleEdgeThickness1.
+  ///
+  /// In en, this message translates to:
+  /// **'Rolling the stole into a coil shows the edge and the thickness.'**
+  String get guideStoleEdgeThickness1;
+
+  /// No description provided for @guideStoleEdgeThickness2.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll it loosely so the layers stay separate.'**
+  String get guideStoleEdgeThickness2;
+
+  /// No description provided for @guideStoleEdgeThickness3.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoot straight down onto the coil.'**
+  String get guideStoleEdgeThickness3;
 }
 
 class _AppLocalizationsDelegate

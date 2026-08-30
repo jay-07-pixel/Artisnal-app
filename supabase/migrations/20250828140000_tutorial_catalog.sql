@@ -100,7 +100,7 @@ insert into public.tutorial_videos (
 (
   'shawl_hung_flat', 'shawl', 'Hung / pinned flat', 'shawl_hung_flat.mp4',
   '["Hanging the shawl flat shows the whole design at once.","Pin both top corners so it does not sag in the middle.","Stand straight in front, not to one side."]'::jsonb,
-  '[{"title":"Pin it flat","instruction":"Pin both top corners so the shawl hangs without sagging.","storage_key":"shawl hung flat/shawl_hung_flat_howto_2.png","bundled_asset":"assets/images/steps/shawl_hung_flat_1.png"},{"title":"Stand square to it","instruction":"Stand directly in front so the shape is not skewed.","storage_key":"shawl hung flat/shawl_hung_flat_howto_4.png","bundled_asset":"assets/images/steps/shawl_hung_flat_2.png"}]'::jsonb,
+  '[{"title":"Pin it flat","instruction":"Pin both top corners so the shawl hangs without sagging.","storage_key":"shawl hung flat/shawl_hung_flat_howto_2.png","bundled_asset":"assets/images/steps/shawl_hung_flat_1.png"},{"title":"Stand square to it","instruction":"Stand directly in front so the shape is not skewed.","storage_key":"shawl hung flat/shawl_hung_flat_howto_3.png","bundled_asset":"assets/images/steps/shawl_hung_flat_2.png"}]'::jsonb,
   11
 ),
 (

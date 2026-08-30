@@ -58,6 +58,14 @@ class PhotographyTemplate {
 
   bool get needsStyleStep => !skipsStyleStep && allowedPresetIds.isNotEmpty;
 
+  /// Close-up texture, weave, border and corner detail templates skip the
+  /// tutorial video step — live camera guidance is enough.
+  bool get skipsTutorialStep =>
+      id.contains('texture_weave') ||
+      id.contains('embroidery_border') ||
+      id.contains('border_corner') ||
+      id.contains('corner_stitching');
+
   TechniquePreset get technique => TechniquePreset(
         angle: angle,
         lighting: lighting,

@@ -162,12 +162,12 @@ class _Preview extends StatelessWidget {
       );
     }
 
+    final l10n = AppLocalizations.of(context);
     final message = switch (camera.status) {
-      CameraStatus.permissionDenied =>
-        'Camera permission is needed to take photos.\n'
-            'Please allow camera access in Settings.',
-      CameraStatus.unavailable =>
-        camera.errorMessage ?? 'The camera is unavailable.',
+      CameraStatus.permissionDenied => l10n.cameraPermissionNeeded,
+      CameraStatus.unavailable => camera.errorMessage == 'no_camera'
+          ? l10n.noCameraFound
+          : l10n.cameraUnavailable,
       _ => null,
     };
 
@@ -416,7 +416,13 @@ class _LiveGuidancePill extends StatelessWidget {
     // Nothing in view is the one moment where the preset's own placement
     // line helps more than a measurement can.
     final detail = measured && feedback.prompt == CapturePrompt.noProduct
-        ? guidance.cameraGuidance.placementInstruction
+        ? (AppCopy.presetPlacement(l10n, guidance.presetId ?? '') ??
+            AppCopy.displayedPlacement(
+              l10n,
+              templateId: guidance.templateId,
+              templateName: guidance.templateName,
+              fallback: guidance.cameraGuidance.placementInstruction,
+            ))
         : null;
 
     return Positioned(

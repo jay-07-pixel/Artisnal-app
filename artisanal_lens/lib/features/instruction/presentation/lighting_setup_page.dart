@@ -38,7 +38,10 @@ class LightingSetupPage extends ConsumerWidget {
     final captureGuidance = ref.watch(sessionCaptureGuidanceProvider);
     final technique = captureGuidance.technique;
     final slotLabel = _slotLabel(context, session, set?.categoryId);
-    final hasTutorial = hasTutorialContent(preset);
+    final hasTutorial = hasTutorialContent(
+      preset: preset,
+      guidance: guidance,
+    );
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
@@ -115,6 +118,7 @@ class LightingSetupPage extends ConsumerWidget {
               title: l10n.placeTheProduct,
               body: AppCopy.displayedPlacement(
                     l10n,
+                    preset: preset,
                     templateId: guidance.templateId,
                     templateName: guidance.templateName,
                     fallback: captureGuidance.placement,
@@ -127,6 +131,7 @@ class LightingSetupPage extends ConsumerWidget {
               title: l10n.placeTheProduct,
               body: AppCopy.displayedPlacement(
                     l10n,
+                    preset: preset,
                     templateId: guidance.templateId,
                     templateName: guidance.templateName,
                     fallback: guidance.placement,
@@ -141,7 +146,14 @@ class LightingSetupPage extends ConsumerWidget {
             _InfoCard(
               icon: Icons.tune_outlined,
               title: l10n.setupSection,
-              body: guidance.setupGuidance.join('\n'),
+              body: () {
+                final localized = AppCopy.templateGuidance(
+                  l10n,
+                  guidance.templateId,
+                );
+                if (localized.isNotEmpty) return localized.join('\n');
+                return guidance.setupGuidance.join('\n');
+              }(),
             ),
             const SizedBox(height: AppDimens.space12),
           ],

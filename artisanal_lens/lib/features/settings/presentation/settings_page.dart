@@ -7,14 +7,11 @@ import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/photography_guideline.dart';
 import '../../../l10n/app_copy.dart';
-import 'profile_settings_section.dart';
+import 'account_settings_section.dart';
 
 /// Settings.
 ///
-/// The Figma file lists Settings as a navigation destination but does not
-/// detail its contents, so this holds only what the research already
-/// specifies: language choice (the 42% who cite language barriers) and the
-/// photography guidelines the app's advice is built on.
+/// Language choice, account sign-in / cloud backup, and photography guidelines.
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
@@ -50,6 +47,17 @@ class SettingsPage extends ConsumerWidget {
               AppDimens.space32,
             ),
             children: [
+              Text(l10n.accountBackup, style: AppTypography.displayMedium),
+              const SizedBox(height: AppDimens.space4),
+              Text(
+                l10n.accountBackupSubtitle,
+                style: AppTypography.labelSmall,
+              ),
+              const SizedBox(height: AppDimens.space12),
+              const AccountSettingsSection(),
+              const SizedBox(height: AppDimens.space24),
+              const Divider(),
+              const SizedBox(height: AppDimens.space24),
               Text(l10n.language, style: AppTypography.displayMedium),
               const SizedBox(height: AppDimens.space12),
               RadioGroup<AppLanguage>(
@@ -67,7 +75,7 @@ class SettingsPage extends ConsumerWidget {
                         activeColor: AppColors.primary,
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          language.label,
+                          AppCopy.languageLabel(l10n, language),
                           style: AppTypography.bodyMedium.copyWith(
                             color: AppColors.textPrimary,
                           ),
@@ -76,17 +84,6 @@ class SettingsPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: AppDimens.space24),
-              const Divider(),
-              const SizedBox(height: AppDimens.space24),
-              Text('Your name', style: AppTypography.displayMedium),
-              const SizedBox(height: AppDimens.space4),
-              Text(
-                'Saved on this phone only.',
-                style: AppTypography.labelSmall,
-              ),
-              const SizedBox(height: AppDimens.space12),
-              const ProfileSettingsSection(),
               const SizedBox(height: AppDimens.space24),
               const Divider(),
               const SizedBox(height: AppDimens.space24),

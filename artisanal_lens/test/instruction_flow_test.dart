@@ -180,9 +180,43 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(hasTutorialContent(null), isFalse);
+    expect(
+      hasTutorialContent(
+        guidance: ShotGuidance.forSlot(
+          ShotType.sareePhotography,
+          1,
+          categoryId: BundledCatalogDataSource.saree,
+        ),
+      ),
+      isFalse,
+    );
     expect(find.text('Open Camera'), findsOneWidget);
     expect(find.text('Before you shoot'), findsOneWidget);
+  });
+
+  test('Texture and border templates skip tutorial even with a fold preset', () {
+    final pallu = catalog.presetById('saree_pallu_drape')!;
+    final weaveGuidance = ShotGuidance.resolve(
+      shotType: ShotType.sareePhotography,
+      slotIndex: 1,
+      preset: pallu,
+      categoryId: BundledCatalogDataSource.saree,
+    );
+    final borderGuidance = ShotGuidance.resolve(
+      shotType: ShotType.sareePhotography,
+      slotIndex: 3,
+      preset: pallu,
+      categoryId: BundledCatalogDataSource.saree,
+    );
+    expect(
+      hasTutorialContent(preset: pallu, guidance: weaveGuidance),
+      isFalse,
+    );
+    expect(
+      hasTutorialContent(preset: pallu, guidance: borderGuidance),
+      isFalse,
+    );
+    expect(pallu.hasVideoTutorial, isTrue);
   });
 
   test('Saree Weave takes Centre focus into the camera', () {

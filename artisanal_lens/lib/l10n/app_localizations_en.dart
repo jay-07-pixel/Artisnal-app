@@ -1433,4 +1433,743 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get compositionDetailFrameHint =>
       'Keep the embroidery inside the highlighted frame.';
+
+  @override
+  String get accountBackup => 'Account & backup';
+
+  @override
+  String get accountBackupSubtitle =>
+      'Create a username and password to save progress online.';
+
+  @override
+  String get cloudBackupNotConfigured => 'Cloud backup not configured';
+
+  @override
+  String get cloudBackupNotConfiguredBody =>
+      'This build has no cloud connection. Progress stays on this phone only.';
+
+  @override
+  String get signedInAs => 'Signed in as';
+
+  @override
+  String get artisanFallback => 'Artisan';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get createAccountPrompt =>
+      'Create an account to save your work online.';
+
+  @override
+  String get signInPrompt => 'Sign in to load your saved products and photos.';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get usernameHint => 'e.g. priya_weaver';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get createAccount => 'Create account';
+
+  @override
+  String get signIn => 'Sign in';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign in';
+
+  @override
+  String get needAccount => 'Need an account? Create one';
+
+  @override
+  String get accountCreated =>
+      'Account created. Your progress will sync online.';
+
+  @override
+  String get signedInSuccess => 'Signed in. Your saved work is on this phone.';
+
+  @override
+  String get signedOutSuccess => 'Signed out. Local photos stay on this phone.';
+
+  @override
+  String get syncOffline => 'No internet — sync when you are back online.';
+
+  @override
+  String syncDone(int sets, int shots) {
+    return 'Synced: $sets products uploaded, $shots photos uploaded.';
+  }
+
+  @override
+  String get syncUpToDate => 'Everything is already up to date.';
+
+  @override
+  String syncFailed(String error) {
+    return 'Sync failed: $error';
+  }
+
+  @override
+  String get yourProgress => 'Your progress';
+
+  @override
+  String get productsStarted => 'Products started';
+
+  @override
+  String get finishedSets => 'Finished sets';
+
+  @override
+  String get inProgressSets => 'In progress';
+
+  @override
+  String get photosCaptured => 'Photos captured';
+
+  @override
+  String get usernameTooShort =>
+      'Username must be at least 3 letters or numbers.';
+
+  @override
+  String get usernameTooLong => 'Username must be 32 characters or fewer.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters.';
+
+  @override
+  String get fullScreen => 'Full screen';
+
+  @override
+  String get tapToSkip => 'Tap to skip';
+
+  @override
+  String get cameraPermissionNeeded =>
+      'Camera permission is needed to take photos.\nPlease allow camera access in Settings.';
+
+  @override
+  String get cameraUnavailable => 'The camera is unavailable.';
+
+  @override
+  String get noCameraFound => 'No camera found on this device.';
+
+  @override
+  String get accountCreateFailed => 'Could not create your account. Try again.';
+
+  @override
+  String get enterValidUsername => 'Enter a valid username.';
+
+  @override
+  String get monthJan => 'Jan';
+
+  @override
+  String get monthFeb => 'Feb';
+
+  @override
+  String get monthMar => 'Mar';
+
+  @override
+  String get monthApr => 'Apr';
+
+  @override
+  String get monthMay => 'May';
+
+  @override
+  String get monthJun => 'Jun';
+
+  @override
+  String get monthJul => 'Jul';
+
+  @override
+  String get monthAug => 'Aug';
+
+  @override
+  String get monthSep => 'Sep';
+
+  @override
+  String get monthOct => 'Oct';
+
+  @override
+  String get monthNov => 'Nov';
+
+  @override
+  String get monthDec => 'Dec';
+
+  @override
+  String get presetCushionFlatLayNeeds => 'Plain uncluttered surface';
+
+  @override
+  String get presetCushionStackedPairNeeds => 'Two covers; side light';
+
+  @override
+  String get presetCushionProppedNeeds => 'A chair, sofa or bed';
+
+  @override
+  String get presetCushionCornerTuckNeeds => 'Close-up light';
+
+  @override
+  String get presetShawlDrapedShoulderNeeds => 'Someone to wear the shawl';
+
+  @override
+  String get presetShawlFoldedStackNeeds => 'Side lighting';
+
+  @override
+  String get presetShawlHungFlatNeeds =>
+      'A line, bamboo pole or wall to pin against';
+
+  @override
+  String get presetShawlCornerTuckNeeds => 'Close-up light';
+
+  @override
+  String get presetStoleNeckWrapNeeds => 'Someone to wear the stole';
+
+  @override
+  String get presetStoleFlatSpreadNeeds => 'Plain surface; overhead view';
+
+  @override
+  String get presetStoleLooseKnotNeeds => 'Soft side light';
+
+  @override
+  String get presetStoleRolledCoilNeeds => 'Soft side light';
+
+  @override
+  String get placementSareePalluDrape =>
+      'Drape the saree over a hanger, bamboo or mannequin so the pallu falls freely.';
+
+  @override
+  String get placementSareeBoxFold =>
+      'Fold the saree into even layers and stack them so the edge is visible.';
+
+  @override
+  String get placementSareeWornDrape =>
+      'Drape the saree on the person so colour, pattern and border show clearly.';
+
+  @override
+  String get placementSareeRollDisplay =>
+      'Roll the saree so the pallu and border face the camera.';
+
+  @override
+  String get placementCushionFlatLay =>
+      'Place the cover flat on a plain, uncluttered surface.';
+
+  @override
+  String get placementCushionStackedPair =>
+      'Place one cover neatly on top of the other.';
+
+  @override
+  String get placementCushionPropped =>
+      'Prop the cushion on a chair or sofa, facing forward.';
+
+  @override
+  String get placementCushionCornerTuck =>
+      'Turn the cover so one stitched corner faces you.';
+
+  @override
+  String get placementShawlDrapedShoulder =>
+      'Place the shawl over one shoulder, letting it fall.';
+
+  @override
+  String get placementShawlFoldedStack =>
+      'Fold the shawl into even layers and stack them neatly.';
+
+  @override
+  String get placementShawlHungFlat =>
+      'Pin both top corners so the shawl hangs without sagging.';
+
+  @override
+  String get placementShawlCornerTuck =>
+      'Fold one corner back to show both sides of the weave.';
+
+  @override
+  String get placementStoleNeckWrap =>
+      'Wrap it once around the neck, letting both ends hang.';
+
+  @override
+  String get placementStoleFlatSpread =>
+      'Spread the stole flat so its full length is visible.';
+
+  @override
+  String get placementStoleLooseKnot =>
+      'Tie one loose knot in the middle — do not pull tight.';
+
+  @override
+  String get placementStoleRolledCoil =>
+      'Roll the stole loosely into a flat coil.';
+
+  @override
+  String get transcriptSareePalluDrape1 =>
+      'Hang the saree so its fall is clearly visible.';
+
+  @override
+  String get transcriptSareePalluDrape2 =>
+      'Use a hanger, bamboo pole or mannequin at about shoulder height.';
+
+  @override
+  String get transcriptSareePalluDrape3 =>
+      'Let the pallu hang freely — do not pull it straight.';
+
+  @override
+  String get transcriptSareePalluDrape4 =>
+      'Let the folds follow the diagonal lines on your screen.';
+
+  @override
+  String get transcriptSareePalluDrape5 =>
+      'Keep one light source to the side so the sheen shows.';
+
+  @override
+  String get transcriptSareeBoxFold1 =>
+      'Fold the saree into a neat stack so the layers stay visible.';
+
+  @override
+  String get transcriptSareeBoxFold2 =>
+      'Keep the folded edge facing the camera — that edge shows thickness.';
+
+  @override
+  String get transcriptSareeBoxFold3 =>
+      'Line the folds up with the horizontal guides.';
+
+  @override
+  String get transcriptSareeBoxFold4 =>
+      'Use light from the side so each layer has depth.';
+
+  @override
+  String get transcriptSareeWornDrape1 =>
+      'A worn shot shows the full saree — colour, pattern and material.';
+
+  @override
+  String get transcriptSareeWornDrape2 =>
+      'Stand in open shade so the colour stays true.';
+
+  @override
+  String get transcriptSareeWornDrape3 =>
+      'Let the saree cover most of the frame.';
+
+  @override
+  String get transcriptSareeWornDrape4 =>
+      'Line the top border up with the top third of the grid.';
+
+  @override
+  String get transcriptSareeWornDrape5 =>
+      'If there are pleats, follow the vertical grid lines.';
+
+  @override
+  String get transcriptSareeRollDisplay1 =>
+      'Roll the saree so the pallu and border face the camera.';
+
+  @override
+  String get transcriptSareeRollDisplay2 =>
+      'Let the roll cover most of the frame.';
+
+  @override
+  String get transcriptSareeRollDisplay3 =>
+      'Line the top border up with the top third of the grid.';
+
+  @override
+  String get transcriptSareeRollDisplay4 =>
+      'Use soft daylight so the colour stays true.';
+
+  @override
+  String get transcriptCushionFlatLay1 =>
+      'Lay the cushion cover flat on a plain surface.';
+
+  @override
+  String get transcriptCushionFlatLay2 =>
+      'Smooth it out but leave the natural texture visible.';
+
+  @override
+  String get transcriptCushionFlatLay3 =>
+      'Hold the phone directly above, not at an angle.';
+
+  @override
+  String get transcriptCushionFlatLay4 =>
+      'Keep the edges straight along the grid.';
+
+  @override
+  String get transcriptCushionStackedPair1 =>
+      'Stack two covers so the buyer can see the thickness.';
+
+  @override
+  String get transcriptCushionStackedPair2 =>
+      'Keep the stacked edges facing the camera.';
+
+  @override
+  String get transcriptCushionStackedPair3 =>
+      'Use side light so each layer casts a soft shadow.';
+
+  @override
+  String get transcriptCushionPropped1 =>
+      'Placing the cushion on a chair shows its real size.';
+
+  @override
+  String get transcriptCushionPropped2 =>
+      'Choose a seat that does not compete with the pattern.';
+
+  @override
+  String get transcriptCushionPropped3 => 'Shoot at eye level, not from above.';
+
+  @override
+  String get transcriptCushionCornerTuck1 =>
+      'The corner shows your stitching most clearly.';
+
+  @override
+  String get transcriptCushionCornerTuck2 =>
+      'Move close until the corner fills the small frame.';
+
+  @override
+  String get transcriptCushionCornerTuck3 =>
+      'Tap the screen on the stitching to focus.';
+
+  @override
+  String get transcriptShawlDrapedShoulder1 =>
+      'Draping the shawl on a shoulder shows how heavy it is.';
+
+  @override
+  String get transcriptShawlDrapedShoulder2 =>
+      'Let one end hang lower than the other.';
+
+  @override
+  String get transcriptShawlDrapedShoulder3 =>
+      'Do not pin it — let the fabric fall on its own.';
+
+  @override
+  String get transcriptShawlFoldedStack1 =>
+      'Stack the shawl neatly with the folds visible.';
+
+  @override
+  String get transcriptShawlFoldedStack2 =>
+      'Keep the folds parallel to the horizontal lines.';
+
+  @override
+  String get transcriptShawlFoldedStack3 =>
+      'Make sure the edge of the shawl is visible for thickness.';
+
+  @override
+  String get transcriptShawlFoldedStack4 =>
+      'Use side lighting so each fold has depth.';
+
+  @override
+  String get transcriptShawlHungFlat1 =>
+      'Hanging the shawl flat shows the whole design at once.';
+
+  @override
+  String get transcriptShawlHungFlat2 =>
+      'Pin both top corners so it does not sag in the middle.';
+
+  @override
+  String get transcriptShawlHungFlat3 =>
+      'Stand straight in front, not to one side.';
+
+  @override
+  String get transcriptShawlCornerTuck1 =>
+      'A close-up of the corner shows the weave and the border together.';
+
+  @override
+  String get transcriptShawlCornerTuck2 =>
+      'Fold one corner back so both sides are visible.';
+
+  @override
+  String get transcriptShawlCornerTuck3 =>
+      'Move close until the weave fills the frame.';
+
+  @override
+  String get transcriptStoleNeckWrap1 =>
+      'A worn shot answers the most common question — how big is it?';
+
+  @override
+  String get transcriptStoleNeckWrap2 =>
+      'Wrap it once around the neck and let both ends hang.';
+
+  @override
+  String get transcriptStoleNeckWrap3 =>
+      'Shoot from the chest up so the ends stay in frame.';
+
+  @override
+  String get transcriptStoleFlatSpread1 =>
+      'Spread the stole out so its full length is visible.';
+
+  @override
+  String get transcriptStoleFlatSpread2 =>
+      'Leave the natural creases — they show what the fabric is like.';
+
+  @override
+  String get transcriptStoleFlatSpread3 =>
+      'Hold the phone directly above the middle.';
+
+  @override
+  String get transcriptStoleLooseKnot1 =>
+      'A loose knot shows how soft and light the stole is.';
+
+  @override
+  String get transcriptStoleLooseKnot2 =>
+      'Tie it loosely — never pull it tight.';
+
+  @override
+  String get transcriptStoleLooseKnot3 =>
+      'Keep the knot in the centre of the frame.';
+
+  @override
+  String get transcriptStoleRolledCoil1 =>
+      'Rolling the stole into a coil shows the edge and the thickness.';
+
+  @override
+  String get transcriptStoleRolledCoil2 =>
+      'Roll it loosely so the layers stay separate.';
+
+  @override
+  String get transcriptStoleRolledCoil3 => 'Shoot straight down onto the coil.';
+
+  @override
+  String get guideSareeFullDisplay1 => 'The saree covers most of the frame.';
+
+  @override
+  String get guideSareeFullDisplay2 =>
+      'The top border aligns with the top third of the grid.';
+
+  @override
+  String get guideSareeFullDisplay3 =>
+      'When draped, pleats align with the vertical grid.';
+
+  @override
+  String get guideSareeTextureWeave1 => 'The saree fills the frame.';
+
+  @override
+  String get guideSareeTextureWeave2 => 'The texture stays in the centre.';
+
+  @override
+  String get guideSareeTextureWeave3 => 'Use soft light.';
+
+  @override
+  String get guideSareeTextureWeave4 => 'Avoid harsh reflections.';
+
+  @override
+  String get guideSareeEmbroideryBorder1 =>
+      'The embroidery stays inside the frame.';
+
+  @override
+  String get guideSareeEmbroideryBorder2 => 'Use side lighting.';
+
+  @override
+  String get guideSareeEmbroideryBorder3 =>
+      'Keep the detail sharp and well-lit.';
+
+  @override
+  String get guideCushionTextureWeave1 => 'The weave fills the frame.';
+
+  @override
+  String get guideCushionTextureWeave2 => 'The texture stays in the centre.';
+
+  @override
+  String get guideShawlFullDesign1 =>
+      'Hanging the shawl flat shows the whole design at once.';
+
+  @override
+  String get guideShawlFullDesign2 =>
+      'Pin both top corners so it does not sag in the middle.';
+
+  @override
+  String get guideShawlTextureWeave1 => 'The weave fills the frame.';
+
+  @override
+  String get guideShawlTextureWeave2 => 'The texture stays in the centre.';
+
+  @override
+  String get guideStoleFullLength1 =>
+      'Spread the stole out so its full length is visible.';
+
+  @override
+  String get guideStoleFullLength2 =>
+      'Leave the natural creases — they show what the fabric is like.';
+
+  @override
+  String get guideStoleTextureWeave1 => 'The weave fills the frame.';
+
+  @override
+  String get guideStoleTextureWeave2 => 'The texture stays in the centre.';
+
+  @override
+  String get authInvalidCredentials => 'Incorrect username or password.';
+
+  @override
+  String get authUserAlreadyRegistered => 'That username is already taken.';
+
+  @override
+  String get authEmailNotConfirmed => 'Confirm your email, then try again.';
+
+  @override
+  String get authGeneric => 'Could not sign in. Try again.';
+
+  @override
+  String get languageAssamese => 'Assamese';
+
+  @override
+  String get languageHindi => 'Hindi';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get guideSareeDrapedLook1 => 'Let the fabric fall naturally.';
+
+  @override
+  String get guideSareeDrapedLook2 => 'Folds follow the diagonal.';
+
+  @override
+  String get guideSareeDrapedLook3 => 'Use side lighting.';
+
+  @override
+  String get guideSareeEmbroideryBorder4 => 'Use a contrast background.';
+
+  @override
+  String get guideSareeFoldedStack1 =>
+      'Folds stay parallel to the horizontal lines.';
+
+  @override
+  String get guideSareeFoldedStack2 => 'Use side lighting.';
+
+  @override
+  String get guideSareeFoldedStack3 => 'Keep the edge visible.';
+
+  @override
+  String get guideCushionFullCover1 =>
+      'Lay the cover flat so the full pattern is visible.';
+
+  @override
+  String get guideCushionFullCover2 =>
+      'Hold the phone directly above, not at an angle.';
+
+  @override
+  String get guideCushionFullCover3 =>
+      'Keep the edges straight along the grid.';
+
+  @override
+  String get guideCushionTextureWeave3 => 'Use soft light.';
+
+  @override
+  String get guideCushionTextureWeave4 => 'Avoid harsh reflections.';
+
+  @override
+  String get guideCushionStackedThickness1 =>
+      'Stack two covers so the buyer can see the thickness.';
+
+  @override
+  String get guideCushionStackedThickness2 =>
+      'Keep the stacked edges facing the camera.';
+
+  @override
+  String get guideCushionStackedThickness3 =>
+      'Use side light so each layer casts a soft shadow.';
+
+  @override
+  String get guideCushionCornerStitching1 =>
+      'The corner shows stitching most clearly.';
+
+  @override
+  String get guideCushionCornerStitching2 =>
+      'Move close until the corner fills the small frame.';
+
+  @override
+  String get guideCushionCornerStitching3 =>
+      'Keep the stitching sharp and well-lit.';
+
+  @override
+  String get guideCushionInUse1 =>
+      'Placing the cushion on a chair shows its real size.';
+
+  @override
+  String get guideCushionInUse2 =>
+      'Choose a seat that does not compete with the pattern.';
+
+  @override
+  String get guideCushionInUse3 => 'Shoot at eye level, not from above.';
+
+  @override
+  String get guideShawlFullDesign3 =>
+      'Stand straight in front, not to one side.';
+
+  @override
+  String get guideShawlTextureWeave3 => 'Use soft light.';
+
+  @override
+  String get guideShawlTextureWeave4 => 'Avoid harsh reflections.';
+
+  @override
+  String get guideShawlDrapedLook1 =>
+      'Draping the shawl on a shoulder shows how heavy it is.';
+
+  @override
+  String get guideShawlDrapedLook2 => 'Let one end hang lower than the other.';
+
+  @override
+  String get guideShawlDrapedLook3 =>
+      'Do not pin it — let the fabric fall on its own.';
+
+  @override
+  String get guideShawlBorderCorner1 =>
+      'A close-up of the corner shows the weave and the border together.';
+
+  @override
+  String get guideShawlBorderCorner2 =>
+      'Fold one corner back so both sides are visible.';
+
+  @override
+  String get guideShawlBorderCorner3 =>
+      'Move close until the weave fills the frame.';
+
+  @override
+  String get guideShawlStackDisplay1 =>
+      'Stack the shawl neatly with the folds visible.';
+
+  @override
+  String get guideShawlStackDisplay2 =>
+      'Keep the folds parallel to the horizontal lines.';
+
+  @override
+  String get guideShawlStackDisplay3 =>
+      'Use side lighting so each fold has depth.';
+
+  @override
+  String get guideStoleFullLength3 =>
+      'Hold the phone directly above the middle.';
+
+  @override
+  String get guideStoleTextureWeave3 => 'Use soft light.';
+
+  @override
+  String get guideStoleTextureWeave4 => 'Avoid harsh reflections.';
+
+  @override
+  String get guideStoleWornNeckWrap1 =>
+      'A worn shot answers how big the stole is.';
+
+  @override
+  String get guideStoleWornNeckWrap2 =>
+      'Wrap it once around the neck and let both ends hang.';
+
+  @override
+  String get guideStoleWornNeckWrap3 =>
+      'Shoot from the chest up so the ends stay in frame.';
+
+  @override
+  String get guideStoleSoftnessKnot1 =>
+      'A loose knot shows how soft and light the stole is.';
+
+  @override
+  String get guideStoleSoftnessKnot2 => 'Tie it loosely — never pull it tight.';
+
+  @override
+  String get guideStoleSoftnessKnot3 =>
+      'Keep the knot in the centre of the frame.';
+
+  @override
+  String get guideStoleEdgeThickness1 =>
+      'Rolling the stole into a coil shows the edge and the thickness.';
+
+  @override
+  String get guideStoleEdgeThickness2 =>
+      'Roll it loosely so the layers stay separate.';
+
+  @override
+  String get guideStoleEdgeThickness3 => 'Shoot straight down onto the coil.';
 }

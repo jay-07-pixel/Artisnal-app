@@ -19,8 +19,12 @@
   "photosCompleted": "{done} में से {total} फोटो पूरी हुईं",
   "@photosCompleted": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "emptyAll": "अभी कोई पिछला सेट नहीं है।",
@@ -38,14 +42,18 @@
   "materialTypeHeadline": "आप किस तरह का {material}\nइस्तेमाल कर रहे हैं?",
   "@materialTypeHeadline": {
     "placeholders": {
-      "material": {"type": "String"}
+      "material": {
+        "type": "String"
+      }
     }
   },
   "giveProductName": "अपने उत्पाद का नाम लिखें",
   "nameHint": "जैसे नीला रेशम {category}",
   "@nameHint": {
     "placeholders": {
-      "category": {"type": "String"}
+      "category": {
+        "type": "String"
+      }
     }
   },
   "photosToCapture": "लेनी वाली फोटो",
@@ -59,7 +67,9 @@
   "takeNext": "अगली लें — {label}",
   "@takeNext": {
     "placeholders": {
-      "label": {"type": "String"}
+      "label": {
+        "type": "String"
+      }
     }
   },
   "productUnavailable": "यह उत्पाद अब उपलब्ध नहीं है।",
@@ -70,20 +80,28 @@
   "styleSubtitleSaree": "इस {template} फोटो की व्यवस्था चुनें।",
   "@styleSubtitleSaree": {
     "placeholders": {
-      "template": {"type": "String"}
+      "template": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleShot": "इस {shot} फोटो की व्यवस्था चुनें।",
   "@styleSubtitleShot": {
     "placeholders": {
-      "shot": {"type": "String"}
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleCategory": "इस {category} {shot} फोटो की व्यवस्था चुनें।",
   "@styleSubtitleCategory": {
     "placeholders": {
-      "category": {"type": "String"},
-      "shot": {"type": "String"}
+      "category": {
+        "type": "String"
+      },
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "labelContent": "विषय",
@@ -94,13 +112,17 @@
   "contentPrefixed": "विषय: {value}",
   "@contentPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "needsPrefixed": "ज़रूरत: {value}",
   "@needsPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "lightingAndSetup": "रोशनी और सेटअप",
@@ -114,13 +136,17 @@
   "tutorialSubtitlePreset": "{name} का सेटअप कैसे करें, देखें।",
   "@tutorialSubtitlePreset": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleTemplate": "{name} का सेटअप कैसे करें, देखें।",
   "@tutorialSubtitleTemplate": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleFallback": "जब वीडियो जुड़ेगा, यह सेटअप दिखाया जाएगा।",
@@ -142,28 +168,40 @@
   "continueCount": "जारी रखें — {done}/{total}",
   "@continueCount": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "noPhotosToExport": "भेजने के लिए अभी कोई फोटो नहीं है।",
   "couldNotExport": "भेज नहीं सके: {error}",
   "@couldNotExport": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "exportShareText": "{name} — {count} फोटो, द आर्टिसनल लेंस से ली गईं",
   "@exportShareText": {
     "placeholders": {
-      "name": {"type": "String"},
-      "count": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
     }
   },
   "couldNotSavePhoto": "फोटो सेव नहीं हो सकी: {error}",
   "@couldNotSavePhoto": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "galleryEmpty": "अभी कोई फोटो सेट नहीं है।\nशुरू करने के लिए नया उत्पाद बनाएँ।",
@@ -180,25 +218,33 @@
   "fillFrameWith": "{slot} से फ्रेम भरें",
   "@fillFrameWith": {
     "placeholders": {
-      "slot": {"type": "String"}
+      "slot": {
+        "type": "String"
+      }
     }
   },
   "promptNoProduct": "{product} को सामने रखें",
   "@promptNoProduct": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptMoveIntoFrame": "{product} को फ्रेम में लाइए",
   "@promptMoveIntoFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepInsideFrame": "{product} को फ्रेम के अंदर रखें",
   "@promptKeepInsideFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptAlignHorizontal": "मोड़ों को आड़ी रेखाओं के साथ मिलाएँ",
@@ -209,7 +255,9 @@
   "promptCenterSubject": "{product} को बीच में रखें",
   "@promptCenterSubject": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepTextureCentre": "बनावट को केंद्र में रखें",
@@ -533,5 +581,229 @@
   "compositionCentreFocus": "केंद्र फोकस",
   "compositionCentreFocusHint": "बनावट को फ्रेम के केंद्र में रखें।",
   "compositionDetailFrame": "विवरण फ्रेम",
-  "compositionDetailFrameHint": "कढ़ाई को हाइलाइट किए फ्रेम के अंदर रखें।"
+  "compositionDetailFrameHint": "कढ़ाई को हाइलाइट किए फ्रेम के अंदर रखें।",
+  "accountBackup": "खाता और बैकअप",
+  "accountBackupSubtitle": "प्रगति ऑनलाइन सहेजने के लिए उपयोगकर्ता नाम और पासवर्ड बनाएँ।",
+  "cloudBackupNotConfigured": "क्लाउड बैकअप तैयार नहीं है",
+  "cloudBackupNotConfiguredBody": "इस बिल्ड में क्लाउड कनेक्शन नहीं है। प्रगति केवल इस फ़ोन पर रहती है।",
+  "signedInAs": "साइन इन है",
+  "artisanFallback": "कारीगर",
+  "syncNow": "अभी सिंक करें",
+  "signOut": "साइन आउट",
+  "createAccountPrompt": "अपना काम ऑनलाइन सहेजने के लिए खाता बनाएँ।",
+  "signInPrompt": "सहेजे गए उत्पाद और फ़ोटो लोड करने के लिए साइन इन करें।",
+  "username": "उपयोगकर्ता नाम",
+  "usernameHint": "जैसे priya_weaver",
+  "password": "पासवर्ड",
+  "createAccount": "खाता बनाएँ",
+  "signIn": "साइन इन",
+  "alreadyHaveAccount": "पहले से खाता है? साइन इन करें",
+  "needAccount": "खाता चाहिए? एक बनाएँ",
+  "accountCreated": "खाता बन गया। आपकी प्रगति ऑनलाइन सिंक होगी।",
+  "signedInSuccess": "साइन इन हो गया। आपका सहेजा काम इस फ़ोन पर है।",
+  "signedOutSuccess": "साइन आउट हो गया। स्थानीय फ़ोटो इस फ़ोन पर रहेंगे।",
+  "syncOffline": "इंटरनेट नहीं — वापस ऑनलाइन आने पर सिंक करें।",
+  "syncDone": "सिंक हुआ: {sets} उत्पाद अपलोड, {shots} फ़ोटो अपलोड।",
+  "@syncDone": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "shots": {
+        "type": "int"
+      }
+    }
+  },
+  "syncUpToDate": "सब कुछ पहले से अपडेट है।",
+  "syncFailed": "सिंक असफल: {error}",
+  "@syncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "yourProgress": "आपकी प्रगति",
+  "productsStarted": "शुरू किए उत्पाद",
+  "finishedSets": "पूर्ण सेट",
+  "inProgressSets": "जारी",
+  "photosCaptured": "ली गई फ़ोटो",
+  "usernameTooShort": "उपयोगकर्ता नाम कम से कम 3 अक्षर या अंक का होना चाहिए।",
+  "usernameTooLong": "उपयोगकर्ता नाम 32 अक्षरों से अधिक नहीं होना चाहिए।",
+  "passwordTooShort": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए।",
+  "fullScreen": "पूर्ण स्क्रीन",
+  "tapToSkip": "छोड़ने के लिए टैप करें",
+  "cameraPermissionNeeded": "फ़ोटो लेने के लिए कैमरा अनुमति चाहिए।\nकृपया सेटिंग्स में कैमरा एक्सेस दें।",
+  "cameraUnavailable": "कैमरा उपलब्ध नहीं है।",
+  "noCameraFound": "इस डिवाइस पर कोई कैमरा नहीं मिला।",
+  "accountCreateFailed": "खाता नहीं बन सका। फिर कोशिश करें।",
+  "enterValidUsername": "सही उपयोगकर्ता नाम डालें।",
+  "monthJan": "जन",
+  "monthFeb": "फर",
+  "monthMar": "मार्च",
+  "monthApr": "अप्रै",
+  "monthMay": "मई",
+  "monthJun": "जून",
+  "monthJul": "जुल",
+  "monthAug": "अग",
+  "monthSep": "सित",
+  "monthOct": "अक्टू",
+  "monthNov": "नव",
+  "monthDec": "दिस",
+  "presetCushionFlatLayNeeds": "सादा, साफ़ सतह",
+  "presetCushionStackedPairNeeds": "दो कवर; बगल की रोशनी",
+  "presetCushionProppedNeeds": "कुर्सी, सोफ़ा या बिस्तर",
+  "presetCushionCornerTuckNeeds": "क्लोज-अप रोशनी",
+  "presetShawlDrapedShoulderNeeds": "शॉल पहनाने वाला कोई व्यक्ति",
+  "presetShawlFoldedStackNeeds": "बगल की रोशनी",
+  "presetShawlHungFlatNeeds": "रस्सी, बाँस या दीवार जहाँ पिन करें",
+  "presetShawlCornerTuckNeeds": "क्लोज-अप रोशनी",
+  "presetStoleNeckWrapNeeds": "स्टोल पहनाने वाला कोई व्यक्ति",
+  "presetStoleFlatSpreadNeeds": "सादी सतह; ऊपर से नज़र",
+  "presetStoleLooseKnotNeeds": "नरम बगल की रोशनी",
+  "presetStoleRolledCoilNeeds": "नरम बगल की रोशनी",
+  "placementSareePalluDrape": "साड़ी को हैंगर, बाँस या मैनक्विन पर लटकाएँ ताकि पल्लू आज़ाद लटके।",
+  "placementSareeBoxFold": "साड़ी को बराबर परतों में मोड़कर ढेर करें ताकि किनारा दिखे।",
+  "placementSareeWornDrape": "व्यक्ति पर साड़ी इस तरह लपेटें कि रंग, पैटर्न और बॉर्डर साफ़ दिखें।",
+  "placementSareeRollDisplay": "साड़ी को ऐसे रोल करें कि पल्लू और बॉर्डर कैमरे की ओर हों।",
+  "placementCushionFlatLay": "कवर को सादी, साफ़ सतह पर समतल रखें।",
+  "placementCushionStackedPair": "एक कवर को दूसरे पर साफ़-सुथरे ढंग से रखें।",
+  "placementCushionPropped": "कुशन को कुर्सी या सोफ़े पर आगे की ओर टिकाएँ।",
+  "placementCushionCornerTuck": "कवर घुमाएँ ताकि सिला हुआ एक कोना आपके सामने हो।",
+  "placementShawlDrapedShoulder": "शॉल एक कंधे पर रखें और उसे लटकने दें।",
+  "placementShawlFoldedStack": "शॉल को बराबर परतों में मोड़कर साफ़ ढेर करें।",
+  "placementShawlHungFlat": "दोनों ऊपरी कोनों को पिन करें ताकि शॉल बीच में न झुके।",
+  "placementShawlCornerTuck": "एक कोना पीछे मोड़ें ताकि बुनाई के दोनों पहलू दिखें।",
+  "placementStoleNeckWrap": "गर्दन पर एक बार लपेटें, दोनों सिरे लटकने दें।",
+  "placementStoleFlatSpread": "स्टोल को समतल फैलाएँ ताकि पूरी लंबाई दिखे।",
+  "placementStoleLooseKnot": "बीच में एक ढीली गाँठ बाँधें — कसकर न खींचें।",
+  "placementStoleRolledCoil": "स्टोल को ढीला समतल कुंडली में रोल करें।",
+  "transcriptSareePalluDrape1": "साड़ी ऐसे लटकाएँ कि उसका गिरना साफ़ दिखे।",
+  "transcriptSareePalluDrape2": "कंधे की ऊँचाई पर हैंगर, बाँस या मैनक्विन का उपयोग करें।",
+  "transcriptSareePalluDrape3": "पल्लू को आज़ाद लटकने दें — सीधा न खींचें।",
+  "transcriptSareePalluDrape4": "मोड़ स्क्रीन की तिरछी रेखाओं का अनुसरण करें।",
+  "transcriptSareePalluDrape5": "चमक दिखाने के लिए एक रोशनी बगल में रखें।",
+  "transcriptSareeBoxFold1": "साड़ी को साफ़ ढेर में मोड़ें ताकि परतें दिखें।",
+  "transcriptSareeBoxFold2": "मुड़ा किनारा कैमरे की ओर रखें — वह मोटाई दिखाता है।",
+  "transcriptSareeBoxFold3": "मोड़ों को क्षैतिज गाइड से मिलाएँ।",
+  "transcriptSareeBoxFold4": "हर परत में गहराई के लिए बगल से रोशनी लें।",
+  "transcriptSareeWornDrape1": "पहनी हुई फ़ोटो पूरी साड़ी दिखाती है — रंग, पैटर्न और सामग्री।",
+  "transcriptSareeWornDrape2": "रंग सही रहे इसलिए खुली छाया में खड़े हों।",
+  "transcriptSareeWornDrape3": "साड़ी ज़्यादातर फ्रेम ढक ले।",
+  "transcriptSareeWornDrape4": "ऊपरी बॉर्डर को ग्रिड के ऊपरी तिहाई से मिलाएँ।",
+  "transcriptSareeWornDrape5": "अगर प्लीट हों तो ऊर्ध्वाधर ग्रिड रेखाओं का अनुसरण करें।",
+  "transcriptSareeRollDisplay1": "साड़ी ऐसे रोल करें कि पल्लू और बॉर्डर कैमरे की ओर हों।",
+  "transcriptSareeRollDisplay2": "रोल ज़्यादातर फ्रेम ढक ले।",
+  "transcriptSareeRollDisplay3": "ऊपरी बॉर्डर को ग्रिड के ऊपरी तिहाई से मिलाएँ।",
+  "transcriptSareeRollDisplay4": "रंग सही रहे इसलिए नरम दिन की रोशनी लें।",
+  "transcriptCushionFlatLay1": "कुशन कवर को सादी सतह पर समतल रखें।",
+  "transcriptCushionFlatLay2": "समतल करें पर प्राकृतिक बनावट रहने दें।",
+  "transcriptCushionFlatLay3": "फ़ोन सीधे ऊपर रखें, कोण पर नहीं।",
+  "transcriptCushionFlatLay4": "किनारों को ग्रिड के साथ सीधा रखें।",
+  "transcriptCushionStackedPair1": "दो कवर ढेर करें ताकि खरीदार मोटाई देख सके।",
+  "transcriptCushionStackedPair2": "ढेर के किनारे कैमरे की ओर रखें।",
+  "transcriptCushionStackedPair3": "हर परत की छाया के लिए बगल की रोशनी लें।",
+  "transcriptCushionPropped1": "कुर्सी पर कुशन रखने से उसका असली आकार दिखता है।",
+  "transcriptCushionPropped2": "ऐसी सीट चुनें जो पैटर्न से टक्कर न करे।",
+  "transcriptCushionPropped3": "आँखों की ऊँचाई से लें, ऊपर से नहीं।",
+  "transcriptCushionCornerTuck1": "कोना आपकी सिलाई सबसे साफ़ दिखाता है।",
+  "transcriptCushionCornerTuck2": "पास जाएँ जब तक कोना छोटे फ्रेम को भर दे।",
+  "transcriptCushionCornerTuck3": "फोकस के लिए सिलाई पर स्क्रीन टैप करें।",
+  "transcriptShawlDrapedShoulder1": "कंधे पर शॉल लपेटने से उसका भार दिखता है।",
+  "transcriptShawlDrapedShoulder2": "एक सिरा दूसरे से नीचे लटकने दें।",
+  "transcriptShawlDrapedShoulder3": "पिन न करें — कपड़े को अपने आप गिरने दें।",
+  "transcriptShawlFoldedStack1": "शॉल को मोड़ दिखाई देने के साथ साफ़ ढेर करें।",
+  "transcriptShawlFoldedStack2": "मोड़ों को क्षैतिज रेखाओं के समानांतर रखें।",
+  "transcriptShawlFoldedStack3": "मोटाई के लिए शॉल का किनारा दिखे।",
+  "transcriptShawlFoldedStack4": "हर मोड़ में गहराई के लिए बगल की रोशनी लें।",
+  "transcriptShawlHungFlat1": "समतल लटकाने से पूरा डिज़ाइन एक साथ दिखता है।",
+  "transcriptShawlHungFlat2": "दोनों ऊपरी कोनों को पिन करें ताकि बीच में न झुके।",
+  "transcriptShawlHungFlat3": "सीधे सामने खड़े हों, एक तरफ़ नहीं।",
+  "transcriptShawlCornerTuck1": "कोने का क्लोज-अप बुनाई और बॉर्डर साथ दिखाता है।",
+  "transcriptShawlCornerTuck2": "एक कोना पीछे मोड़ें ताकि दोनों पहलू दिखें।",
+  "transcriptShawlCornerTuck3": "पास जाएँ जब तक बुनाई फ्रेम भर दे।",
+  "transcriptStoleNeckWrap1": "पहनी हुई फ़ोटो सबसे आम सवाल का जवाब देती है — कितना बड़ा है?",
+  "transcriptStoleNeckWrap2": "गर्दन पर एक बार लपेटें और दोनों सिरे लटकने दें।",
+  "transcriptStoleNeckWrap3": "सीने से ऊपर लें ताकि सिरे फ्रेम में रहें।",
+  "transcriptStoleFlatSpread1": "स्टोल फैलाएँ ताकि पूरी लंबाई दिखे।",
+  "transcriptStoleFlatSpread2": "प्राकृतिक सिलवटें रहने दें — वे कपड़े का स्वभाव दिखाती हैं।",
+  "transcriptStoleFlatSpread3": "फ़ोन सीधे बीच के ऊपर रखें।",
+  "transcriptStoleLooseKnot1": "ढीली गाँठ दिखाती है कि स्टोल कितना नरम और हल्का है।",
+  "transcriptStoleLooseKnot2": "ढीला बाँधें — कसकर कभी न खींचें।",
+  "transcriptStoleLooseKnot3": "गाँठ फ्रेम के केंद्र में रखें।",
+  "transcriptStoleRolledCoil1": "कुंडली में रोल करने से किनारा और मोटाई दिखते हैं।",
+  "transcriptStoleRolledCoil2": "ढीला रोल करें ताकि परतें अलग रहें।",
+  "transcriptStoleRolledCoil3": "कुंडली पर सीधे ऊपर से शूट करें।",
+  "guideSareeFullDisplay1": "साड़ी फ्रेम का ज़्यादातर हिस्सा ढक ले।",
+  "guideSareeFullDisplay2": "ऊपरी बॉर्डर ग्रिड के ऊपरी तिहाई से मिले।",
+  "guideSareeFullDisplay3": "ड्रेप में प्लीट्स ऊर्ध्वाधर ग्रिड से मिलें।",
+  "guideSareeTextureWeave1": "साड़ी पूरा फ्रेम भर दे।",
+  "guideSareeTextureWeave2": "बनावट बीच में रहे।",
+  "guideSareeTextureWeave3": "नरम रोशनी का इस्तेमाल करें।",
+  "guideSareeTextureWeave4": "तेज़ चमक से बचें।",
+  "guideSareeEmbroideryBorder1": "कढ़ाई फ्रेम के अंदर रहे।",
+  "guideSareeEmbroideryBorder2": "बगल से रोशनी लें।",
+  "guideSareeEmbroideryBorder3": "विवरण साफ़ और अच्छी रोशनी में रखें।",
+  "guideCushionTextureWeave1": "बुन फ्रेम भर दे।",
+  "guideCushionTextureWeave2": "बनावट बीच में रहे।",
+  "guideShawlFullDesign1": "शॉल समतल टाँगने से पूरा डिज़ाइन एक साथ दिखता है।",
+  "guideShawlFullDesign2": "दोनों ऊपरी कोने पिन करें ताकि बीच में न झुके।",
+  "guideShawlTextureWeave1": "बुन फ्रेम भर दे।",
+  "guideShawlTextureWeave2": "बनावट बीच में रहे।",
+  "guideStoleFullLength1": "स्टोल को फैलाएँ ताकि पूरी लंबाई दिखे।",
+  "guideStoleFullLength2": "प्राकृतिक सिलवटें रहने दें — वे कपड़े का स्वभाव दिखाती हैं।",
+  "guideStoleTextureWeave1": "बुन फ्रेम भर दे।",
+  "guideStoleTextureWeave2": "बनावट बीच में रहे।",
+  "authInvalidCredentials": "गलत उपयोगकर्ता नाम या पासवर्ड।",
+  "authUserAlreadyRegistered": "यह उपयोगकर्ता नाम पहले से लिया जा चुका है।",
+  "authEmailNotConfirmed": "ईमेल की पुष्टि करें, फिर कोशिश करें।",
+  "authGeneric": "साइन इन नहीं हो सका। फिर कोशिश करें।",
+  "languageAssamese": "असमिया",
+  "languageHindi": "हिन्दी",
+  "languageEnglish": "अंग्रेज़ी",
+  "guideSareeDrapedLook1": "कपड़े को स्वाभाविक रूप से गिरने दें।",
+  "guideSareeDrapedLook2": "मोड़ विकर्ण के साथ चलें।",
+  "guideSareeDrapedLook3": "बगल से रोशनी लें।",
+  "guideSareeEmbroideryBorder4": "कंट्रास्ट वाला बैकग्राउंड लें।",
+  "guideSareeFoldedStack1": "मोड़ क्षैतिज रेखाओं के समानांतर रहें।",
+  "guideSareeFoldedStack2": "बगल से रोशनी लें।",
+  "guideSareeFoldedStack3": "किनारा दिखता रहे।",
+  "guideCushionFullCover1": "कवर को समतल रखें ताकि पूरा पैटर्न दिखे।",
+  "guideCushionFullCover2": "फ़ोन सीधे ऊपर से पकड़ें, तिरछा नहीं।",
+  "guideCushionFullCover3": "किनारे ग्रिड के साथ सीधे रखें।",
+  "guideCushionTextureWeave3": "नरम रोशनी का इस्तेमाल करें।",
+  "guideCushionTextureWeave4": "तेज़ चमक से बचें।",
+  "guideCushionStackedThickness1": "दो कवर इस तरह रखें कि मोटाई दिखे।",
+  "guideCushionStackedThickness2": "ढेर के किनारे कैमरे की ओर रखें।",
+  "guideCushionStackedThickness3": "बगल की रोशनी से हर परत की हल्की छाया बने।",
+  "guideCushionCornerStitching1": "कोने पर सिलाई सबसे साफ़ दिखे।",
+  "guideCushionCornerStitching2": "पास जाएँ जब तक कोना छोटे फ्रेम को भर दे।",
+  "guideCushionCornerStitching3": "सिलाई तेज़ और अच्छी रोशनी में रखें।",
+  "guideCushionInUse1": "कुर्सी पर रखने से असली आकार दिखता है।",
+  "guideCushionInUse2": "ऐसी सीट चुनें जो पैटर्न से न टकराए।",
+  "guideCushionInUse3": "आँखों की ऊँचाई से लें, ऊपर से नहीं।",
+  "guideShawlFullDesign3": "सीधे सामने खड़े हों, एक तरफ़ नहीं।",
+  "guideShawlTextureWeave3": "नरम रोशनी का इस्तेमाल करें।",
+  "guideShawlTextureWeave4": "तेज़ चमक से बचें।",
+  "guideShawlDrapedLook1": "कंधे पर शॉल ड्रेप करने से उसके वजन का अंदाज़ा मिलता है।",
+  "guideShawlDrapedLook2": "एक सिरा दूसरे से नीचे लटकने दें।",
+  "guideShawlDrapedLook3": "पिन न करें — कपड़े को अपने आप गिरने दें।",
+  "guideShawlBorderCorner1": "कोने का क्लोज-अप बुन और बॉर्डर एक साथ दिखाता है।",
+  "guideShawlBorderCorner2": "एक कोना पीछे मोड़ें ताकि दोनों तरफ़ दिखें।",
+  "guideShawlBorderCorner3": "पास जाएँ जब तक बुन फ्रेम भर दे।",
+  "guideShawlStackDisplay1": "शॉल को साफ़-सुथरे ढेर में रखें, मोड़ दिखते हुए।",
+  "guideShawlStackDisplay2": "मोड़ क्षैतिज रेखाओं के समानांतर रखें।",
+  "guideShawlStackDisplay3": "बगल की रोशनी से हर मोड़ में गहराई आए।",
+  "guideStoleFullLength3": "फ़ोन सीधे बीच के ऊपर पकड़ें।",
+  "guideStoleTextureWeave3": "नरम रोशनी का इस्तेमाल करें।",
+  "guideStoleTextureWeave4": "तेज़ चमक से बचें।",
+  "guideStoleWornNeckWrap1": "पहनकर ली गई तस्वीर से स्टोल का आकार पता चलता है।",
+  "guideStoleWornNeckWrap2": "गर्दन पर एक बार लपेटें और दोनों सिरे लटकने दें।",
+  "guideStoleWornNeckWrap3": "छाती से ऊपर से लें ताकि सिरे फ्रेम में रहें।",
+  "guideStoleSoftnessKnot1": "ढीली गाँठ से पता चलता है कि स्टोल कितनी नरम और हल्की है।",
+  "guideStoleSoftnessKnot2": "ढीला बाँधें — कभी कसकर न खींचें।",
+  "guideStoleSoftnessKnot3": "गाँठ फ्रेम के बीच में रखें।",
+  "guideStoleEdgeThickness1": "स्टोल को कुंडली में लपेटने से किनारा और मोटाई दिखती है।",
+  "guideStoleEdgeThickness2": "ढीला लपेटें ताकि परतें अलग रहें।",
+  "guideStoleEdgeThickness3": "कुंडली पर सीधे ऊपर से लें।"
 }

@@ -129,7 +129,7 @@ class GuidedCameraController extends AutoDisposeNotifier<GuidedCameraState> {
       if (_cameras.isEmpty) {
         state = state.copyWith(
           status: CameraStatus.unavailable,
-          errorMessage: 'No camera found on this device.',
+          errorMessage: 'no_camera',
         );
         return;
       }

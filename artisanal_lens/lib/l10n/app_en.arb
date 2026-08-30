@@ -19,8 +19,12 @@
   "photosCompleted": "{done} of {total} photos completed",
   "@photosCompleted": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "emptyAll": "No previous sets yet.",
@@ -38,14 +42,18 @@
   "materialTypeHeadline": "What type of {material}\nare you using?",
   "@materialTypeHeadline": {
     "placeholders": {
-      "material": {"type": "String"}
+      "material": {
+        "type": "String"
+      }
     }
   },
   "giveProductName": "Give your product a name",
   "nameHint": "e.g. Blue Silk {category}",
   "@nameHint": {
     "placeholders": {
-      "category": {"type": "String"}
+      "category": {
+        "type": "String"
+      }
     }
   },
   "photosToCapture": "Photos to capture",
@@ -59,7 +67,9 @@
   "takeNext": "Take next — {label}",
   "@takeNext": {
     "placeholders": {
-      "label": {"type": "String"}
+      "label": {
+        "type": "String"
+      }
     }
   },
   "productUnavailable": "This product is no longer available.",
@@ -70,20 +80,28 @@
   "styleSubtitleSaree": "Choose the arrangement for this {template} photo.",
   "@styleSubtitleSaree": {
     "placeholders": {
-      "template": {"type": "String"}
+      "template": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleShot": "Choose the arrangement for this {shot} photo.",
   "@styleSubtitleShot": {
     "placeholders": {
-      "shot": {"type": "String"}
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleCategory": "Choose the arrangement for this {category} {shot} photo.",
   "@styleSubtitleCategory": {
     "placeholders": {
-      "category": {"type": "String"},
-      "shot": {"type": "String"}
+      "category": {
+        "type": "String"
+      },
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "labelContent": "Content",
@@ -94,13 +112,17 @@
   "contentPrefixed": "Content: {value}",
   "@contentPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "needsPrefixed": "Needs: {value}",
   "@needsPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "lightingAndSetup": "Lighting and setup",
@@ -114,13 +136,17 @@
   "tutorialSubtitlePreset": "Watch how to set up {name}.",
   "@tutorialSubtitlePreset": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleTemplate": "Watch how to set up {name}.",
   "@tutorialSubtitleTemplate": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleFallback": "A short video will show this setup when it is added.",
@@ -142,28 +168,40 @@
   "continueCount": "Continue — {done}/{total}",
   "@continueCount": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "noPhotosToExport": "No photos to export yet.",
   "couldNotExport": "Could not export: {error}",
   "@couldNotExport": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "exportShareText": "{name} — {count} photos, shot with The Artisanal Lens",
   "@exportShareText": {
     "placeholders": {
-      "name": {"type": "String"},
-      "count": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
     }
   },
   "couldNotSavePhoto": "Could not save the photo: {error}",
   "@couldNotSavePhoto": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "galleryEmpty": "No photo sets yet.\nStart a new product to begin.",
@@ -180,25 +218,33 @@
   "fillFrameWith": "Fill the frame with the {slot}",
   "@fillFrameWith": {
     "placeholders": {
-      "slot": {"type": "String"}
+      "slot": {
+        "type": "String"
+      }
     }
   },
   "promptNoProduct": "Place the {product} in view",
   "@promptNoProduct": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptMoveIntoFrame": "Move the {product} into the frame",
   "@promptMoveIntoFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepInsideFrame": "Keep the {product} inside the frame",
   "@promptKeepInsideFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptAlignHorizontal": "Line the folds up with the horizontal guides",
@@ -209,7 +255,9 @@
   "promptCenterSubject": "Center the {product}",
   "@promptCenterSubject": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepTextureCentre": "Keep the texture in the centre",
@@ -533,5 +581,229 @@
   "compositionCentreFocus": "Centre focus",
   "compositionCentreFocusHint": "Keep the texture in the centre of the frame.",
   "compositionDetailFrame": "Detail frame",
-  "compositionDetailFrameHint": "Keep the embroidery inside the highlighted frame."
+  "compositionDetailFrameHint": "Keep the embroidery inside the highlighted frame.",
+  "accountBackup": "Account & backup",
+  "accountBackupSubtitle": "Create a username and password to save progress online.",
+  "cloudBackupNotConfigured": "Cloud backup not configured",
+  "cloudBackupNotConfiguredBody": "This build has no cloud connection. Progress stays on this phone only.",
+  "signedInAs": "Signed in as",
+  "artisanFallback": "Artisan",
+  "syncNow": "Sync now",
+  "signOut": "Sign out",
+  "createAccountPrompt": "Create an account to save your work online.",
+  "signInPrompt": "Sign in to load your saved products and photos.",
+  "username": "Username",
+  "usernameHint": "e.g. priya_weaver",
+  "password": "Password",
+  "createAccount": "Create account",
+  "signIn": "Sign in",
+  "alreadyHaveAccount": "Already have an account? Sign in",
+  "needAccount": "Need an account? Create one",
+  "accountCreated": "Account created. Your progress will sync online.",
+  "signedInSuccess": "Signed in. Your saved work is on this phone.",
+  "signedOutSuccess": "Signed out. Local photos stay on this phone.",
+  "syncOffline": "No internet — sync when you are back online.",
+  "syncDone": "Synced: {sets} products uploaded, {shots} photos uploaded.",
+  "@syncDone": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "shots": {
+        "type": "int"
+      }
+    }
+  },
+  "syncUpToDate": "Everything is already up to date.",
+  "syncFailed": "Sync failed: {error}",
+  "@syncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "yourProgress": "Your progress",
+  "productsStarted": "Products started",
+  "finishedSets": "Finished sets",
+  "inProgressSets": "In progress",
+  "photosCaptured": "Photos captured",
+  "usernameTooShort": "Username must be at least 3 letters or numbers.",
+  "usernameTooLong": "Username must be 32 characters or fewer.",
+  "passwordTooShort": "Password must be at least 6 characters.",
+  "fullScreen": "Full screen",
+  "tapToSkip": "Tap to skip",
+  "cameraPermissionNeeded": "Camera permission is needed to take photos.\nPlease allow camera access in Settings.",
+  "cameraUnavailable": "The camera is unavailable.",
+  "noCameraFound": "No camera found on this device.",
+  "accountCreateFailed": "Could not create your account. Try again.",
+  "enterValidUsername": "Enter a valid username.",
+  "monthJan": "Jan",
+  "monthFeb": "Feb",
+  "monthMar": "Mar",
+  "monthApr": "Apr",
+  "monthMay": "May",
+  "monthJun": "Jun",
+  "monthJul": "Jul",
+  "monthAug": "Aug",
+  "monthSep": "Sep",
+  "monthOct": "Oct",
+  "monthNov": "Nov",
+  "monthDec": "Dec",
+  "presetCushionFlatLayNeeds": "Plain uncluttered surface",
+  "presetCushionStackedPairNeeds": "Two covers; side light",
+  "presetCushionProppedNeeds": "A chair, sofa or bed",
+  "presetCushionCornerTuckNeeds": "Close-up light",
+  "presetShawlDrapedShoulderNeeds": "Someone to wear the shawl",
+  "presetShawlFoldedStackNeeds": "Side lighting",
+  "presetShawlHungFlatNeeds": "A line, bamboo pole or wall to pin against",
+  "presetShawlCornerTuckNeeds": "Close-up light",
+  "presetStoleNeckWrapNeeds": "Someone to wear the stole",
+  "presetStoleFlatSpreadNeeds": "Plain surface; overhead view",
+  "presetStoleLooseKnotNeeds": "Soft side light",
+  "presetStoleRolledCoilNeeds": "Soft side light",
+  "placementSareePalluDrape": "Drape the saree over a hanger, bamboo or mannequin so the pallu falls freely.",
+  "placementSareeBoxFold": "Fold the saree into even layers and stack them so the edge is visible.",
+  "placementSareeWornDrape": "Drape the saree on the person so colour, pattern and border show clearly.",
+  "placementSareeRollDisplay": "Roll the saree so the pallu and border face the camera.",
+  "placementCushionFlatLay": "Place the cover flat on a plain, uncluttered surface.",
+  "placementCushionStackedPair": "Place one cover neatly on top of the other.",
+  "placementCushionPropped": "Prop the cushion on a chair or sofa, facing forward.",
+  "placementCushionCornerTuck": "Turn the cover so one stitched corner faces you.",
+  "placementShawlDrapedShoulder": "Place the shawl over one shoulder, letting it fall.",
+  "placementShawlFoldedStack": "Fold the shawl into even layers and stack them neatly.",
+  "placementShawlHungFlat": "Pin both top corners so the shawl hangs without sagging.",
+  "placementShawlCornerTuck": "Fold one corner back to show both sides of the weave.",
+  "placementStoleNeckWrap": "Wrap it once around the neck, letting both ends hang.",
+  "placementStoleFlatSpread": "Spread the stole flat so its full length is visible.",
+  "placementStoleLooseKnot": "Tie one loose knot in the middle — do not pull tight.",
+  "placementStoleRolledCoil": "Roll the stole loosely into a flat coil.",
+  "transcriptSareePalluDrape1": "Hang the saree so its fall is clearly visible.",
+  "transcriptSareePalluDrape2": "Use a hanger, bamboo pole or mannequin at about shoulder height.",
+  "transcriptSareePalluDrape3": "Let the pallu hang freely — do not pull it straight.",
+  "transcriptSareePalluDrape4": "Let the folds follow the diagonal lines on your screen.",
+  "transcriptSareePalluDrape5": "Keep one light source to the side so the sheen shows.",
+  "transcriptSareeBoxFold1": "Fold the saree into a neat stack so the layers stay visible.",
+  "transcriptSareeBoxFold2": "Keep the folded edge facing the camera — that edge shows thickness.",
+  "transcriptSareeBoxFold3": "Line the folds up with the horizontal guides.",
+  "transcriptSareeBoxFold4": "Use light from the side so each layer has depth.",
+  "transcriptSareeWornDrape1": "A worn shot shows the full saree — colour, pattern and material.",
+  "transcriptSareeWornDrape2": "Stand in open shade so the colour stays true.",
+  "transcriptSareeWornDrape3": "Let the saree cover most of the frame.",
+  "transcriptSareeWornDrape4": "Line the top border up with the top third of the grid.",
+  "transcriptSareeWornDrape5": "If there are pleats, follow the vertical grid lines.",
+  "transcriptSareeRollDisplay1": "Roll the saree so the pallu and border face the camera.",
+  "transcriptSareeRollDisplay2": "Let the roll cover most of the frame.",
+  "transcriptSareeRollDisplay3": "Line the top border up with the top third of the grid.",
+  "transcriptSareeRollDisplay4": "Use soft daylight so the colour stays true.",
+  "transcriptCushionFlatLay1": "Lay the cushion cover flat on a plain surface.",
+  "transcriptCushionFlatLay2": "Smooth it out but leave the natural texture visible.",
+  "transcriptCushionFlatLay3": "Hold the phone directly above, not at an angle.",
+  "transcriptCushionFlatLay4": "Keep the edges straight along the grid.",
+  "transcriptCushionStackedPair1": "Stack two covers so the buyer can see the thickness.",
+  "transcriptCushionStackedPair2": "Keep the stacked edges facing the camera.",
+  "transcriptCushionStackedPair3": "Use side light so each layer casts a soft shadow.",
+  "transcriptCushionPropped1": "Placing the cushion on a chair shows its real size.",
+  "transcriptCushionPropped2": "Choose a seat that does not compete with the pattern.",
+  "transcriptCushionPropped3": "Shoot at eye level, not from above.",
+  "transcriptCushionCornerTuck1": "The corner shows your stitching most clearly.",
+  "transcriptCushionCornerTuck2": "Move close until the corner fills the small frame.",
+  "transcriptCushionCornerTuck3": "Tap the screen on the stitching to focus.",
+  "transcriptShawlDrapedShoulder1": "Draping the shawl on a shoulder shows how heavy it is.",
+  "transcriptShawlDrapedShoulder2": "Let one end hang lower than the other.",
+  "transcriptShawlDrapedShoulder3": "Do not pin it — let the fabric fall on its own.",
+  "transcriptShawlFoldedStack1": "Stack the shawl neatly with the folds visible.",
+  "transcriptShawlFoldedStack2": "Keep the folds parallel to the horizontal lines.",
+  "transcriptShawlFoldedStack3": "Make sure the edge of the shawl is visible for thickness.",
+  "transcriptShawlFoldedStack4": "Use side lighting so each fold has depth.",
+  "transcriptShawlHungFlat1": "Hanging the shawl flat shows the whole design at once.",
+  "transcriptShawlHungFlat2": "Pin both top corners so it does not sag in the middle.",
+  "transcriptShawlHungFlat3": "Stand straight in front, not to one side.",
+  "transcriptShawlCornerTuck1": "A close-up of the corner shows the weave and the border together.",
+  "transcriptShawlCornerTuck2": "Fold one corner back so both sides are visible.",
+  "transcriptShawlCornerTuck3": "Move close until the weave fills the frame.",
+  "transcriptStoleNeckWrap1": "A worn shot answers the most common question — how big is it?",
+  "transcriptStoleNeckWrap2": "Wrap it once around the neck and let both ends hang.",
+  "transcriptStoleNeckWrap3": "Shoot from the chest up so the ends stay in frame.",
+  "transcriptStoleFlatSpread1": "Spread the stole out so its full length is visible.",
+  "transcriptStoleFlatSpread2": "Leave the natural creases — they show what the fabric is like.",
+  "transcriptStoleFlatSpread3": "Hold the phone directly above the middle.",
+  "transcriptStoleLooseKnot1": "A loose knot shows how soft and light the stole is.",
+  "transcriptStoleLooseKnot2": "Tie it loosely — never pull it tight.",
+  "transcriptStoleLooseKnot3": "Keep the knot in the centre of the frame.",
+  "transcriptStoleRolledCoil1": "Rolling the stole into a coil shows the edge and the thickness.",
+  "transcriptStoleRolledCoil2": "Roll it loosely so the layers stay separate.",
+  "transcriptStoleRolledCoil3": "Shoot straight down onto the coil.",
+  "guideSareeFullDisplay1": "The saree covers most of the frame.",
+  "guideSareeFullDisplay2": "The top border aligns with the top third of the grid.",
+  "guideSareeFullDisplay3": "When draped, pleats align with the vertical grid.",
+  "guideSareeTextureWeave1": "The saree fills the frame.",
+  "guideSareeTextureWeave2": "The texture stays in the centre.",
+  "guideSareeTextureWeave3": "Use soft light.",
+  "guideSareeTextureWeave4": "Avoid harsh reflections.",
+  "guideSareeEmbroideryBorder1": "The embroidery stays inside the frame.",
+  "guideSareeEmbroideryBorder2": "Use side lighting.",
+  "guideSareeEmbroideryBorder3": "Keep the detail sharp and well-lit.",
+  "guideCushionTextureWeave1": "The weave fills the frame.",
+  "guideCushionTextureWeave2": "The texture stays in the centre.",
+  "guideShawlFullDesign1": "Hanging the shawl flat shows the whole design at once.",
+  "guideShawlFullDesign2": "Pin both top corners so it does not sag in the middle.",
+  "guideShawlTextureWeave1": "The weave fills the frame.",
+  "guideShawlTextureWeave2": "The texture stays in the centre.",
+  "guideStoleFullLength1": "Spread the stole out so its full length is visible.",
+  "guideStoleFullLength2": "Leave the natural creases — they show what the fabric is like.",
+  "guideStoleTextureWeave1": "The weave fills the frame.",
+  "guideStoleTextureWeave2": "The texture stays in the centre.",
+  "authInvalidCredentials": "Incorrect username or password.",
+  "authUserAlreadyRegistered": "That username is already taken.",
+  "authEmailNotConfirmed": "Confirm your email, then try again.",
+  "authGeneric": "Could not sign in. Try again.",
+  "languageAssamese": "Assamese",
+  "languageHindi": "Hindi",
+  "languageEnglish": "English",
+  "guideSareeDrapedLook1": "Let the fabric fall naturally.",
+  "guideSareeDrapedLook2": "Folds follow the diagonal.",
+  "guideSareeDrapedLook3": "Use side lighting.",
+  "guideSareeEmbroideryBorder4": "Use a contrast background.",
+  "guideSareeFoldedStack1": "Folds stay parallel to the horizontal lines.",
+  "guideSareeFoldedStack2": "Use side lighting.",
+  "guideSareeFoldedStack3": "Keep the edge visible.",
+  "guideCushionFullCover1": "Lay the cover flat so the full pattern is visible.",
+  "guideCushionFullCover2": "Hold the phone directly above, not at an angle.",
+  "guideCushionFullCover3": "Keep the edges straight along the grid.",
+  "guideCushionTextureWeave3": "Use soft light.",
+  "guideCushionTextureWeave4": "Avoid harsh reflections.",
+  "guideCushionStackedThickness1": "Stack two covers so the buyer can see the thickness.",
+  "guideCushionStackedThickness2": "Keep the stacked edges facing the camera.",
+  "guideCushionStackedThickness3": "Use side light so each layer casts a soft shadow.",
+  "guideCushionCornerStitching1": "The corner shows stitching most clearly.",
+  "guideCushionCornerStitching2": "Move close until the corner fills the small frame.",
+  "guideCushionCornerStitching3": "Keep the stitching sharp and well-lit.",
+  "guideCushionInUse1": "Placing the cushion on a chair shows its real size.",
+  "guideCushionInUse2": "Choose a seat that does not compete with the pattern.",
+  "guideCushionInUse3": "Shoot at eye level, not from above.",
+  "guideShawlFullDesign3": "Stand straight in front, not to one side.",
+  "guideShawlTextureWeave3": "Use soft light.",
+  "guideShawlTextureWeave4": "Avoid harsh reflections.",
+  "guideShawlDrapedLook1": "Draping the shawl on a shoulder shows how heavy it is.",
+  "guideShawlDrapedLook2": "Let one end hang lower than the other.",
+  "guideShawlDrapedLook3": "Do not pin it — let the fabric fall on its own.",
+  "guideShawlBorderCorner1": "A close-up of the corner shows the weave and the border together.",
+  "guideShawlBorderCorner2": "Fold one corner back so both sides are visible.",
+  "guideShawlBorderCorner3": "Move close until the weave fills the frame.",
+  "guideShawlStackDisplay1": "Stack the shawl neatly with the folds visible.",
+  "guideShawlStackDisplay2": "Keep the folds parallel to the horizontal lines.",
+  "guideShawlStackDisplay3": "Use side lighting so each fold has depth.",
+  "guideStoleFullLength3": "Hold the phone directly above the middle.",
+  "guideStoleTextureWeave3": "Use soft light.",
+  "guideStoleTextureWeave4": "Avoid harsh reflections.",
+  "guideStoleWornNeckWrap1": "A worn shot answers how big the stole is.",
+  "guideStoleWornNeckWrap2": "Wrap it once around the neck and let both ends hang.",
+  "guideStoleWornNeckWrap3": "Shoot from the chest up so the ends stay in frame.",
+  "guideStoleSoftnessKnot1": "A loose knot shows how soft and light the stole is.",
+  "guideStoleSoftnessKnot2": "Tie it loosely — never pull it tight.",
+  "guideStoleSoftnessKnot3": "Keep the knot in the centre of the frame.",
+  "guideStoleEdgeThickness1": "Rolling the stole into a coil shows the edge and the thickness.",
+  "guideStoleEdgeThickness2": "Roll it loosely so the layers stay separate.",
+  "guideStoleEdgeThickness3": "Shoot straight down onto the coil."
 }

@@ -8,6 +8,8 @@ import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_dimens.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../domain/entities/fold_preset.dart';
+import '../../../domain/entities/photography_template.dart';
+import '../../../domain/entities/shot_guidance.dart';
 import '../../../domain/entities/tutorial_catalog_entry.dart';
 import '../../../l10n/app_copy.dart';
 import '../../../shared/widgets/catalog_video.dart';
@@ -18,7 +20,12 @@ import '../../home/shot_sets_controller.dart';
 List<String> spokenTranscriptFor(
   FoldPreset? preset, {
   TutorialCatalogEntry? catalogEntry,
+  AppLocalizations? l10n,
 }) {
+  if (preset != null && l10n != null) {
+    final localized = AppCopy.tutorialTranscript(l10n, preset.id);
+    if (localized.isNotEmpty) return localized;
+  }
   if (catalogEntry != null && catalogEntry.hasTranscript) {
     return catalogEntry.transcript;
   }
@@ -26,7 +33,16 @@ List<String> spokenTranscriptFor(
   return preset.tutorialTranscript;
 }
 
-bool hasTutorialContent(FoldPreset? preset) {
+bool hasTutorialContent({
+  FoldPreset? preset,
+  ShotGuidance? guidance,
+}) {
+  final template = guidance == null
+      ? null
+      : PhotographyTemplates.byId(guidance.templateId ?? '') ??
+          PhotographyTemplates.byName(guidance.templateName);
+  if (template != null && template.skipsTutorialStep) return false;
+
   if (preset == null) return false;
   return preset.hasVideoTutorial || preset.tutorialTranscript.isNotEmpty;
 }
@@ -45,8 +61,12 @@ class TutorialPage extends ConsumerWidget {
     final catalogEntry = catalogAsync.valueOrNull;
     final videoKey =
         catalogEntry?.videoStorageKey ?? preset?.tutorialVideoAsset;
-    final transcript = spokenTranscriptFor(preset, catalogEntry: catalogEntry);
     final l10n = AppLocalizations.of(context);
+    final transcript = spokenTranscriptFor(
+      preset,
+      catalogEntry: catalogEntry,
+      l10n: l10n,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -114,11 +134,11 @@ class TutorialPage extends ConsumerWidget {
     required TutorialCatalogEntry? catalogEntry,
     required String? templateName,
   }) {
-    if (catalogEntry != null) {
-      return l10n.tutorialSubtitlePreset(catalogEntry.name.toLowerCase());
-    }
     if (preset != null) {
       return l10n.tutorialSubtitlePreset(AppCopy.presetNameLower(l10n, preset.id));
+    }
+    if (catalogEntry != null) {
+      return l10n.tutorialSubtitlePreset(catalogEntry.name.toLowerCase());
     }
     final localizedTemplate =
         AppCopy.templateNameLowerByEnglish(l10n, templateName);

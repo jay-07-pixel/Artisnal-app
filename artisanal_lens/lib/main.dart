@@ -46,7 +46,8 @@ class _ArtisanalLensAppState extends ConsumerState<ArtisanalLensApp> {
     final language = ref.watch(localeProvider);
 
     return MaterialApp.router(
-      title: 'The Artisanal Lens',
+      key: ValueKey(language.code),
+      title: lookupAppLocalizations(language.locale).appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       locale: language.locale,

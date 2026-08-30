@@ -19,8 +19,12 @@
   "photosCompleted": "{total} খনৰ {done} খন ফটো সম্পূৰ্ণ",
   "@photosCompleted": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "emptyAll": "এতিয়াও কোনো আগৰ ছেট নাই।",
@@ -38,14 +42,18 @@
   "materialTypeHeadline": "আপুনি কি ধৰণৰ {material}\nব্যৱহাৰ কৰিছে?",
   "@materialTypeHeadline": {
     "placeholders": {
-      "material": {"type": "String"}
+      "material": {
+        "type": "String"
+      }
     }
   },
   "giveProductName": "আপোনাৰ সামগ্ৰীৰ নাম দিয়ক",
   "nameHint": "যেনে নীলা পট {category}",
   "@nameHint": {
     "placeholders": {
-      "category": {"type": "String"}
+      "category": {
+        "type": "String"
+      }
     }
   },
   "photosToCapture": "তুলিবলগীয়া ফটো",
@@ -59,7 +67,9 @@
   "takeNext": "পৰৱৰ্তী তোলক — {label}",
   "@takeNext": {
     "placeholders": {
-      "label": {"type": "String"}
+      "label": {
+        "type": "String"
+      }
     }
   },
   "productUnavailable": "এই সামগ্ৰী এতিয়া উপলব্ধ নহয়।",
@@ -70,20 +80,28 @@
   "styleSubtitleSaree": "এই {template} ফটোৰ সজাওক বাছক।",
   "@styleSubtitleSaree": {
     "placeholders": {
-      "template": {"type": "String"}
+      "template": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleShot": "এই {shot} ফটোৰ সজাওক বাছক।",
   "@styleSubtitleShot": {
     "placeholders": {
-      "shot": {"type": "String"}
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "styleSubtitleCategory": "এই {category} {shot} ফটোৰ সজাওক বাছক।",
   "@styleSubtitleCategory": {
     "placeholders": {
-      "category": {"type": "String"},
-      "shot": {"type": "String"}
+      "category": {
+        "type": "String"
+      },
+      "shot": {
+        "type": "String"
+      }
     }
   },
   "labelContent": "বিষয়",
@@ -94,13 +112,17 @@
   "contentPrefixed": "বিষয়: {value}",
   "@contentPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "needsPrefixed": "প্ৰয়োজন: {value}",
   "@needsPrefixed": {
     "placeholders": {
-      "value": {"type": "String"}
+      "value": {
+        "type": "String"
+      }
     }
   },
   "lightingAndSetup": "পোহৰ আৰু ছেটআপ",
@@ -114,13 +136,17 @@
   "tutorialSubtitlePreset": "{name} কেনেকৈ ছেটআপ কৰিব চাওক।",
   "@tutorialSubtitlePreset": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleTemplate": "{name} কেনেকৈ ছেটআপ কৰিব চাওক।",
   "@tutorialSubtitleTemplate": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "tutorialSubtitleFallback": "ভিডিঅ' যোগ হোৱাৰ পিছত এই ছেটআপ দেখুওৱা হ'ব।",
@@ -142,28 +168,40 @@
   "continueCount": "আগবাঢ়ক — {done}/{total}",
   "@continueCount": {
     "placeholders": {
-      "done": {"type": "int"},
-      "total": {"type": "int"}
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "noPhotosToExport": "পঠিয়াবলৈ এতিয়াও কোনো ফটো নাই।",
   "couldNotExport": "পঠিয়াব পৰা নগ'ল: {error}",
   "@couldNotExport": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "exportShareText": "{name} — {count} খন ফটো, দ্য আৰ্টিছানেল লেন্সৰে তোলা",
   "@exportShareText": {
     "placeholders": {
-      "name": {"type": "String"},
-      "count": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
     }
   },
   "couldNotSavePhoto": "ফটো ছেভ কৰিব পৰা নগ'ল: {error}",
   "@couldNotSavePhoto": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "galleryEmpty": "এতিয়াও কোনো ফটো ছেট নাই।\nআৰম্ভ কৰিবলৈ নতুন সামগ্ৰী বনাওক।",
@@ -180,25 +218,33 @@
   "fillFrameWith": "{slot}ৰে ফ্ৰেম ভৰাওক",
   "@fillFrameWith": {
     "placeholders": {
-      "slot": {"type": "String"}
+      "slot": {
+        "type": "String"
+      }
     }
   },
   "promptNoProduct": "{product}খন সন্মুখত ৰাখক",
   "@promptNoProduct": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptMoveIntoFrame": "{product}খন ফ্ৰেমৰ ভিতৰলৈ আনক",
   "@promptMoveIntoFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepInsideFrame": "{product}খন ফ্ৰেমৰ ভিতৰত ৰাখক",
   "@promptKeepInsideFrame": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptAlignHorizontal": "ভাঁজবোৰ আনুভূমিক গাইডৰ সৈতে মিলাওক",
@@ -209,7 +255,9 @@
   "promptCenterSubject": "{product}খন মাজত ৰাখক",
   "@promptCenterSubject": {
     "placeholders": {
-      "product": {"type": "String"}
+      "product": {
+        "type": "String"
+      }
     }
   },
   "promptKeepTextureCentre": "গঠনটো কেন্দ্ৰত ৰাখক",
@@ -533,5 +581,229 @@
   "compositionCentreFocus": "কেন্দ্ৰ ফ'কাছ",
   "compositionCentreFocusHint": "গঠনটো ফ্ৰেমৰ কেন্দ্ৰত ৰাখক।",
   "compositionDetailFrame": "বিৱৰণ ফ্ৰেম",
-  "compositionDetailFrameHint": "এমব্ৰয়ডাৰী হাইলাইট কৰা ফ্ৰেমৰ ভিতৰত ৰাখক।"
+  "compositionDetailFrameHint": "এমব্ৰয়ডাৰী হাইলাইট কৰা ফ্ৰেমৰ ভিতৰত ৰাখক।",
+  "accountBackup": "একাউণ্ট আৰু বেকআপ",
+  "accountBackupSubtitle": "অগ্ৰগতি অনলাইন সংৰক্ষণ কৰিবলৈ ব্যৱহাৰকাৰী নাম আৰু পাছৱৰ্ড সৃষ্টি কৰক।",
+  "cloudBackupNotConfigured": "ক্লাউড বেকআপ সাজু নহয়",
+  "cloudBackupNotConfiguredBody": "এই বিল্ডত ক্লাউড সংযোগ নাই। অগ্ৰগতি কেৱল এই ফোনতে থাকিব।",
+  "signedInAs": "ছাইন ইন আছে",
+  "artisanFallback": "কাৰিকৰ",
+  "syncNow": "এতিয়া ছিংক কৰক",
+  "signOut": "ছাইন আউট",
+  "createAccountPrompt": "আপোনাৰ কাম অনলাইন সংৰক্ষণ কৰিবলৈ একাউণ্ট সৃষ্টি কৰক।",
+  "signInPrompt": "সংৰক্ষিত সামগ্ৰী আৰু ফটো লোড কৰিবলৈ ছাইন ইন কৰক।",
+  "username": "ব্যৱহাৰকাৰী নাম",
+  "usernameHint": "যেনে priya_weaver",
+  "password": "পাছৱৰ্ড",
+  "createAccount": "একাউণ্ট সৃষ্টি কৰক",
+  "signIn": "ছাইন ইন",
+  "alreadyHaveAccount": "ইতিমধ্যে একাউণ্ট আছে? ছাইন ইন কৰক",
+  "needAccount": "একাউণ্ট লাগে? এটা সৃষ্টি কৰক",
+  "accountCreated": "একাউণ্ট সৃষ্টি হ’ল। আপোনাৰ অগ্ৰগতি অনলাইন ছিংক হ’ব।",
+  "signedInSuccess": "ছাইন ইন হ’ল। আপোনাৰ সংৰক্ষিত কাম এই ফোনত আছে।",
+  "signedOutSuccess": "ছাইন আউট হ’ল। স্থানীয় ফটো এই ফোনতে থাকিব।",
+  "syncOffline": "ইণ্টাৰনেট নাই — অনলাইন হ’লে ছিংক কৰক।",
+  "syncDone": "ছিংক হ’ল: {sets} সামগ্ৰী আপলোড, {shots} ফটো আপলোড।",
+  "@syncDone": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "shots": {
+        "type": "int"
+      }
+    }
+  },
+  "syncUpToDate": "সকলো ইতিমধ্যে আপডেট আছে।",
+  "syncFailed": "ছিংক ব্যৰ্থ: {error}",
+  "@syncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "yourProgress": "আপোনাৰ অগ্ৰগতি",
+  "productsStarted": "আৰম্ভ কৰা সামগ্ৰী",
+  "finishedSets": "সম্পূৰ্ণ ছেট",
+  "inProgressSets": "চলি আছে",
+  "photosCaptured": "তোলা ফটো",
+  "usernameTooShort": "ব্যৱহাৰকাৰী নাম কমেও ৩টা আখৰ বা সংখ্যা হ’ব লাগিব।",
+  "usernameTooLong": "ব্যৱহাৰকাৰী নাম ৩২ আখৰতকৈ বেছি হ’ব নোৱাৰে।",
+  "passwordTooShort": "পাছৱৰ্ড কমেও ৬টা আখৰ হ’ব লাগিব।",
+  "fullScreen": "সম্পূৰ্ণ স্ক্ৰীন",
+  "tapToSkip": "এৰিবলৈ টেপ কৰক",
+  "cameraPermissionNeeded": "ফটো তুলিবলৈ কেমেৰাৰ অনুমতি লাগে।\nঅনুগ্ৰহ কৰি ছেটিংছত কেমেৰা এক্সেছ দিয়ক।",
+  "cameraUnavailable": "কেমেৰা উপলব্ধ নহয়।",
+  "noCameraFound": "এই ডিভাইচত কোনো কেমেৰা পোৱা নগ’ল।",
+  "accountCreateFailed": "একাউণ্ট সৃষ্টি কৰিব পৰা নগ’ল। পুনৰ চেষ্টা কৰক।",
+  "enterValidUsername": "সঠিক ব্যৱহাৰকাৰী নাম দিয়ক।",
+  "monthJan": "জানু",
+  "monthFeb": "ফেব্ৰু",
+  "monthMar": "মাৰ্চ",
+  "monthApr": "এপ্ৰিল",
+  "monthMay": "মে’",
+  "monthJun": "জুন",
+  "monthJul": "জুলাই",
+  "monthAug": "আগ",
+  "monthSep": "চেপ্টে",
+  "monthOct": "অক্টো",
+  "monthNov": "নৱে",
+  "monthDec": "ডিচে",
+  "presetCushionFlatLayNeeds": "সৰল, পৰিষ্কাৰ পৃষ্ঠ",
+  "presetCushionStackedPairNeeds": "দুটা কভাৰ; কাষৰ পোহৰ",
+  "presetCushionProppedNeeds": "চকী, ছোফা বা বিচনা",
+  "presetCushionCornerTuckNeeds": "ক্ল’জ-আপ পোহৰ",
+  "presetShawlDrapedShoulderNeeds": "শাল পিন্ধোৱা কোনো ব্যক্তি",
+  "presetShawlFoldedStackNeeds": "কাষৰ পোহৰ",
+  "presetShawlHungFlatNeeds": "ৰছী, বাঁহ বা দেৱাল য’ত পিন কৰিব",
+  "presetShawlCornerTuckNeeds": "ক্ল’জ-আপ পোহৰ",
+  "presetStoleNeckWrapNeeds": "ষ্টোল পিন্ধোৱা কোনো ব্যক্তি",
+  "presetStoleFlatSpreadNeeds": "সৰল পৃষ্ঠ; ওপৰৰ পৰা দৃশ্য",
+  "presetStoleLooseKnotNeeds": "কোমল কাষৰ পোহৰ",
+  "presetStoleRolledCoilNeeds": "কোমল কাষৰ পোহৰ",
+  "placementSareePalluDrape": "শাড়ী হেংগাৰ, বাঁহ বা মেনেকিনত ওলোৱাওক যাতে পল্লু মুক্তকৈ ওলমে।",
+  "placementSareeBoxFold": "শাড়ী সমান স্তৰত ভাঁজ কৰি দ’ম কৰক যাতে কাষ দেখা যায়।",
+  "placementSareeWornDrape": "ব্যক্তিত শাড়ী এনেদৰে মেৰাই দিয়ক যাতে ৰং, আৰ্হি আৰু বৰ্ডাৰ স্পষ্ট দেখা যায়।",
+  "placementSareeRollDisplay": "শাড়ী এনেদৰে ৰোল কৰক যাতে পল্লু আৰু বৰ্ডাৰ কেমেৰাৰ ফালে থাকে।",
+  "placementCushionFlatLay": "কভাৰ সৰল, পৰিষ্কাৰ পৃষ্ঠত সমতলকৈ ৰাখক।",
+  "placementCushionStackedPair": "এটা কভাৰ আনটোৰ ওপৰত পৰিষ্কাৰকৈ ৰাখক।",
+  "placementCushionPropped": "কুশ্বন চকী বা ছোফাত আগফালে থিয় কৰাই ৰাখক।",
+  "placementCushionCornerTuck": "কভাৰ ঘূৰাওক যাতে চিলাই কৰা এটা কোণ আপোনাৰ সন্মুখত থাকে।",
+  "placementShawlDrapedShoulder": "শাল এখন কান্ধত ৰাখি ওলোমাই দিয়ক।",
+  "placementShawlFoldedStack": "শাল সমান স্তৰত ভাঁজ কৰি পৰিষ্কাৰকৈ দ’ম কৰক।",
+  "placementShawlHungFlat": "দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে শাল মাজত নামি নাযায়।",
+  "placementShawlCornerTuck": "এটা কোণ পাছলৈ ভাঁজ কৰক যাতে বয়নৰ দুয়োফাল দেখা যায়।",
+  "placementStoleNeckWrap": "ডিঙিত এবাৰ মেৰাই দুয়োটা মূৰ ওলোমাই দিয়ক।",
+  "placementStoleFlatSpread": "ষ্টোল সমতলকৈ মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।",
+  "placementStoleLooseKnot": "মাজত এটা ঢিলা গাঁঠি বান্ধক — টানি টান নকৰিব।",
+  "placementStoleRolledCoil": "ষ্টোল ঢিলাকৈ সমতল কুণ্ডলীত ৰোল কৰক।",
+  "transcriptSareePalluDrape1": "শাড়ী এনেদৰে ওলোৱাওক যাতে ইয়াৰ পতন স্পষ্ট দেখা যায়।",
+  "transcriptSareePalluDrape2": "কান্ধৰ উচ্চতাত হেংগাৰ, বাঁহ বা মেনেকিন ব্যৱহাৰ কৰক।",
+  "transcriptSareePalluDrape3": "পল্লু মুক্তকৈ ওলোমাই দিয়ক — পোনকৈ টানি নধৰিব।",
+  "transcriptSareePalluDrape4": "ভাঁজবোৰে স্ক্ৰীনৰ তিৰ্যক ৰেখা অনুসৰণ কৰক।",
+  "transcriptSareePalluDrape5": "চিকমিকনি দেখুৱাবলৈ এটা পোহৰ কাষত ৰাখক।",
+  "transcriptSareeBoxFold1": "শাড়ী পৰিষ্কাৰ দ’মত ভাঁজ কৰক যাতে স্তৰবোৰ দেখা যায়।",
+  "transcriptSareeBoxFold2": "ভাঁজ কৰা কাষ কেমেৰাৰ ফালে ৰাখক — সেই কাষে ডাঠতা দেখুৱায়।",
+  "transcriptSareeBoxFold3": "ভাঁজবোৰ আনুভূমিক গাইডৰ সৈতে মিলাওক।",
+  "transcriptSareeBoxFold4": "প্ৰতিটো স্তৰত গভীৰতাৰ বাবে কাষৰ পৰা পোহৰ লওক।",
+  "transcriptSareeWornDrape1": "পৰিধান কৰা ফটোৱে সম্পূৰ্ণ শাড়ী দেখুৱায় — ৰং, আৰ্হি আৰু সামগ্ৰী।",
+  "transcriptSareeWornDrape2": "ৰং সঠিক থাকিবলৈ খোলা ছাঁত থিয় হওক।",
+  "transcriptSareeWornDrape3": "শাড়ীয়ে ফ্ৰেমৰ বেছিভাগ ঢাকক।",
+  "transcriptSareeWornDrape4": "ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলাওক।",
+  "transcriptSareeWornDrape5": "প্লিট থাকিলে উলম্ব গ্ৰিড ৰেখা অনুসৰণ কৰক।",
+  "transcriptSareeRollDisplay1": "শাড়ী এনেদৰে ৰোল কৰক যাতে পল্লু আৰু বৰ্ডাৰ কেমেৰাৰ ফালে থাকে।",
+  "transcriptSareeRollDisplay2": "ৰোলে ফ্ৰেমৰ বেছিভাগ ঢাকক।",
+  "transcriptSareeRollDisplay3": "ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলাওক।",
+  "transcriptSareeRollDisplay4": "ৰং সঠিক থাকিবলৈ কোমল দিনৰ পোহৰ লওক।",
+  "transcriptCushionFlatLay1": "কুশ্বন কভাৰ সৰল পৃষ্ঠত সমতলকৈ ৰাখক।",
+  "transcriptCushionFlatLay2": "সমতল কৰক কিন্তু প্ৰাকৃতিক গঠন থাকিব দিয়ক।",
+  "transcriptCushionFlatLay3": "ফোন পোনকৈ ওপৰত ৰাখক, কোণত নহয়।",
+  "transcriptCushionFlatLay4": "কাষবোৰ গ্ৰিডৰ সৈতে পোনকৈ ৰাখক।",
+  "transcriptCushionStackedPair1": "দুটা কভাৰ দ’ম কৰক যাতে ক্ৰেতাই ডাঠতা দেখিব পাৰে।",
+  "transcriptCushionStackedPair2": "দ’মৰ কাষ কেমেৰাৰ ফালে ৰাখক।",
+  "transcriptCushionStackedPair3": "প্ৰতিটো স্তৰৰ ছাঁৰ বাবে কাষৰ পোহৰ লওক।",
+  "transcriptCushionPropped1": "চকীত কুশ্বন ৰাখিলে ইয়াৰ প্ৰকৃত আকাৰ দেখা যায়।",
+  "transcriptCushionPropped2": "আৰ্হিৰ সৈতে প্ৰতিযোগিতা নকৰা আসন বাছক।",
+  "transcriptCushionPropped3": "চকুৰ উচ্চতাৰ পৰা তোলক, ওপৰৰ পৰা নহয়।",
+  "transcriptCushionCornerTuck1": "কোণে আপোনাৰ চিলাই সৰ্বাধিক স্পষ্টকৈ দেখুৱায়।",
+  "transcriptCushionCornerTuck2": "কোণে সৰু ফ্ৰেম ভৰোৱালৈকে ওচৰলৈ যাওক।",
+  "transcriptCushionCornerTuck3": "ফ’কাছৰ বাবে চিলাইত স্ক্ৰীন টেপ কৰক।",
+  "transcriptShawlDrapedShoulder1": "কান্ধত শাল ওলোৱাই ইয়াৰ ওজন দেখুৱায়।",
+  "transcriptShawlDrapedShoulder2": "এটা মূৰ আনটোতকৈ তললৈ ওলোমাই দিয়ক।",
+  "transcriptShawlDrapedShoulder3": "পিন নকৰিব — কাপোৰ নিজেই পৰিব দিয়ক।",
+  "transcriptShawlFoldedStack1": "ভাঁজ দেখা যোৱাকৈ শাল পৰিষ্কাৰকৈ দ’ম কৰক।",
+  "transcriptShawlFoldedStack2": "ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক।",
+  "transcriptShawlFoldedStack3": "ডাঠতাৰ বাবে শালৰ কাষ দেখা যাওক।",
+  "transcriptShawlFoldedStack4": "প্ৰতিটো ভাঁজত গভীৰতাৰ বাবে কাষৰ পোহৰ লওক।",
+  "transcriptShawlHungFlat1": "সমতলকৈ ওলোৱাই সম্পূৰ্ণ ডিজাইন একেলগে দেখুৱায়।",
+  "transcriptShawlHungFlat2": "দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে মাজত নামি নাযায়।",
+  "transcriptShawlHungFlat3": "পোনকৈ সন্মুখত থিয় হওক, এফালে নহয়।",
+  "transcriptShawlCornerTuck1": "কোণৰ ক্ল’জ-আপে বয়ন আৰু বৰ্ডাৰ একেলগে দেখুৱায়।",
+  "transcriptShawlCornerTuck2": "এটা কোণ পাছলৈ ভাঁজ কৰক যাতে দুয়োফাল দেখা যায়।",
+  "transcriptShawlCornerTuck3": "বয়নে ফ্ৰেম ভৰোৱালৈকে ওচৰলৈ যাওক।",
+  "transcriptStoleNeckWrap1": "পৰিধান কৰা ফটোৱে সাধাৰণ প্ৰশ্নৰ উত্তৰ দিয়ে — কিমান ডাঙৰ?",
+  "transcriptStoleNeckWrap2": "ডিঙিত এবাৰ মেৰাই দুয়োটা মূৰ ওলোমাই দিয়ক।",
+  "transcriptStoleNeckWrap3": "বুকুৰ পৰা ওপৰলৈ তোলক যাতে মূৰবোৰ ফ্ৰেমত থাকে।",
+  "transcriptStoleFlatSpread1": "ষ্টোল মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।",
+  "transcriptStoleFlatSpread2": "প্ৰাকৃতিক ভাঁজ থাকিব দিয়ক — সেইবোৰে কাপোৰৰ স্বভাৱ দেখুৱায়।",
+  "transcriptStoleFlatSpread3": "ফোন পোনকৈ মাজৰ ওপৰত ৰাখক।",
+  "transcriptStoleLooseKnot1": "ঢিলা গাঁঠিয়ে ষ্টোল কিমান কোমল আৰু পাতল দেখুৱায়।",
+  "transcriptStoleLooseKnot2": "ঢিলাকৈ বান্ধক — কেতিয়াও টানি টান নকৰিব।",
+  "transcriptStoleLooseKnot3": "গাঁঠি ফ্ৰেমৰ কেন্দ্ৰত ৰাখক।",
+  "transcriptStoleRolledCoil1": "কুণ্ডলীত ৰোল কৰিলে কাষ আৰু ডাঠতা দেখা যায়।",
+  "transcriptStoleRolledCoil2": "ঢিলাকৈ ৰোল কৰক যাতে স্তৰবোৰ পৃথক থাকে।",
+  "transcriptStoleRolledCoil3": "কুণ্ডলীৰ ওপৰত পোনকৈ তললৈ তোলক।",
+  "guideSareeFullDisplay1": "শাড়ীয়ে ফ্ৰেমৰ বেছিভাগ অংশ ঢাকে।",
+  "guideSareeFullDisplay2": "ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলে।",
+  "guideSareeFullDisplay3": "ড্ৰেপত প্লীটবোৰ উলম্ব গ্ৰিডৰ সৈতে মিলে।",
+  "guideSareeTextureWeave1": "শাড়ীয়ে গোটেই ফ্ৰেম ভৰায়।",
+  "guideSareeTextureWeave2": "বয়ন মাজত থাকে।",
+  "guideSareeTextureWeave3": "কোমল পোহৰ ব্যৱহাৰ কৰক।",
+  "guideSareeTextureWeave4": "কঠোৰ প্ৰতিফলন এৰাই চলক।",
+  "guideSareeEmbroideryBorder1": "এমব্ৰয়ডাৰী ফ্ৰেমৰ ভিতৰত থাকে।",
+  "guideSareeEmbroideryBorder2": "কাষৰ পৰা পোহৰ লওক।",
+  "guideSareeEmbroideryBorder3": "বিৱৰণ তীক্ষ্ণ আৰু ভালকৈ পোহৰত ৰাখক।",
+  "guideCushionTextureWeave1": "বয়নে ফ্ৰেম ভৰায়।",
+  "guideCushionTextureWeave2": "বয়ন মাজত থাকে।",
+  "guideShawlFullDesign1": "শাল সমতলকৈ ওলোমাই গোটেই ডিজাইন একেলগে দেখা যায়।",
+  "guideShawlFullDesign2": "দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে মাজত নামি নাযায়।",
+  "guideShawlTextureWeave1": "বয়নে ফ্ৰেম ভৰায়।",
+  "guideShawlTextureWeave2": "বয়ন মাজত থাকে।",
+  "guideStoleFullLength1": "ষ্টোল মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।",
+  "guideStoleFullLength2": "স্বাভাৱিক ভাঁজ থাকিবলৈ দিয়ক — সেইবোৰে কাপোৰৰ স্বভাৱ দেখুৱায়।",
+  "guideStoleTextureWeave1": "বয়নে ফ্ৰেম ভৰায়।",
+  "guideStoleTextureWeave2": "বয়ন মাজত থাকে।",
+  "authInvalidCredentials": "ভুল ব্যৱহাৰকাৰী নাম বা পাছৱৰ্ড।",
+  "authUserAlreadyRegistered": "এই ব্যৱহাৰকাৰী নাম ইতিমধ্যে লোৱা হৈছে।",
+  "authEmailNotConfirmed": "ইমেইল নিশ্চিত কৰক, তাৰ পিছত চেষ্টা কৰক।",
+  "authGeneric": "ছাইন ইন কৰিব পৰা নগ’ল। পুনৰ চেষ্টা কৰক।",
+  "languageAssamese": "অসমীয়া",
+  "languageHindi": "হিন্দী",
+  "languageEnglish": "ইংৰাজী",
+  "guideSareeDrapedLook1": "কাপোৰ স্বাভাৱিকভাৱে পৰিবলৈ দিয়ক।",
+  "guideSareeDrapedLook2": "ভাঁজবোৰ তিৰ্যক ৰেখাৰে যায়।",
+  "guideSareeDrapedLook3": "কাষৰ পৰা পোহৰ লওক।",
+  "guideSareeEmbroideryBorder4": "কনট্ৰাষ্ট বেকগ্ৰাউণ্ড ব্যৱহাৰ কৰক।",
+  "guideSareeFoldedStack1": "ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল থাকে।",
+  "guideSareeFoldedStack2": "কাষৰ পৰা পোহৰ লওক।",
+  "guideSareeFoldedStack3": "কাষ দেখা যায়।",
+  "guideCushionFullCover1": "কভাৰ সমতলকৈ ৰাখক যাতে সম্পূৰ্ণ নক্সা দেখা যায়।",
+  "guideCushionFullCover2": "ফোন পোনপটীয়াকৈ ওপৰৰ পৰা ধৰক, কোণত নহয়।",
+  "guideCushionFullCover3": "কাষবোৰ গ্ৰিডৰ সৈতে পোনকৈ ৰাখক।",
+  "guideCushionTextureWeave3": "কোমল পোহৰ ব্যৱহাৰ কৰক।",
+  "guideCushionTextureWeave4": "কঠোৰ প্ৰতিফলন এৰাই চলক।",
+  "guideCushionStackedThickness1": "দুটা কভাৰ এনেকৈ ৰাখক যাতে ডাঠতা দেখা যায়।",
+  "guideCushionStackedThickness2": "স্তূপৰ কাষ কেমেৰাৰ ফালে ৰাখক।",
+  "guideCushionStackedThickness3": "কাষৰ পোহৰে প্ৰতিটো স্তৰৰ কোমল ছাঁ পেলায়।",
+  "guideCushionCornerStitching1": "কোণত চিলাই স্পষ্টকৈ দেখা যায়।",
+  "guideCushionCornerStitching2": "কাষ চাপি যাওক যেতিয়ালৈকে কোণে সৰু ফ্ৰেম ভৰায়।",
+  "guideCushionCornerStitching3": "চিলাই তীক্ষ্ণ আৰু ভালকৈ পোহৰত ৰাখক।",
+  "guideCushionInUse1": "চেয়াৰত ৰাখিলে প্ৰকৃত আকাৰ দেখা যায়।",
+  "guideCushionInUse2": "এনে আসন বাছি লওক যি নক্সাৰ সৈতে প্ৰতিযোগিতা নকৰে।",
+  "guideCushionInUse3": "চকুৰ স্তৰত তোলক, ওপৰৰ পৰা নহয়।",
+  "guideShawlFullDesign3": "পোনপটীয়াকৈ সন্মুখত থিয় হওক, এফালে নহয়।",
+  "guideShawlTextureWeave3": "কোমল পোহৰ ব্যৱহাৰ কৰক।",
+  "guideShawlTextureWeave4": "কঠোৰ প্ৰতিফলন এৰাই চলক।",
+  "guideShawlDrapedLook1": "কান্ধত শাল ড্ৰেপ কৰিলে ই কিমান গধুৰ তাক দেখুৱায়।",
+  "guideShawlDrapedLook2": "এটা মূৰ আনটোতকৈ তললৈ ওলমিবলৈ দিয়ক।",
+  "guideShawlDrapedLook3": "পিন নকৰিব — কাপোৰ নিজে পৰিবলৈ দিয়ক।",
+  "guideShawlBorderCorner1": "কোণৰ ক্ল'জ-আপে বয়ন আৰু বৰ্ডাৰ একেলগে দেখুৱায়।",
+  "guideShawlBorderCorner2": "এটা কোণ পাছলৈ ভাঁজ কৰক যাতে দুয়োফাল দেখা যায়।",
+  "guideShawlBorderCorner3": "কাষ চাপি যাওক যেতিয়ালৈকে বয়নে ফ্ৰেম ভৰায়।",
+  "guideShawlStackDisplay1": "শাল পৰিষ্কাৰকৈ স্তূপ কৰক, ভাঁজ দেখা যায়।",
+  "guideShawlStackDisplay2": "ভাঁজ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক।",
+  "guideShawlStackDisplay3": "কাষৰ পোহৰে প্ৰতিটো ভাঁজত গভীৰতা আনে।",
+  "guideStoleFullLength3": "ফোন পোনপটীয়াকৈ মাজৰ ওপৰত ধৰক।",
+  "guideStoleTextureWeave3": "কোমল পোহৰ ব্যৱহাৰ কৰক।",
+  "guideStoleTextureWeave4": "কঠোৰ প্ৰতিফলন এৰাই চলক।",
+  "guideStoleWornNeckWrap1": "পৰিধান কৰা শটে ষ্টোল কিমান ডাঙৰ তাক উত্তৰ দিয়ে।",
+  "guideStoleWornNeckWrap2": "ডিঙিত এবাৰ মেৰিয়াই দুয়োটা মূৰ ওলমিবলৈ দিয়ক।",
+  "guideStoleWornNeckWrap3": "বুকৰ পৰা ওপৰলৈ তোলক যাতে মূৰবোৰ ফ্ৰেমত থাকে।",
+  "guideStoleSoftnessKnot1": "ঢিলা গাঁঠিয়ে ষ্টোল কিমান কোমল আৰু পাতল তাক দেখুৱায়।",
+  "guideStoleSoftnessKnot2": "ঢিলাকৈ বান্ধক — কেতিয়াও টান নকৰিব।",
+  "guideStoleSoftnessKnot3": "গাঁঠি ফ্ৰেমৰ মাজত ৰাখক।",
+  "guideStoleEdgeThickness1": "ষ্টোল কুণ্ডলিত কৰিলে কাষ আৰু ডাঠতা দেখা যায়।",
+  "guideStoleEdgeThickness2": "ঢিলাকৈ মেৰিয়াওক যাতে স্তৰবোৰ পৃথক থাকে।",
+  "guideStoleEdgeThickness3": "কুণ্ডলীৰ ওপৰৰ পৰা পোনকৈ তোলক।"
 }

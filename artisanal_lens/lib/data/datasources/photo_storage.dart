@@ -17,6 +17,13 @@ abstract interface class PhotoStorage {
   /// the handle the rest of the app stores and passes around.
   Future<String> persist(String capturedPath, {required String setId});
 
+  /// Writes downloaded cloud bytes into app storage.
+  Future<String> persistBytes(
+    Uint8List bytes, {
+    required String setId,
+    required String shotId,
+  });
+
   /// The image to render for [handle], or null when it can no longer be read.
   ImageProvider? imageProvider(String handle);
 

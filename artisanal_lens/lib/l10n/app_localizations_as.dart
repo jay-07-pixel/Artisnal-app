@@ -1401,4 +1401,721 @@ class AppLocalizationsAs extends AppLocalizations {
   @override
   String get compositionDetailFrameHint =>
       'এমব্ৰয়ডাৰী হাইলাইট কৰা ফ্ৰেমৰ ভিতৰত ৰাখক।';
+
+  @override
+  String get accountBackup => 'একাউণ্ট আৰু বেকআপ';
+
+  @override
+  String get accountBackupSubtitle =>
+      'অগ্ৰগতি অনলাইন সংৰক্ষণ কৰিবলৈ ব্যৱহাৰকাৰী নাম আৰু পাছৱৰ্ড সৃষ্টি কৰক।';
+
+  @override
+  String get cloudBackupNotConfigured => 'ক্লাউড বেকআপ সাজু নহয়';
+
+  @override
+  String get cloudBackupNotConfiguredBody =>
+      'এই বিল্ডত ক্লাউড সংযোগ নাই। অগ্ৰগতি কেৱল এই ফোনতে থাকিব।';
+
+  @override
+  String get signedInAs => 'ছাইন ইন আছে';
+
+  @override
+  String get artisanFallback => 'কাৰিকৰ';
+
+  @override
+  String get syncNow => 'এতিয়া ছিংক কৰক';
+
+  @override
+  String get signOut => 'ছাইন আউট';
+
+  @override
+  String get createAccountPrompt =>
+      'আপোনাৰ কাম অনলাইন সংৰক্ষণ কৰিবলৈ একাউণ্ট সৃষ্টি কৰক।';
+
+  @override
+  String get signInPrompt => 'সংৰক্ষিত সামগ্ৰী আৰু ফটো লোড কৰিবলৈ ছাইন ইন কৰক।';
+
+  @override
+  String get username => 'ব্যৱহাৰকাৰী নাম';
+
+  @override
+  String get usernameHint => 'যেনে priya_weaver';
+
+  @override
+  String get password => 'পাছৱৰ্ড';
+
+  @override
+  String get createAccount => 'একাউণ্ট সৃষ্টি কৰক';
+
+  @override
+  String get signIn => 'ছাইন ইন';
+
+  @override
+  String get alreadyHaveAccount => 'ইতিমধ্যে একাউণ্ট আছে? ছাইন ইন কৰক';
+
+  @override
+  String get needAccount => 'একাউণ্ট লাগে? এটা সৃষ্টি কৰক';
+
+  @override
+  String get accountCreated =>
+      'একাউণ্ট সৃষ্টি হ’ল। আপোনাৰ অগ্ৰগতি অনলাইন ছিংক হ’ব।';
+
+  @override
+  String get signedInSuccess => 'ছাইন ইন হ’ল। আপোনাৰ সংৰক্ষিত কাম এই ফোনত আছে।';
+
+  @override
+  String get signedOutSuccess => 'ছাইন আউট হ’ল। স্থানীয় ফটো এই ফোনতে থাকিব।';
+
+  @override
+  String get syncOffline => 'ইণ্টাৰনেট নাই — অনলাইন হ’লে ছিংক কৰক।';
+
+  @override
+  String syncDone(int sets, int shots) {
+    return 'ছিংক হ’ল: $sets সামগ্ৰী আপলোড, $shots ফটো আপলোড।';
+  }
+
+  @override
+  String get syncUpToDate => 'সকলো ইতিমধ্যে আপডেট আছে।';
+
+  @override
+  String syncFailed(String error) {
+    return 'ছিংক ব্যৰ্থ: $error';
+  }
+
+  @override
+  String get yourProgress => 'আপোনাৰ অগ্ৰগতি';
+
+  @override
+  String get productsStarted => 'আৰম্ভ কৰা সামগ্ৰী';
+
+  @override
+  String get finishedSets => 'সম্পূৰ্ণ ছেট';
+
+  @override
+  String get inProgressSets => 'চলি আছে';
+
+  @override
+  String get photosCaptured => 'তোলা ফটো';
+
+  @override
+  String get usernameTooShort =>
+      'ব্যৱহাৰকাৰী নাম কমেও ৩টা আখৰ বা সংখ্যা হ’ব লাগিব।';
+
+  @override
+  String get usernameTooLong => 'ব্যৱহাৰকাৰী নাম ৩২ আখৰতকৈ বেছি হ’ব নোৱাৰে।';
+
+  @override
+  String get passwordTooShort => 'পাছৱৰ্ড কমেও ৬টা আখৰ হ’ব লাগিব।';
+
+  @override
+  String get fullScreen => 'সম্পূৰ্ণ স্ক্ৰীন';
+
+  @override
+  String get tapToSkip => 'এৰিবলৈ টেপ কৰক';
+
+  @override
+  String get cameraPermissionNeeded =>
+      'ফটো তুলিবলৈ কেমেৰাৰ অনুমতি লাগে।\nঅনুগ্ৰহ কৰি ছেটিংছত কেমেৰা এক্সেছ দিয়ক।';
+
+  @override
+  String get cameraUnavailable => 'কেমেৰা উপলব্ধ নহয়।';
+
+  @override
+  String get noCameraFound => 'এই ডিভাইচত কোনো কেমেৰা পোৱা নগ’ল।';
+
+  @override
+  String get accountCreateFailed =>
+      'একাউণ্ট সৃষ্টি কৰিব পৰা নগ’ল। পুনৰ চেষ্টা কৰক।';
+
+  @override
+  String get enterValidUsername => 'সঠিক ব্যৱহাৰকাৰী নাম দিয়ক।';
+
+  @override
+  String get monthJan => 'জানু';
+
+  @override
+  String get monthFeb => 'ফেব্ৰু';
+
+  @override
+  String get monthMar => 'মাৰ্চ';
+
+  @override
+  String get monthApr => 'এপ্ৰিল';
+
+  @override
+  String get monthMay => 'মে’';
+
+  @override
+  String get monthJun => 'জুন';
+
+  @override
+  String get monthJul => 'জুলাই';
+
+  @override
+  String get monthAug => 'আগ';
+
+  @override
+  String get monthSep => 'চেপ্টে';
+
+  @override
+  String get monthOct => 'অক্টো';
+
+  @override
+  String get monthNov => 'নৱে';
+
+  @override
+  String get monthDec => 'ডিচে';
+
+  @override
+  String get presetCushionFlatLayNeeds => 'সৰল, পৰিষ্কাৰ পৃষ্ঠ';
+
+  @override
+  String get presetCushionStackedPairNeeds => 'দুটা কভাৰ; কাষৰ পোহৰ';
+
+  @override
+  String get presetCushionProppedNeeds => 'চকী, ছোফা বা বিচনা';
+
+  @override
+  String get presetCushionCornerTuckNeeds => 'ক্ল’জ-আপ পোহৰ';
+
+  @override
+  String get presetShawlDrapedShoulderNeeds => 'শাল পিন্ধোৱা কোনো ব্যক্তি';
+
+  @override
+  String get presetShawlFoldedStackNeeds => 'কাষৰ পোহৰ';
+
+  @override
+  String get presetShawlHungFlatNeeds => 'ৰছী, বাঁহ বা দেৱাল য’ত পিন কৰিব';
+
+  @override
+  String get presetShawlCornerTuckNeeds => 'ক্ল’জ-আপ পোহৰ';
+
+  @override
+  String get presetStoleNeckWrapNeeds => 'ষ্টোল পিন্ধোৱা কোনো ব্যক্তি';
+
+  @override
+  String get presetStoleFlatSpreadNeeds => 'সৰল পৃষ্ঠ; ওপৰৰ পৰা দৃশ্য';
+
+  @override
+  String get presetStoleLooseKnotNeeds => 'কোমল কাষৰ পোহৰ';
+
+  @override
+  String get presetStoleRolledCoilNeeds => 'কোমল কাষৰ পোহৰ';
+
+  @override
+  String get placementSareePalluDrape =>
+      'শাড়ী হেংগাৰ, বাঁহ বা মেনেকিনত ওলোৱাওক যাতে পল্লু মুক্তকৈ ওলমে।';
+
+  @override
+  String get placementSareeBoxFold =>
+      'শাড়ী সমান স্তৰত ভাঁজ কৰি দ’ম কৰক যাতে কাষ দেখা যায়।';
+
+  @override
+  String get placementSareeWornDrape =>
+      'ব্যক্তিত শাড়ী এনেদৰে মেৰাই দিয়ক যাতে ৰং, আৰ্হি আৰু বৰ্ডাৰ স্পষ্ট দেখা যায়।';
+
+  @override
+  String get placementSareeRollDisplay =>
+      'শাড়ী এনেদৰে ৰোল কৰক যাতে পল্লু আৰু বৰ্ডাৰ কেমেৰাৰ ফালে থাকে।';
+
+  @override
+  String get placementCushionFlatLay =>
+      'কভাৰ সৰল, পৰিষ্কাৰ পৃষ্ঠত সমতলকৈ ৰাখক।';
+
+  @override
+  String get placementCushionStackedPair =>
+      'এটা কভাৰ আনটোৰ ওপৰত পৰিষ্কাৰকৈ ৰাখক।';
+
+  @override
+  String get placementCushionPropped =>
+      'কুশ্বন চকী বা ছোফাত আগফালে থিয় কৰাই ৰাখক।';
+
+  @override
+  String get placementCushionCornerTuck =>
+      'কভাৰ ঘূৰাওক যাতে চিলাই কৰা এটা কোণ আপোনাৰ সন্মুখত থাকে।';
+
+  @override
+  String get placementShawlDrapedShoulder =>
+      'শাল এখন কান্ধত ৰাখি ওলোমাই দিয়ক।';
+
+  @override
+  String get placementShawlFoldedStack =>
+      'শাল সমান স্তৰত ভাঁজ কৰি পৰিষ্কাৰকৈ দ’ম কৰক।';
+
+  @override
+  String get placementShawlHungFlat =>
+      'দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে শাল মাজত নামি নাযায়।';
+
+  @override
+  String get placementShawlCornerTuck =>
+      'এটা কোণ পাছলৈ ভাঁজ কৰক যাতে বয়নৰ দুয়োফাল দেখা যায়।';
+
+  @override
+  String get placementStoleNeckWrap =>
+      'ডিঙিত এবাৰ মেৰাই দুয়োটা মূৰ ওলোমাই দিয়ক।';
+
+  @override
+  String get placementStoleFlatSpread =>
+      'ষ্টোল সমতলকৈ মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।';
+
+  @override
+  String get placementStoleLooseKnot =>
+      'মাজত এটা ঢিলা গাঁঠি বান্ধক — টানি টান নকৰিব।';
+
+  @override
+  String get placementStoleRolledCoil => 'ষ্টোল ঢিলাকৈ সমতল কুণ্ডলীত ৰোল কৰক।';
+
+  @override
+  String get transcriptSareePalluDrape1 =>
+      'শাড়ী এনেদৰে ওলোৱাওক যাতে ইয়াৰ পতন স্পষ্ট দেখা যায়।';
+
+  @override
+  String get transcriptSareePalluDrape2 =>
+      'কান্ধৰ উচ্চতাত হেংগাৰ, বাঁহ বা মেনেকিন ব্যৱহাৰ কৰক।';
+
+  @override
+  String get transcriptSareePalluDrape3 =>
+      'পল্লু মুক্তকৈ ওলোমাই দিয়ক — পোনকৈ টানি নধৰিব।';
+
+  @override
+  String get transcriptSareePalluDrape4 =>
+      'ভাঁজবোৰে স্ক্ৰীনৰ তিৰ্যক ৰেখা অনুসৰণ কৰক।';
+
+  @override
+  String get transcriptSareePalluDrape5 =>
+      'চিকমিকনি দেখুৱাবলৈ এটা পোহৰ কাষত ৰাখক।';
+
+  @override
+  String get transcriptSareeBoxFold1 =>
+      'শাড়ী পৰিষ্কাৰ দ’মত ভাঁজ কৰক যাতে স্তৰবোৰ দেখা যায়।';
+
+  @override
+  String get transcriptSareeBoxFold2 =>
+      'ভাঁজ কৰা কাষ কেমেৰাৰ ফালে ৰাখক — সেই কাষে ডাঠতা দেখুৱায়।';
+
+  @override
+  String get transcriptSareeBoxFold3 => 'ভাঁজবোৰ আনুভূমিক গাইডৰ সৈতে মিলাওক।';
+
+  @override
+  String get transcriptSareeBoxFold4 =>
+      'প্ৰতিটো স্তৰত গভীৰতাৰ বাবে কাষৰ পৰা পোহৰ লওক।';
+
+  @override
+  String get transcriptSareeWornDrape1 =>
+      'পৰিধান কৰা ফটোৱে সম্পূৰ্ণ শাড়ী দেখুৱায় — ৰং, আৰ্হি আৰু সামগ্ৰী।';
+
+  @override
+  String get transcriptSareeWornDrape2 => 'ৰং সঠিক থাকিবলৈ খোলা ছাঁত থিয় হওক।';
+
+  @override
+  String get transcriptSareeWornDrape3 => 'শাড়ীয়ে ফ্ৰেমৰ বেছিভাগ ঢাকক।';
+
+  @override
+  String get transcriptSareeWornDrape4 =>
+      'ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলাওক।';
+
+  @override
+  String get transcriptSareeWornDrape5 =>
+      'প্লিট থাকিলে উলম্ব গ্ৰিড ৰেখা অনুসৰণ কৰক।';
+
+  @override
+  String get transcriptSareeRollDisplay1 =>
+      'শাড়ী এনেদৰে ৰোল কৰক যাতে পল্লু আৰু বৰ্ডাৰ কেমেৰাৰ ফালে থাকে।';
+
+  @override
+  String get transcriptSareeRollDisplay2 => 'ৰোলে ফ্ৰেমৰ বেছিভাগ ঢাকক।';
+
+  @override
+  String get transcriptSareeRollDisplay3 =>
+      'ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলাওক।';
+
+  @override
+  String get transcriptSareeRollDisplay4 =>
+      'ৰং সঠিক থাকিবলৈ কোমল দিনৰ পোহৰ লওক।';
+
+  @override
+  String get transcriptCushionFlatLay1 => 'কুশ্বন কভাৰ সৰল পৃষ্ঠত সমতলকৈ ৰাখক।';
+
+  @override
+  String get transcriptCushionFlatLay2 =>
+      'সমতল কৰক কিন্তু প্ৰাকৃতিক গঠন থাকিব দিয়ক।';
+
+  @override
+  String get transcriptCushionFlatLay3 => 'ফোন পোনকৈ ওপৰত ৰাখক, কোণত নহয়।';
+
+  @override
+  String get transcriptCushionFlatLay4 => 'কাষবোৰ গ্ৰিডৰ সৈতে পোনকৈ ৰাখক।';
+
+  @override
+  String get transcriptCushionStackedPair1 =>
+      'দুটা কভাৰ দ’ম কৰক যাতে ক্ৰেতাই ডাঠতা দেখিব পাৰে।';
+
+  @override
+  String get transcriptCushionStackedPair2 => 'দ’মৰ কাষ কেমেৰাৰ ফালে ৰাখক।';
+
+  @override
+  String get transcriptCushionStackedPair3 =>
+      'প্ৰতিটো স্তৰৰ ছাঁৰ বাবে কাষৰ পোহৰ লওক।';
+
+  @override
+  String get transcriptCushionPropped1 =>
+      'চকীত কুশ্বন ৰাখিলে ইয়াৰ প্ৰকৃত আকাৰ দেখা যায়।';
+
+  @override
+  String get transcriptCushionPropped2 =>
+      'আৰ্হিৰ সৈতে প্ৰতিযোগিতা নকৰা আসন বাছক।';
+
+  @override
+  String get transcriptCushionPropped3 =>
+      'চকুৰ উচ্চতাৰ পৰা তোলক, ওপৰৰ পৰা নহয়।';
+
+  @override
+  String get transcriptCushionCornerTuck1 =>
+      'কোণে আপোনাৰ চিলাই সৰ্বাধিক স্পষ্টকৈ দেখুৱায়।';
+
+  @override
+  String get transcriptCushionCornerTuck2 =>
+      'কোণে সৰু ফ্ৰেম ভৰোৱালৈকে ওচৰলৈ যাওক।';
+
+  @override
+  String get transcriptCushionCornerTuck3 =>
+      'ফ’কাছৰ বাবে চিলাইত স্ক্ৰীন টেপ কৰক।';
+
+  @override
+  String get transcriptShawlDrapedShoulder1 =>
+      'কান্ধত শাল ওলোৱাই ইয়াৰ ওজন দেখুৱায়।';
+
+  @override
+  String get transcriptShawlDrapedShoulder2 =>
+      'এটা মূৰ আনটোতকৈ তললৈ ওলোমাই দিয়ক।';
+
+  @override
+  String get transcriptShawlDrapedShoulder3 =>
+      'পিন নকৰিব — কাপোৰ নিজেই পৰিব দিয়ক।';
+
+  @override
+  String get transcriptShawlFoldedStack1 =>
+      'ভাঁজ দেখা যোৱাকৈ শাল পৰিষ্কাৰকৈ দ’ম কৰক।';
+
+  @override
+  String get transcriptShawlFoldedStack2 =>
+      'ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক।';
+
+  @override
+  String get transcriptShawlFoldedStack3 => 'ডাঠতাৰ বাবে শালৰ কাষ দেখা যাওক।';
+
+  @override
+  String get transcriptShawlFoldedStack4 =>
+      'প্ৰতিটো ভাঁজত গভীৰতাৰ বাবে কাষৰ পোহৰ লওক।';
+
+  @override
+  String get transcriptShawlHungFlat1 =>
+      'সমতলকৈ ওলোৱাই সম্পূৰ্ণ ডিজাইন একেলগে দেখুৱায়।';
+
+  @override
+  String get transcriptShawlHungFlat2 =>
+      'দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে মাজত নামি নাযায়।';
+
+  @override
+  String get transcriptShawlHungFlat3 => 'পোনকৈ সন্মুখত থিয় হওক, এফালে নহয়।';
+
+  @override
+  String get transcriptShawlCornerTuck1 =>
+      'কোণৰ ক্ল’জ-আপে বয়ন আৰু বৰ্ডাৰ একেলগে দেখুৱায়।';
+
+  @override
+  String get transcriptShawlCornerTuck2 =>
+      'এটা কোণ পাছলৈ ভাঁজ কৰক যাতে দুয়োফাল দেখা যায়।';
+
+  @override
+  String get transcriptShawlCornerTuck3 => 'বয়নে ফ্ৰেম ভৰোৱালৈকে ওচৰলৈ যাওক।';
+
+  @override
+  String get transcriptStoleNeckWrap1 =>
+      'পৰিধান কৰা ফটোৱে সাধাৰণ প্ৰশ্নৰ উত্তৰ দিয়ে — কিমান ডাঙৰ?';
+
+  @override
+  String get transcriptStoleNeckWrap2 =>
+      'ডিঙিত এবাৰ মেৰাই দুয়োটা মূৰ ওলোমাই দিয়ক।';
+
+  @override
+  String get transcriptStoleNeckWrap3 =>
+      'বুকুৰ পৰা ওপৰলৈ তোলক যাতে মূৰবোৰ ফ্ৰেমত থাকে।';
+
+  @override
+  String get transcriptStoleFlatSpread1 =>
+      'ষ্টোল মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।';
+
+  @override
+  String get transcriptStoleFlatSpread2 =>
+      'প্ৰাকৃতিক ভাঁজ থাকিব দিয়ক — সেইবোৰে কাপোৰৰ স্বভাৱ দেখুৱায়।';
+
+  @override
+  String get transcriptStoleFlatSpread3 => 'ফোন পোনকৈ মাজৰ ওপৰত ৰাখক।';
+
+  @override
+  String get transcriptStoleLooseKnot1 =>
+      'ঢিলা গাঁঠিয়ে ষ্টোল কিমান কোমল আৰু পাতল দেখুৱায়।';
+
+  @override
+  String get transcriptStoleLooseKnot2 =>
+      'ঢিলাকৈ বান্ধক — কেতিয়াও টানি টান নকৰিব।';
+
+  @override
+  String get transcriptStoleLooseKnot3 => 'গাঁঠি ফ্ৰেমৰ কেন্দ্ৰত ৰাখক।';
+
+  @override
+  String get transcriptStoleRolledCoil1 =>
+      'কুণ্ডলীত ৰোল কৰিলে কাষ আৰু ডাঠতা দেখা যায়।';
+
+  @override
+  String get transcriptStoleRolledCoil2 =>
+      'ঢিলাকৈ ৰোল কৰক যাতে স্তৰবোৰ পৃথক থাকে।';
+
+  @override
+  String get transcriptStoleRolledCoil3 => 'কুণ্ডলীৰ ওপৰত পোনকৈ তললৈ তোলক।';
+
+  @override
+  String get guideSareeFullDisplay1 => 'শাড়ীয়ে ফ্ৰেমৰ বেছিভাগ অংশ ঢাকে।';
+
+  @override
+  String get guideSareeFullDisplay2 =>
+      'ওপৰৰ বৰ্ডাৰ গ্ৰিডৰ ওপৰৰ তৃতীয়াংশৰ সৈতে মিলে।';
+
+  @override
+  String get guideSareeFullDisplay3 =>
+      'ড্ৰেপত প্লীটবোৰ উলম্ব গ্ৰিডৰ সৈতে মিলে।';
+
+  @override
+  String get guideSareeTextureWeave1 => 'শাড়ীয়ে গোটেই ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideSareeTextureWeave2 => 'বয়ন মাজত থাকে।';
+
+  @override
+  String get guideSareeTextureWeave3 => 'কোমল পোহৰ ব্যৱহাৰ কৰক।';
+
+  @override
+  String get guideSareeTextureWeave4 => 'কঠোৰ প্ৰতিফলন এৰাই চলক।';
+
+  @override
+  String get guideSareeEmbroideryBorder1 => 'এমব্ৰয়ডাৰী ফ্ৰেমৰ ভিতৰত থাকে।';
+
+  @override
+  String get guideSareeEmbroideryBorder2 => 'কাষৰ পৰা পোহৰ লওক।';
+
+  @override
+  String get guideSareeEmbroideryBorder3 =>
+      'বিৱৰণ তীক্ষ্ণ আৰু ভালকৈ পোহৰত ৰাখক।';
+
+  @override
+  String get guideCushionTextureWeave1 => 'বয়নে ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideCushionTextureWeave2 => 'বয়ন মাজত থাকে।';
+
+  @override
+  String get guideShawlFullDesign1 =>
+      'শাল সমতলকৈ ওলোমাই গোটেই ডিজাইন একেলগে দেখা যায়।';
+
+  @override
+  String get guideShawlFullDesign2 =>
+      'দুয়োটা ওপৰৰ কোণ পিন কৰক যাতে মাজত নামি নাযায়।';
+
+  @override
+  String get guideShawlTextureWeave1 => 'বয়নে ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideShawlTextureWeave2 => 'বয়ন মাজত থাকে।';
+
+  @override
+  String get guideStoleFullLength1 =>
+      'ষ্টোল মেলি দিয়ক যাতে সম্পূৰ্ণ দৈৰ্ঘ্য দেখা যায়।';
+
+  @override
+  String get guideStoleFullLength2 =>
+      'স্বাভাৱিক ভাঁজ থাকিবলৈ দিয়ক — সেইবোৰে কাপোৰৰ স্বভাৱ দেখুৱায়।';
+
+  @override
+  String get guideStoleTextureWeave1 => 'বয়নে ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideStoleTextureWeave2 => 'বয়ন মাজত থাকে।';
+
+  @override
+  String get authInvalidCredentials => 'ভুল ব্যৱহাৰকাৰী নাম বা পাছৱৰ্ড।';
+
+  @override
+  String get authUserAlreadyRegistered =>
+      'এই ব্যৱহাৰকাৰী নাম ইতিমধ্যে লোৱা হৈছে।';
+
+  @override
+  String get authEmailNotConfirmed => 'ইমেইল নিশ্চিত কৰক, তাৰ পিছত চেষ্টা কৰক।';
+
+  @override
+  String get authGeneric => 'ছাইন ইন কৰিব পৰা নগ’ল। পুনৰ চেষ্টা কৰক।';
+
+  @override
+  String get languageAssamese => 'অসমীয়া';
+
+  @override
+  String get languageHindi => 'হিন্দী';
+
+  @override
+  String get languageEnglish => 'ইংৰাজী';
+
+  @override
+  String get guideSareeDrapedLook1 => 'কাপোৰ স্বাভাৱিকভাৱে পৰিবলৈ দিয়ক।';
+
+  @override
+  String get guideSareeDrapedLook2 => 'ভাঁজবোৰ তিৰ্যক ৰেখাৰে যায়।';
+
+  @override
+  String get guideSareeDrapedLook3 => 'কাষৰ পৰা পোহৰ লওক।';
+
+  @override
+  String get guideSareeEmbroideryBorder4 =>
+      'কনট্ৰাষ্ট বেকগ্ৰাউণ্ড ব্যৱহাৰ কৰক।';
+
+  @override
+  String get guideSareeFoldedStack1 => 'ভাঁজবোৰ আনুভূমিক ৰেখাৰ সমান্তৰাল থাকে।';
+
+  @override
+  String get guideSareeFoldedStack2 => 'কাষৰ পৰা পোহৰ লওক।';
+
+  @override
+  String get guideSareeFoldedStack3 => 'কাষ দেখা যায়।';
+
+  @override
+  String get guideCushionFullCover1 =>
+      'কভাৰ সমতলকৈ ৰাখক যাতে সম্পূৰ্ণ নক্সা দেখা যায়।';
+
+  @override
+  String get guideCushionFullCover2 =>
+      'ফোন পোনপটীয়াকৈ ওপৰৰ পৰা ধৰক, কোণত নহয়।';
+
+  @override
+  String get guideCushionFullCover3 => 'কাষবোৰ গ্ৰিডৰ সৈতে পোনকৈ ৰাখক।';
+
+  @override
+  String get guideCushionTextureWeave3 => 'কোমল পোহৰ ব্যৱহাৰ কৰক।';
+
+  @override
+  String get guideCushionTextureWeave4 => 'কঠোৰ প্ৰতিফলন এৰাই চলক।';
+
+  @override
+  String get guideCushionStackedThickness1 =>
+      'দুটা কভাৰ এনেকৈ ৰাখক যাতে ডাঠতা দেখা যায়।';
+
+  @override
+  String get guideCushionStackedThickness2 => 'স্তূপৰ কাষ কেমেৰাৰ ফালে ৰাখক।';
+
+  @override
+  String get guideCushionStackedThickness3 =>
+      'কাষৰ পোহৰে প্ৰতিটো স্তৰৰ কোমল ছাঁ পেলায়।';
+
+  @override
+  String get guideCushionCornerStitching1 => 'কোণত চিলাই স্পষ্টকৈ দেখা যায়।';
+
+  @override
+  String get guideCushionCornerStitching2 =>
+      'কাষ চাপি যাওক যেতিয়ালৈকে কোণে সৰু ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideCushionCornerStitching3 =>
+      'চিলাই তীক্ষ্ণ আৰু ভালকৈ পোহৰত ৰাখক।';
+
+  @override
+  String get guideCushionInUse1 => 'চেয়াৰত ৰাখিলে প্ৰকৃত আকাৰ দেখা যায়।';
+
+  @override
+  String get guideCushionInUse2 =>
+      'এনে আসন বাছি লওক যি নক্সাৰ সৈতে প্ৰতিযোগিতা নকৰে।';
+
+  @override
+  String get guideCushionInUse3 => 'চকুৰ স্তৰত তোলক, ওপৰৰ পৰা নহয়।';
+
+  @override
+  String get guideShawlFullDesign3 =>
+      'পোনপটীয়াকৈ সন্মুখত থিয় হওক, এফালে নহয়।';
+
+  @override
+  String get guideShawlTextureWeave3 => 'কোমল পোহৰ ব্যৱহাৰ কৰক।';
+
+  @override
+  String get guideShawlTextureWeave4 => 'কঠোৰ প্ৰতিফলন এৰাই চলক।';
+
+  @override
+  String get guideShawlDrapedLook1 =>
+      'কান্ধত শাল ড্ৰেপ কৰিলে ই কিমান গধুৰ তাক দেখুৱায়।';
+
+  @override
+  String get guideShawlDrapedLook2 => 'এটা মূৰ আনটোতকৈ তললৈ ওলমিবলৈ দিয়ক।';
+
+  @override
+  String get guideShawlDrapedLook3 => 'পিন নকৰিব — কাপোৰ নিজে পৰিবলৈ দিয়ক।';
+
+  @override
+  String get guideShawlBorderCorner1 =>
+      'কোণৰ ক্ল\'জ-আপে বয়ন আৰু বৰ্ডাৰ একেলগে দেখুৱায়।';
+
+  @override
+  String get guideShawlBorderCorner2 =>
+      'এটা কোণ পাছলৈ ভাঁজ কৰক যাতে দুয়োফাল দেখা যায়।';
+
+  @override
+  String get guideShawlBorderCorner3 =>
+      'কাষ চাপি যাওক যেতিয়ালৈকে বয়নে ফ্ৰেম ভৰায়।';
+
+  @override
+  String get guideShawlStackDisplay1 =>
+      'শাল পৰিষ্কাৰকৈ স্তূপ কৰক, ভাঁজ দেখা যায়।';
+
+  @override
+  String get guideShawlStackDisplay2 => 'ভাঁজ আনুভূমিক ৰেখাৰ সমান্তৰাল ৰাখক।';
+
+  @override
+  String get guideShawlStackDisplay3 => 'কাষৰ পোহৰে প্ৰতিটো ভাঁজত গভীৰতা আনে।';
+
+  @override
+  String get guideStoleFullLength3 => 'ফোন পোনপটীয়াকৈ মাজৰ ওপৰত ধৰক।';
+
+  @override
+  String get guideStoleTextureWeave3 => 'কোমল পোহৰ ব্যৱহাৰ কৰক।';
+
+  @override
+  String get guideStoleTextureWeave4 => 'কঠোৰ প্ৰতিফলন এৰাই চলক।';
+
+  @override
+  String get guideStoleWornNeckWrap1 =>
+      'পৰিধান কৰা শটে ষ্টোল কিমান ডাঙৰ তাক উত্তৰ দিয়ে।';
+
+  @override
+  String get guideStoleWornNeckWrap2 =>
+      'ডিঙিত এবাৰ মেৰিয়াই দুয়োটা মূৰ ওলমিবলৈ দিয়ক।';
+
+  @override
+  String get guideStoleWornNeckWrap3 =>
+      'বুকৰ পৰা ওপৰলৈ তোলক যাতে মূৰবোৰ ফ্ৰেমত থাকে।';
+
+  @override
+  String get guideStoleSoftnessKnot1 =>
+      'ঢিলা গাঁঠিয়ে ষ্টোল কিমান কোমল আৰু পাতল তাক দেখুৱায়।';
+
+  @override
+  String get guideStoleSoftnessKnot2 => 'ঢিলাকৈ বান্ধক — কেতিয়াও টান নকৰিব।';
+
+  @override
+  String get guideStoleSoftnessKnot3 => 'গাঁঠি ফ্ৰেমৰ মাজত ৰাখক।';
+
+  @override
+  String get guideStoleEdgeThickness1 =>
+      'ষ্টোল কুণ্ডলিত কৰিলে কাষ আৰু ডাঠতা দেখা যায়।';
+
+  @override
+  String get guideStoleEdgeThickness2 =>
+      'ঢিলাকৈ মেৰিয়াওক যাতে স্তৰবোৰ পৃথক থাকে।';
+
+  @override
+  String get guideStoleEdgeThickness3 => 'কুণ্ডলীৰ ওপৰৰ পৰা পোনকৈ তোলক।';
 }

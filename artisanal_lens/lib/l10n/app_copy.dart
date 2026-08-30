@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../app/locale_controller.dart';
 import '../domain/entities/capture_feedback.dart';
 import '../domain/entities/fabric_property.dart';
 import '../domain/entities/fold_preset.dart';
@@ -447,8 +448,272 @@ abstract final class AppCopy {
         'saree_box_fold' => l10n.presetSareeBoxFoldNeeds,
         'saree_worn_drape' => l10n.presetSareeWornDrapeNeeds,
         'saree_roll_display' => l10n.presetSareeRollDisplayNeeds,
+        'cushion_flat_lay' => l10n.presetCushionFlatLayNeeds,
+        'cushion_stacked_pair' => l10n.presetCushionStackedPairNeeds,
+        'cushion_propped' => l10n.presetCushionProppedNeeds,
+        'cushion_corner_tuck' => l10n.presetCushionCornerTuckNeeds,
+        'shawl_draped_shoulder' => l10n.presetShawlDrapedShoulderNeeds,
+        'shawl_folded_stack' => l10n.presetShawlFoldedStackNeeds,
+        'shawl_hung_flat' => l10n.presetShawlHungFlatNeeds,
+        'shawl_corner_tuck' => l10n.presetShawlCornerTuckNeeds,
+        'stole_neck_wrap' => l10n.presetStoleNeckWrapNeeds,
+        'stole_flat_spread' => l10n.presetStoleFlatSpreadNeeds,
+        'stole_loose_knot' => l10n.presetStoleLooseKnotNeeds,
+        'stole_rolled_coil' => l10n.presetStoleRolledCoilNeeds,
         _ => preset.needsLabel,
       };
+
+  /// First setup-step instruction (style card Placement).
+  static String? presetPlacement(AppLocalizations l10n, String presetId) =>
+      switch (presetId) {
+        'saree_pallu_drape' => l10n.placementSareePalluDrape,
+        'saree_box_fold' => l10n.placementSareeBoxFold,
+        'saree_worn_drape' => l10n.placementSareeWornDrape,
+        'saree_roll_display' => l10n.placementSareeRollDisplay,
+        'cushion_flat_lay' => l10n.placementCushionFlatLay,
+        'cushion_stacked_pair' => l10n.placementCushionStackedPair,
+        'cushion_propped' => l10n.placementCushionPropped,
+        'cushion_corner_tuck' => l10n.placementCushionCornerTuck,
+        'shawl_draped_shoulder' => l10n.placementShawlDrapedShoulder,
+        'shawl_folded_stack' => l10n.placementShawlFoldedStack,
+        'shawl_hung_flat' => l10n.placementShawlHungFlat,
+        'shawl_corner_tuck' => l10n.placementShawlCornerTuck,
+        'stole_neck_wrap' => l10n.placementStoleNeckWrap,
+        'stole_flat_spread' => l10n.placementStoleFlatSpread,
+        'stole_loose_knot' => l10n.placementStoleLooseKnot,
+        'stole_rolled_coil' => l10n.placementStoleRolledCoil,
+        _ => null,
+      };
+
+  /// Spoken tutorial transcript for a fold preset (localized).
+  static List<String> tutorialTranscript(
+    AppLocalizations l10n,
+    String presetId,
+  ) =>
+      switch (presetId) {
+        'saree_pallu_drape' => [
+          l10n.transcriptSareePalluDrape1,
+          l10n.transcriptSareePalluDrape2,
+          l10n.transcriptSareePalluDrape3,
+          l10n.transcriptSareePalluDrape4,
+          l10n.transcriptSareePalluDrape5,
+        ],
+        'saree_box_fold' => [
+          l10n.transcriptSareeBoxFold1,
+          l10n.transcriptSareeBoxFold2,
+          l10n.transcriptSareeBoxFold3,
+          l10n.transcriptSareeBoxFold4,
+        ],
+        'saree_worn_drape' => [
+          l10n.transcriptSareeWornDrape1,
+          l10n.transcriptSareeWornDrape2,
+          l10n.transcriptSareeWornDrape3,
+          l10n.transcriptSareeWornDrape4,
+          l10n.transcriptSareeWornDrape5,
+        ],
+        'saree_roll_display' => [
+          l10n.transcriptSareeRollDisplay1,
+          l10n.transcriptSareeRollDisplay2,
+          l10n.transcriptSareeRollDisplay3,
+          l10n.transcriptSareeRollDisplay4,
+        ],
+        'cushion_flat_lay' => [
+          l10n.transcriptCushionFlatLay1,
+          l10n.transcriptCushionFlatLay2,
+          l10n.transcriptCushionFlatLay3,
+          l10n.transcriptCushionFlatLay4,
+        ],
+        'cushion_stacked_pair' => [
+          l10n.transcriptCushionStackedPair1,
+          l10n.transcriptCushionStackedPair2,
+          l10n.transcriptCushionStackedPair3,
+        ],
+        'cushion_propped' => [
+          l10n.transcriptCushionPropped1,
+          l10n.transcriptCushionPropped2,
+          l10n.transcriptCushionPropped3,
+        ],
+        'cushion_corner_tuck' => [
+          l10n.transcriptCushionCornerTuck1,
+          l10n.transcriptCushionCornerTuck2,
+          l10n.transcriptCushionCornerTuck3,
+        ],
+        'shawl_draped_shoulder' => [
+          l10n.transcriptShawlDrapedShoulder1,
+          l10n.transcriptShawlDrapedShoulder2,
+          l10n.transcriptShawlDrapedShoulder3,
+        ],
+        'shawl_folded_stack' => [
+          l10n.transcriptShawlFoldedStack1,
+          l10n.transcriptShawlFoldedStack2,
+          l10n.transcriptShawlFoldedStack3,
+          l10n.transcriptShawlFoldedStack4,
+        ],
+        'shawl_hung_flat' => [
+          l10n.transcriptShawlHungFlat1,
+          l10n.transcriptShawlHungFlat2,
+          l10n.transcriptShawlHungFlat3,
+        ],
+        'shawl_corner_tuck' => [
+          l10n.transcriptShawlCornerTuck1,
+          l10n.transcriptShawlCornerTuck2,
+          l10n.transcriptShawlCornerTuck3,
+        ],
+        'stole_neck_wrap' => [
+          l10n.transcriptStoleNeckWrap1,
+          l10n.transcriptStoleNeckWrap2,
+          l10n.transcriptStoleNeckWrap3,
+        ],
+        'stole_flat_spread' => [
+          l10n.transcriptStoleFlatSpread1,
+          l10n.transcriptStoleFlatSpread2,
+          l10n.transcriptStoleFlatSpread3,
+        ],
+        'stole_loose_knot' => [
+          l10n.transcriptStoleLooseKnot1,
+          l10n.transcriptStoleLooseKnot2,
+          l10n.transcriptStoleLooseKnot3,
+        ],
+        'stole_rolled_coil' => [
+          l10n.transcriptStoleRolledCoil1,
+          l10n.transcriptStoleRolledCoil2,
+          l10n.transcriptStoleRolledCoil3,
+        ],
+        _ => const [],
+      };
+
+  /// Photography-template setup guidance lines (Lighting screen).
+  static List<String> templateGuidance(
+    AppLocalizations l10n,
+    String? templateId,
+  ) =>
+      switch (templateId) {
+        'saree_full_display' => [
+          l10n.guideSareeFullDisplay1,
+          l10n.guideSareeFullDisplay2,
+          l10n.guideSareeFullDisplay3,
+        ],
+        'saree_texture_weave' => [
+          l10n.guideSareeTextureWeave1,
+          l10n.guideSareeTextureWeave2,
+          l10n.guideSareeTextureWeave3,
+          l10n.guideSareeTextureWeave4,
+        ],
+        'saree_draped_look' => [
+          l10n.guideSareeDrapedLook1,
+          l10n.guideSareeDrapedLook2,
+          l10n.guideSareeDrapedLook3,
+        ],
+        'saree_embroidery_border' => [
+          l10n.guideSareeEmbroideryBorder1,
+          l10n.guideSareeEmbroideryBorder2,
+          l10n.guideSareeEmbroideryBorder3,
+          l10n.guideSareeEmbroideryBorder4,
+        ],
+        'saree_folded_stack' => [
+          l10n.guideSareeFoldedStack1,
+          l10n.guideSareeFoldedStack2,
+          l10n.guideSareeFoldedStack3,
+        ],
+        'cushion_full_cover' => [
+          l10n.guideCushionFullCover1,
+          l10n.guideCushionFullCover2,
+          l10n.guideCushionFullCover3,
+        ],
+        'cushion_texture_weave' => [
+          l10n.guideCushionTextureWeave1,
+          l10n.guideCushionTextureWeave2,
+          l10n.guideCushionTextureWeave3,
+          l10n.guideCushionTextureWeave4,
+        ],
+        'cushion_stacked_thickness' => [
+          l10n.guideCushionStackedThickness1,
+          l10n.guideCushionStackedThickness2,
+          l10n.guideCushionStackedThickness3,
+        ],
+        'cushion_corner_stitching' => [
+          l10n.guideCushionCornerStitching1,
+          l10n.guideCushionCornerStitching2,
+          l10n.guideCushionCornerStitching3,
+        ],
+        'cushion_in_use' => [
+          l10n.guideCushionInUse1,
+          l10n.guideCushionInUse2,
+          l10n.guideCushionInUse3,
+        ],
+        'shawl_full_design' => [
+          l10n.guideShawlFullDesign1,
+          l10n.guideShawlFullDesign2,
+          l10n.guideShawlFullDesign3,
+        ],
+        'shawl_texture_weave' => [
+          l10n.guideShawlTextureWeave1,
+          l10n.guideShawlTextureWeave2,
+          l10n.guideShawlTextureWeave3,
+          l10n.guideShawlTextureWeave4,
+        ],
+        'shawl_draped_look' => [
+          l10n.guideShawlDrapedLook1,
+          l10n.guideShawlDrapedLook2,
+          l10n.guideShawlDrapedLook3,
+        ],
+        'shawl_border_corner' => [
+          l10n.guideShawlBorderCorner1,
+          l10n.guideShawlBorderCorner2,
+          l10n.guideShawlBorderCorner3,
+        ],
+        'shawl_stack_display' => [
+          l10n.guideShawlStackDisplay1,
+          l10n.guideShawlStackDisplay2,
+          l10n.guideShawlStackDisplay3,
+        ],
+        'stole_full_length' => [
+          l10n.guideStoleFullLength1,
+          l10n.guideStoleFullLength2,
+          l10n.guideStoleFullLength3,
+        ],
+        'stole_texture_weave' => [
+          l10n.guideStoleTextureWeave1,
+          l10n.guideStoleTextureWeave2,
+          l10n.guideStoleTextureWeave3,
+          l10n.guideStoleTextureWeave4,
+        ],
+        'stole_worn_neck_wrap' => [
+          l10n.guideStoleWornNeckWrap1,
+          l10n.guideStoleWornNeckWrap2,
+          l10n.guideStoleWornNeckWrap3,
+        ],
+        'stole_softness_knot' => [
+          l10n.guideStoleSoftnessKnot1,
+          l10n.guideStoleSoftnessKnot2,
+          l10n.guideStoleSoftnessKnot3,
+        ],
+        'stole_edge_thickness' => [
+          l10n.guideStoleEdgeThickness1,
+          l10n.guideStoleEdgeThickness2,
+          l10n.guideStoleEdgeThickness3,
+        ],
+        _ => const [],
+      };
+
+  static String formatSetDate(AppLocalizations l10n, DateTime date) {
+    final labels = [
+      l10n.monthJan,
+      l10n.monthFeb,
+      l10n.monthMar,
+      l10n.monthApr,
+      l10n.monthMay,
+      l10n.monthJun,
+      l10n.monthJul,
+      l10n.monthAug,
+      l10n.monthSep,
+      l10n.monthOct,
+      l10n.monthNov,
+      l10n.monthDec,
+    ];
+    final day = date.day.toString().padLeft(2, '0');
+    return '$day ${labels[date.month - 1]}, ${date.year}';
+  }
 
   static String propertyLabel(AppLocalizations l10n, FabricProperty property) =>
       switch (property) {
@@ -595,6 +860,7 @@ abstract final class AppCopy {
 
   static String? displayedPlacement(
     AppLocalizations l10n, {
+    FoldPreset? preset,
     String? templateId,
     String? templateName,
     String? fallback,
@@ -602,9 +868,44 @@ abstract final class AppCopy {
     final template = PhotographyTemplates.byId(templateId ?? '') ??
         _templateByIdOrName(templateName);
     if (template != null) {
-      return templatePlacement(l10n, template.id);
+      final mapped = templatePlacement(l10n, template.id);
+      if (mapped != null && mapped.isNotEmpty) return mapped;
+    }
+    if (preset != null) {
+      final mapped = presetPlacement(l10n, preset.id);
+      if (mapped != null && mapped.isNotEmpty) return mapped;
     }
     return fallback;
+  }
+
+  static String languageLabel(AppLocalizations l10n, AppLanguage language) =>
+      switch (language) {
+        AppLanguage.assamese => l10n.languageAssamese,
+        AppLanguage.hindi => l10n.languageHindi,
+        AppLanguage.english => l10n.languageEnglish,
+      };
+
+  /// Maps Supabase / AuthException English messages to the active locale.
+  static String authError(AppLocalizations l10n, String message) {
+    final lower = message.toLowerCase();
+    if (lower.contains('invalid login') ||
+        lower.contains('invalid credentials') ||
+        lower.contains('wrong password') ||
+        lower.contains('invalid_credentials')) {
+      return l10n.authInvalidCredentials;
+    }
+    if (lower.contains('already registered') ||
+        lower.contains('already been registered') ||
+        lower.contains('user already')) {
+      return l10n.authUserAlreadyRegistered;
+    }
+    if (lower.contains('email not confirmed') ||
+        lower.contains('not confirmed')) {
+      return l10n.authEmailNotConfirmed;
+    }
+    if (lower.trim().isEmpty) return l10n.authGeneric;
+    // Prefer a localized generic over leaking English server text.
+    return l10n.authGeneric;
   }
 
   static String capturePrompt(

@@ -176,31 +176,89 @@ class AppDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-  /// Inserts a remote set if this device has not seen it yet.
-  Future<bool> mergeRemoteShotSet(Map<dynamic, dynamic> remote) async {
+  /// Inserts or updates a remote set when cloud data is newer or local is synced.
+  Future<void> upsertRemoteShotSet(Map<dynamic, dynamic> remote) async {
     final id = remote['id'] as String;
+    final remoteUpdated = DateTime.parse(
+      remote['updated_at'] as String? ?? remote['created_at'] as String,
+    ).millisecondsSinceEpoch;
+
     final existing = await _db.query(
       tableSets,
       where: 'id = ?',
       whereArgs: [id],
       limit: 1,
     );
-    if (existing.isNotEmpty) return false;
+
+    if (existing.isNotEmpty) {
+      final row = existing.first;
+      final localUpdated =
+          row['updated_at'] as int? ?? row['created_at'] as int? ?? 0;
+      final localPending = (row['sync_status'] as String?) == 'pending';
+      if (localPending && localUpdated >= remoteUpdated) return;
+    }
 
     final createdAt = DateTime.parse(remote['created_at'] as String);
-    await _db.insert(tableSets, {
-      'id': id,
-      'product_name': remote['product_name'],
-      'category_id': remote['category_id'],
-      'material_id': remote['material_id'],
-      'silk_type_id': remote['silk_type_id'],
-      'created_at': createdAt.millisecondsSinceEpoch,
-      'updated_at': DateTime.parse(
-        remote['updated_at'] as String? ?? remote['created_at'] as String,
-      ).millisecondsSinceEpoch,
-      'sync_status': 'synced',
-    });
-    return true;
+    await _db.insert(
+      tableSets,
+      {
+        'id': id,
+        'product_name': remote['product_name'],
+        'category_id': remote['category_id'],
+        'material_id': remote['material_id'],
+        'silk_type_id': remote['silk_type_id'],
+        'created_at': createdAt.millisecondsSinceEpoch,
+        'updated_at': remoteUpdated,
+        'sync_status': 'synced',
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  /// Inserts or replaces a shot row from the cloud, keeping a local file path.
+  Future<void> upsertRemoteShot({
+    required Map<dynamic, dynamic> remote,
+    required String filePath,
+    required String storagePath,
+  }) async {
+    final capturedAt = DateTime.parse(remote['captured_at'] as String);
+    await _db.insert(
+      tableShots,
+      {
+        'id': remote['id'],
+        'set_id': remote['set_id'],
+        'shot_type': remote['shot_type'],
+        'slot_index': remote['slot_index'],
+        'file_path': filePath,
+        'captured_at': capturedAt.millisecondsSinceEpoch,
+        'preset_id': remote['preset_id'],
+        'saved_to_gallery':
+            (remote['saved_to_gallery'] as bool? ?? false) ? 1 : 0,
+        'storage_path': storagePath,
+        'sync_status': 'synced',
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<Map<String, Object?>?> setRowById(String setId) async {
+    final rows = await _db.query(
+      tableSets,
+      where: 'id = ?',
+      whereArgs: [setId],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : rows.first;
+  }
+
+  Future<Map<String, Object?>?> shotRowById(String shotId) async {
+    final rows = await _db.query(
+      tableShots,
+      where: 'id = ?',
+      whereArgs: [shotId],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : rows.first;
   }
 
   Future<void> touchShotSet(String setId) => _db.update(

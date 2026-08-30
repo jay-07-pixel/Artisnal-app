@@ -8,10 +8,10 @@ import '../datasources/app_database.dart';
 import '../datasources/photo_storage.dart';
 import 'supabase_initializer.dart';
 
-/// Pushes local shot sets and photographs to Supabase when enabled.
+/// Pushes local shot sets and photographs to Supabase when signed in.
 ///
-/// Cloud backup is currently disabled — it previously required email/password
-/// auth. Local SQLite remains the source of truth.
+/// Local SQLite remains the source of truth on-device; the cloud copy lets
+/// artisans sign in on another phone and see their progress.
 class CloudSyncService {
   CloudSyncService({
     required AppDatabase database,
@@ -27,9 +27,10 @@ class CloudSyncService {
 
   SupabaseClient? get _client => supabaseClient;
 
-  bool get canSync => false;
+  bool get canSync =>
+      _client != null && _client!.auth.currentSession?.user != null;
 
-  /// Upload pending rows and pull remote changes since the last sync.
+  /// Pull remote changes, then push pending local rows.
   Future<CloudSyncResult> syncAll() async {
     if (!canSync) {
       return const CloudSyncResult(skipped: true);
@@ -40,16 +41,22 @@ class CloudSyncService {
     }
 
     final client = _client!;
+    final userId = client.auth.currentUser!.id;
 
     var uploadedSets = 0;
     var uploadedShots = 0;
     var pulledSets = 0;
+    var pulledShotsCount = 0;
 
-    // Push local metadata first.
+    pulledSets = await _pullRemote(client, userId, onPulledShot: () {
+      pulledShotsCount++;
+    });
+
     final pendingSets = await _database.pendingShotSets();
     for (final row in pendingSets) {
       await client.from('shot_sets').upsert({
         'id': row['id'],
+        'user_id': userId,
         'product_name': row['product_name'],
         'category_id': row['category_id'],
         'material_id': row['material_id'],
@@ -70,7 +77,7 @@ class CloudSyncService {
       final shotId = row['id'] as String;
       final setId = row['set_id'] as String;
       final filePath = row['file_path'] as String;
-      final storagePath = '$setId/$shotId.jpg';
+      final storagePath = '$userId/$setId/$shotId.jpg';
 
       final bytes = await _readPhotoBytes(filePath);
       if (bytes != null) {
@@ -87,6 +94,7 @@ class CloudSyncService {
       await client.from('shots').upsert({
         'id': shotId,
         'set_id': setId,
+        'user_id': userId,
         'shot_type': row['shot_type'],
         'slot_index': row['slot_index'],
         'storage_path': storagePath,
@@ -107,7 +115,72 @@ class CloudSyncService {
       uploadedSets: uploadedSets,
       uploadedShots: uploadedShots,
       pulledSets: pulledSets,
+      pulledShots: pulledShotsCount,
     );
+  }
+
+  Future<int> _pullRemote(
+    SupabaseClient client,
+    String userId, {
+    required void Function() onPulledShot,
+  }) async {
+    var pulledSets = 0;
+
+    final setRows = await client
+        .from('shot_sets')
+        .select()
+        .eq('user_id', userId)
+        .order('updated_at');
+
+    for (final remote in setRows) {
+      final setId = remote['id'] as String;
+      final existingSet = await _database.setRowById(setId);
+      final wasNew = existingSet == null;
+      await _database.upsertRemoteShotSet(remote);
+      if (wasNew) pulledSets++;
+    }
+
+    final shotRows = await client
+        .from('shots')
+        .select()
+        .eq('user_id', userId);
+
+    for (final remote in shotRows) {
+      final shotId = remote['id'] as String;
+      final setId = remote['set_id'] as String;
+      final storagePath = remote['storage_path'] as String?;
+      final existing = await _database.shotRowById(shotId);
+
+      String filePath = existing?['file_path'] as String? ?? '';
+      final hasLocalFile =
+          filePath.isNotEmpty && await _photoStorage.readBytes(filePath) != null;
+
+      if (!hasLocalFile && storagePath != null && storagePath.isNotEmpty) {
+        try {
+          final bytes = await client.storage
+              .from(SupabaseConfig.photosBucket)
+              .download(storagePath);
+          filePath = await _photoStorage.persistBytes(
+            Uint8List.fromList(bytes),
+            setId: setId,
+            shotId: shotId,
+          );
+          onPulledShot();
+        } catch (_) {
+          if (filePath.isEmpty) continue;
+        }
+      }
+
+      if (filePath.isEmpty) continue;
+
+      await _database.upsertRemoteShot(
+        remote: remote,
+        filePath: filePath,
+        storagePath: storagePath ?? '$userId/$setId/$shotId.jpg',
+      );
+    }
+
+    return pulledSets;
   }
 
   Future<bool> _isOnline() async {
@@ -129,6 +202,7 @@ class CloudSyncResult {
     this.uploadedSets = 0,
     this.uploadedShots = 0,
     this.pulledSets = 0,
+    this.pulledShots = 0,
     this.skipped = false,
     this.offline = false,
   });
@@ -136,8 +210,13 @@ class CloudSyncResult {
   final int uploadedSets;
   final int uploadedShots;
   final int pulledSets;
+  final int pulledShots;
   final bool skipped;
   final bool offline;
 
-  bool get didWork => uploadedSets > 0 || uploadedShots > 0 || pulledSets > 0;
+  bool get didWork =>
+      uploadedSets > 0 ||
+      uploadedShots > 0 ||
+      pulledSets > 0 ||
+      pulledShots > 0;
 }

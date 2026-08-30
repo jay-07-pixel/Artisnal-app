@@ -3,7 +3,7 @@
 **Date:** 25 August 2026  
 **Type:** Source-of-truth verification only. No code was changed for this audit.  
 **App:** `artisanal_lens` (`com.artisanallens.artisanal_lens`)  
-**Workspace:** `C:\Users\jayjo\Artisan-App`
+**Workspace:** repository root (`Artisan-App`)
 
 ---
 

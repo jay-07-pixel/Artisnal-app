@@ -37,6 +37,23 @@ class IoPhotoStorage implements PhotoStorage {
   }
 
   @override
+  Future<String> persistBytes(
+    Uint8List bytes, {
+    required String setId,
+    required String shotId,
+  }) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final photosDir = Directory(p.join(directory.path, 'photos'));
+    if (!photosDir.existsSync()) {
+      photosDir.createSync(recursive: true);
+    }
+
+    final destination = p.join(photosDir.path, '${setId}_$shotId.jpg');
+    await File(destination).writeAsBytes(bytes, flush: true);
+    return destination;
+  }
+
+  @override
   ImageProvider? imageProvider(String handle) {
     if (handle.startsWith('assets/')) return AssetImage(handle);
     final file = File(handle);

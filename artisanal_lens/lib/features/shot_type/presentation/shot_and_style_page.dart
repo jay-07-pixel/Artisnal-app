@@ -225,7 +225,8 @@ class _StyleRow extends StatelessWidget {
                       const SizedBox(height: 2),
                       _LabeledValue(
                         label: l10n.labelPlacement,
-                        value: preset.setupSteps.first.instruction,
+                        value: AppCopy.presetPlacement(l10n, preset.id) ??
+                            preset.setupSteps.first.instruction,
                       ),
                     ],
                     const SizedBox(height: 2),
