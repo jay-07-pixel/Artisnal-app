@@ -69,30 +69,29 @@ More device notes: [`artisanal_lens/RUNNING.md`](artisanal_lens/RUNNING.md).
 
 ### Supabase (cloud backup & sync)
 
-Full setup guide: [`supabase/SUPABASE_SETUP.md`](supabase/SUPABASE_SETUP.md).
-
-1. Create a Supabase project and run
-   `supabase/migrations/20250828120000_initial_schema.sql` in the SQL editor.
-2. Run the app with your project credentials:
+**Pre-configured for this repo** — `flutter run` connects to the shared Supabase
+project. Credentials live in `artisanal_lens/supabase.local.json` and
+`lib/app/supabase_config.dart` (anon key only; safe for client apps).
 
 ```bash
-# Option A — local config file (recommended, gitignored)
-cp supabase.local.example.json supabase.local.json
-# edit supabase.local.json with your URL and anon key
-flutter run --dart-define-from-file=supabase.local.json
-
-# Option B — inline flags
-flutter run \
-  --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=your-anon-key
+cd artisanal_lens
+flutter run
 ```
 
-On Windows, `.\run_app.ps1` picks up `supabase.local.json` automatically.
+For release APKs, pass the same file so keys are baked into the build:
 
-3. Open **Settings → Account & backup** to sign in and sync photos.
+```bash
+flutter build apk --release --dart-define-from-file=supabase.local.json
+```
 
-Without those flags the app stays fully offline. Local SQLite is still the
-source of truth; Supabase backs up shot sets and JPEGs when online.
+On Windows: `.\run_app.ps1` also picks up `supabase.local.json`.
+
+Open **Settings → Account & backup** to sign in and sync photos.
+
+New collaborators: paste the prompt in
+[`COLLABORATOR_CURSOR_PROMPT.md`](COLLABORATOR_CURSOR_PROMPT.md) into Cursor.
+
+Full backend setup (migrations, tutorial uploads): [`supabase/SUPABASE_SETUP.md`](supabase/SUPABASE_SETUP.md).
 
 ---
 
